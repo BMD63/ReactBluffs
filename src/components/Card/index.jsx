@@ -2,12 +2,12 @@ import Button from '../Shared/Button';
 import PropTypes from 'prop-types';
 import './styles.css';
 
-const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit }) => {
+const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,totalCards }) => {
   const allQuestionsAnswered = Object.keys(userAnswers).length === 7;
 
   return (
     <div className="card">
-      <h2>Карточка {cardIndex + 1}</h2>
+      <h2>РАУНД {cardIndex + 1} из {totalCards}</h2>
       {cardData.map((question, questionIndex) => (
         <div key={questionIndex} className="question">
           <p>{question.question}</p>

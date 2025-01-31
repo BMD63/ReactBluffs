@@ -68,3 +68,9 @@
   max-height: 60vh;
   overflow-y: auto;
 }
+.answer-item{
+  margin-top: 1.3rem;
+}
+.modalBotton {
+  margin-top: 20px;
+}

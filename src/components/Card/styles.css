@@ -1,16 +1,18 @@
 .card {
     width: 80%;
     margin: 0 auto;
-    border: 3px solid #c2bebe;
-    box-shadow: 2px 2px 2px #c2bebe;
+    border: 2px solid #c2bebe;
+    box-shadow: 2px 2px 2px rgb(175, 140, 97);
     background-color: rgb(235, 224, 211);
 }
 .card h2 {
-    font-size: 1.5em;
+    font-size: 1.5em;   
     margin-bottom: 0.5em;
     margin: auto;
     border: 2px solid #c2bebe;
+    border-radius: 8px;
+    
     text-align: center;
     color: #5a615b;
-    box-shadow: 2px 2px 2px #c2bebe;
+    box-shadow: 2px 2px 2px rgb(175, 140, 97);
 }

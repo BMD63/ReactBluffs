@@ -13,10 +13,11 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
             <div key={index} className="answer-item">
               <p>{question.question}</p>
               <p>Правильный ответ: {question.answer ? 'Да' : 'Нет'}</p>
+              <p>Ваш ответ: {question.userAnswer ? 'Да' : 'Нет'}</p>
             </div>
           ))}
         </div>
-        <Button onClick={onNext}>
+        <Button className= "modalBotton" onClick={onNext}>
           {isLastCard ? 'К результатам' : 'Следующая карточка'}
         </Button>
       </div>

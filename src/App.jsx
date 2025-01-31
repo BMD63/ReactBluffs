@@ -97,6 +97,7 @@ const App = () => {
             setCurrentCardScore(calculateCurrentCardScore(currentCard));
             setShowCardResults(true);
           }}
+          totalCards={cards.length}
         />
       )}
 
