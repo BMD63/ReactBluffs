@@ -24,6 +24,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: opacity 0.2s;
+  border: 1px solid #white;
 }
 
 .btn:disabled {
@@ -34,6 +35,9 @@
 .btn.selected {
   background: #4CAF50;
   color: white;
+}
+.btn:hover {
+transform: scale(1.2 , 1.2);
 }
 
 .card {

@@ -6,7 +6,7 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h2>Результаты карточки {cardIndex + 1}</h2>
+        <h2>Результаты раунда {cardIndex + 1}</h2>
         <p>Набрано баллов: {score}</p>
         <div className="answers-list">
           {cardData.map((question, index) => (
@@ -18,7 +18,7 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
           ))}
         </div>
         <Button className= "modalBotton" onClick={onNext}>
-          {isLastCard ? 'К результатам' : 'Следующая карточка'}
+          {isLastCard ? 'К результатам' : 'Следующий раунд'}
         </Button>
       </div>
     </div>
