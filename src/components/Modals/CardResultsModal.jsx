@@ -1,6 +1,6 @@
 import Button from '../Shared/Button';
 
-const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard }) => {
+const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers}) => {
   if (!isOpen) return null;
   // console.log(score);
   return (
@@ -9,17 +9,20 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
         <h2>Результаты раунда {cardIndex + 1}</h2>
         <p>Набрано баллов: {score}</p>
         <div className="answers-list">
+          <p>Вопросы{JSON.stringify(cardData)}</p>
           {cardData.map((question, index) => (
             <div key={index} className="answer-item">
               <p>{question.question}</p>
-              <p>Правильный ответ: {question.answer ? 'Да' : 'Нет'}</p>
-              <p>Ваш ответ: {question.userAnswer ? 'Да' : 'Нет'}</p>
+              <p>Правильный ответ: {question.correctAnswer ? 'Да' : 'Нет'}</p>
+              <p>Ваш ответ: {userAnswers[index].answer ? 'Да' : 'Нет'}</p>
+              {(userAnswers[index].answer === question.correctAnswer) && userAnswers[index].bonus && <p>Бонус</p>}
             </div>
           ))}
         </div>
         <Button className= "modalBotton" onClick={onNext}>
           {isLastCard ? 'К результатам' : 'Следующий раунд'}
         </Button>
+        {/* <Button onClick={alert(JSON.stringify(cardData))}>Check</Button> */}
       </div>
     </div>
   );

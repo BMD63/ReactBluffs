@@ -25,11 +25,11 @@ const App = () => {
     for(let i = 0; i < cardsCount; i++) {
       newCards.push(shuffledQuestions.slice(i * 7, (i + 1) * 7));
     }
-    
     setCards(newCards);
     const rulesShown = localStorage.getItem('rulesShown');
     if (!rulesShown) setShowRules(true);
   }, []);
+  useEffect(() => {console.log(`userAnswers - ${JSON.stringify(userAnswers)}`)}, [userAnswers]);
 
   const calculateCurrentCardScore = (cardIndex) => {
     let score = 0;
@@ -108,6 +108,7 @@ const App = () => {
         score={currentCardScore}
         onNext={handleNextCard}
         isLastCard={currentCard === cards.length - 1}
+        userAnswers={userAnswers[currentCard]}
       />
 
       <FinalResultsModal

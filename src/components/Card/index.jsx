@@ -1,9 +1,14 @@
 import Button from '../Shared/Button';
 import PropTypes from 'prop-types';
 import './styles.css';
+import { useEffect } from 'react';
 
 const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,totalCards }) => {
   const allQuestionsAnswered = Object.keys(userAnswers).length === 7;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }
+  , [cardIndex]);
 
   return (
     <div className="card">
