@@ -9,7 +9,6 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
         <h2>Результаты раунда {cardIndex + 1}</h2>
         <p>Набрано баллов: {score}</p>
         <div className="answers-list">
-          <p>Вопросы{JSON.stringify(cardData)}</p>
           {cardData.map((question, index) => (
             <div key={index} className="answer-item">
               <p>{question.question}</p>

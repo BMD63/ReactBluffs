@@ -26,11 +26,13 @@ const App = () => {
       newCards.push(shuffledQuestions.slice(i * 7, (i + 1) * 7));
     }
     setCards(newCards);
+    
+  }, []);
+  useEffect(() => {
     const rulesShown = localStorage.getItem('rulesShown');
+    // console.log(rulesShown);
     if (!rulesShown) setShowRules(true);
   }, []);
-  useEffect(() => {console.log(`userAnswers - ${JSON.stringify(userAnswers)}`)}, [userAnswers]);
-
   const calculateCurrentCardScore = (cardIndex) => {
     let score = 0;
     cards[cardIndex].forEach((question, questionIndex) => {
@@ -40,7 +42,7 @@ const App = () => {
         if (userAnswer.bonus) score += 1;
       }
     });
-    console.log(`score - ${score}`);
+    // console.log(`score - ${score}`);
     return score;
   };
 
@@ -119,6 +121,7 @@ const App = () => {
           setUserAnswers([]);
           window.location.reload();
         }}
+
       />
     </div>
   );
