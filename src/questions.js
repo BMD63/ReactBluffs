@@ -13,7 +13,7 @@ export const questions = [
     { question: "Первые десять экранизаций романа 12 стульев были сделаны за рубежом", correctAnswer: true },
     { question: "В списке из 10 самых опасных пород собак питбуль стоит выше волкособа ", correctAnswer: false },
     { question: "Коктейль отвертка это русское облагороженное название американского коктейля секс с водителем", correctAnswer: false },
- /*    { questio: "в 90-х годах до сериала Бригада Дмитрий Дюжев снялся в четерех эротических фильмах", correctAnswer: false },
+    { questio: "в 90-х годах до сериала Бригада Дмитрий Дюжев снялся в четерех эротических фильмах", correctAnswer: false },
     { question: "Шотландское пиво Beithir Fire имеет крепость 75 градусов", correctAnswer: true },
     { question: "На гербе города Шуи изображен просто кусок мыла", correctAnswer: true },
     { question: "Клумпакоис это название танца", correctAnswer: true },
@@ -40,5 +40,5 @@ export const questions = [
     { question: "Лед-9 это форма льда, образующего не шестигранные, а девятигранные кристаллы ", correctAnswer: false },
     { question: "Омон Ра это книга про советскую космонавтику", correctAnswer: true },
     { question: "В Китае запрещено использовать единицу измерения дециметр", correctAnswer: false },
-    { question: "в Европе инструмент болгарку называют russian grinder", correctAnswer: false }, */
+    { question: "в Европе инструмент болгарку называют russian grinder", correctAnswer: false },
 ]
