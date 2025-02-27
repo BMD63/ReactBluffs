@@ -1,8 +1,9 @@
 import Button from '../Shared/Button';
 
-const FinalResultsModal = ({ isOpen, totalScore, onRestart }) => {
+const FinalResultsModal = ({ isOpen, totalScore, onRestart, onNewPlayer }) => {
   const handleNewPlayer = () => {
-    localStorage.setItem('rulesShown', 'false')
+    localStorage.clear();
+    onNewPlayer();
     window.scrollTo(0, 0);
     onRestart();
   }
@@ -12,8 +13,10 @@ const FinalResultsModal = ({ isOpen, totalScore, onRestart }) => {
       <div className="modal">
         <h2>Итоговый результат</h2>
         <p>Общее количество баллов: {totalScore}</p>
-        <Button onClick={onRestart}>Начать заново</Button>
-        <button onClick={handleNewPlayer}> Новый игрок </button>
+        <nav>
+          <Button onClick={onRestart}>Начать заново</Button>
+          <Button onClick={handleNewPlayer}> Новый игрок </Button>
+        </nav>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ const App = () => {
   const [showRules, setShowRules] = useState(false);
   const [showCardResults, setShowCardResults] = useState(false);
   const [currentCardScore, setCurrentCardScore] = useState(0);
+  const [newPlayer, setNewPlayer] = useState(false);
 
   useEffect(() => {
     const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
@@ -30,9 +31,13 @@ const App = () => {
   }, []);
   useEffect(() => {
     const rulesShown = localStorage.getItem('rulesShown');
-    // console.log(rulesShown);
-    if (!rulesShown) setShowRules(true);
-  }, []);
+    if (rulesShown==`false` || rulesShown==null) 
+      setShowRules(true);
+  }, [newPlayer]);
+  const handleNewPlayer = () => {
+    setNewPlayer(true);
+    localStorage.setItem('rulesShown', false);
+  }
   const calculateCurrentCardScore = (cardIndex) => {
     let score = 0;
     cards[cardIndex].forEach((question, questionIndex) => {
@@ -113,7 +118,7 @@ const App = () => {
         userAnswers={userAnswers[currentCard]}
       />
 
-      <FinalResultsModal
+      {currentCard >= cards.length && <FinalResultsModal
         isOpen={currentCard >= cards.length}
         totalScore={totalScore}
         onRestart={() => {
@@ -121,8 +126,8 @@ const App = () => {
           setUserAnswers([]);
           window.location.reload();
         }}
-
-      />
+        onNewPlayer={handleNewPlayer}
+      />}
     </div>
   );
 };
