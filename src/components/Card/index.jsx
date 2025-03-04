@@ -9,10 +9,24 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
     window.scrollTo(0, 0);
   }
   , [cardIndex]);
+  const stringCartIndexes = [
+    `ПЕРВЫЙ`,
+    `ВТОРОЙ`,
+    `ТРЕТИЙ`,
+    `ЧЕТВЕРТЫЙ`,
+    `ПЯТЫЙ`,
+    `ШЕСТОЙ`,
+    `СЕДМОЙ`,
+    `ВОСЬМОЙ`,
+    `ДЕВЯТЫЙ`,
+    `ДЕСЯТЫЙ`,
+  ];
+
+  const stringTotalCards = [`ОДНОЙ`, `ДВУХ`, `ТРЕХ`, `ЧЕТЫРЕХ`, `ПЯТИ`, `ШЕСТИ`, `СЕМИ`, `ВОСЬМИ`, `ДЕВЯТИ`, `ДЕСЯТИ`]; 
 
   return (
     <div className="card">
-      <h2>РАУНД {cardIndex + 1} из {totalCards}</h2>
+      <h2>РАУНД {stringCartIndexes[cardIndex]} из {stringTotalCards[totalCards]}</h2>
       {cardData.map((question, questionIndex) => (
         <div key={questionIndex} className="question">
           <p>{question.question}</p>
