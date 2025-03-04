@@ -26,7 +26,7 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
 
   return (
     <div className="card">
-      <h2>РАУНД {stringCartIndexes[cardIndex]} ИЗ {stringTotalCards[totalCards]}</h2>
+      <h2>РАУНД {stringCartIndexes[cardIndex]} ИЗ {stringTotalCards[totalCards-1]}</h2>
       {cardData.map((question, questionIndex) => (
         <div key={questionIndex} className="question">
           <p>{question.question}</p>
