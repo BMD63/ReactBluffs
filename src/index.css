@@ -1,4 +1,5 @@
 :root {
+  display: flex;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -20,8 +21,10 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
+  max-width: 800px;
 }
 
 h1 {
@@ -58,6 +61,11 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  button {
+    color: #f9f9f9;
   }
 }
 @media (orientation:portrait) {
