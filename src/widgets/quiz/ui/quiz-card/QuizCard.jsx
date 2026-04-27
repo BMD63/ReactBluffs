@@ -29,7 +29,7 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
       <h2>РАУНД {stringCartIndexes[cardIndex]} ИЗ {stringTotalCards[totalCards-1]}</h2>
       {cardData.map((question, questionIndex) => (
         <div key={questionIndex} className="question">
-          <p>{question.question}</p>
+          <p>{question.text}</p>
           <div className="controls">
             <Button
               className={`answer-btn ${userAnswers[questionIndex]?.answer === true ? 'selected' : ''}`}
@@ -72,11 +72,16 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
 Card.propTypes = {
   cardData: PropTypes.arrayOf(
     PropTypes.shape({
-      question: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
     })
   ).isRequired,
   cardIndex: PropTypes.number.isRequired,
-  userAnswers: PropTypes.object.isRequired,
+  userAnswers: PropTypes.objectOf(
+  PropTypes.shape({
+    answer: PropTypes.bool,
+    bonus: PropTypes.bool,
+  })
+).isRequired,
   onAnswer: PropTypes.func.isRequired,
   onBonus: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
