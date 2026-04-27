@@ -1,4 +1,4 @@
-import Button from '../Shared/Button';
+import Button from '../../../../shared/ui/button/Button';
 import PropTypes from 'prop-types';
 import './styles.css';
 import { useEffect } from 'react';

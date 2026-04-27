@@ -1,4 +1,4 @@
-import Button from '../Shared/Button';
+import Button from '../../../../shared/ui/button/Button';
 
 const RulesModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;

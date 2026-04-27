@@ -1,4 +1,4 @@
-import Button from '../Shared/Button';
+import Button from '../../../../shared/ui/button/Button';
 
 const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers}) => {
   if (!isOpen) return null;

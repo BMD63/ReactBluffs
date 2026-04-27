@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { questions } from './questions';
-import Card from './components/Card';
-import RulesModal from './components/Modals/RulesModal';
-import CardResultsModal from './components/Modals/CardResultsModal';
-import FinalResultsModal from './components/Modals/FinalResultsModal';
-import './App.css';
+import { questions } from '../../../questions';
+import Card from '../../../widgets/quiz/ui/quiz-card/QuizCard';
+import RulesModal from '../../../widgets/quiz/ui/modals/RulesModal';
+import CardResultsModal from '../../../widgets/quiz/ui/modals/CardResultsModal';
+import FinalResultsModal from '../../../widgets/quiz/ui/modals/FinalResultsModal';
+import '../../../App.css';
 
 const App = () => {
   const [cards, setCards] = useState([]);
