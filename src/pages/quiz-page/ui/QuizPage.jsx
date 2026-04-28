@@ -6,7 +6,7 @@ import CardResultsModal from '../../../widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '../../../widgets/quiz/ui/modals/FinalResultsModal';
 import '../../../App.css';
 
-const App = () => {
+const QuizPage = () => {
   const [cards, setCards] = useState([]);
   const [currentCard, setCurrentCard] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -40,14 +40,18 @@ const App = () => {
   }
   const calculateCurrentCardScore = (cardIndex) => {
     let score = 0;
-    cards[cardIndex].forEach((question, questionIndex) => {
-      const userAnswer = userAnswers[cardIndex]?.[questionIndex];
+
+    cards[cardIndex].forEach((question) => {
+      const questionId = question.id;
+
+      const userAnswer = userAnswers[cardIndex]?.[questionId];
+
       if (userAnswer && userAnswer.answer === question.correctAnswer) {
         score += 1;
         if (userAnswer.bonus) score += 1;
       }
     });
-    // console.log(`score - ${score}`);
+
     return score;
   };
 
@@ -56,25 +60,31 @@ const App = () => {
     setCurrentCard(prev => prev + 1);
   };
 
-  const handleAnswerUpdate = (cardIndex, questionIndex, answer) => {
+  const handleAnswerUpdate = (cardIndex, questionId, answer) => {
     const newAnswers = [...userAnswers];
+
     if (!newAnswers[cardIndex]) newAnswers[cardIndex] = {};
-    newAnswers[cardIndex][questionIndex] = { 
-      answer, 
-      bonus: false 
+
+    newAnswers[cardIndex][questionId] = {
+      answer,
+      bonus: false,
     };
+
     setUserAnswers(newAnswers);
   };
 
-  const handleBonusUpdate = (cardIndex, questionIndex) => {
+  const handleBonusUpdate = (cardIndex, questionId) => {
     const cardAnswers = userAnswers[cardIndex] || {};
-    const currentBonusCount = Object.values(cardAnswers)
-      .filter(a => a.bonus).length;
 
-    if (currentBonusCount < 3 || cardAnswers[questionIndex]?.bonus) {
+    const currentBonusCount = Object.values(cardAnswers)
+      .filter((a) => a.bonus).length;
+
+    if (currentBonusCount < 3 || cardAnswers[questionId]?.bonus) {
       const newAnswers = [...userAnswers];
-      newAnswers[cardIndex][questionIndex].bonus = 
-        !newAnswers[cardIndex][questionIndex].bonus;
+
+      newAnswers[cardIndex][questionId].bonus =
+        !newAnswers[cardIndex][questionId].bonus;
+
       setUserAnswers(newAnswers);
     }
   };
@@ -132,4 +142,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default QuizPage;

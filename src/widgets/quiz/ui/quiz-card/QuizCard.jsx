@@ -27,19 +27,19 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
   return (
     <div className="card">
       <h2>РАУНД {stringCartIndexes[cardIndex]} ИЗ {stringTotalCards[totalCards-1]}</h2>
-      {cardData.map((question, questionIndex) => (
-        <div key={questionIndex} className="question">
+      {cardData.map((question) => (
+        <div key={question.id} className="question">
           <p>{question.text}</p>
           <div className="controls">
             <Button
-              className={`answer-btn ${userAnswers[questionIndex]?.answer === true ? 'selected' : ''}`}
-              onClick={() => onAnswer(cardIndex, questionIndex, true)}
+              className={`answer-btn ${userAnswers[question.id]?.answer === true ? 'selected' : ''}`}
+              onClick={() => onAnswer(cardIndex, question.id, true)}
             >
               Да
             </Button>
             <Button
-              className={`answer-btn ${userAnswers[questionIndex]?.answer === false ? 'selected' : ''}`}
-              onClick={() => onAnswer(cardIndex, questionIndex, false)}
+              className={`answer-btn ${userAnswers[question.id]?.answer === false ? 'selected' : ''}`}
+              onClick={() => onAnswer(cardIndex, question.id, false)}
             >
               Нет
             </Button>
@@ -49,10 +49,10 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
                 disabled={
                   Object.values(userAnswers)
                     .filter(a => a.bonus).length >= 3 && 
-                  !userAnswers[questionIndex]?.bonus
+                  !userAnswers[question.id]?.bonus
                 }
-                checked={userAnswers[questionIndex]?.bonus || false}
-                onChange={() => onBonus(cardIndex, questionIndex)}
+                checked={userAnswers[question.id]?.bonus || false}
+                onChange={() => onBonus(cardIndex, question.id)}
               />
               Бонусный балл
             </label>
