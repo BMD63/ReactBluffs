@@ -1,7 +1,8 @@
-import Button from '../../../../shared/ui/button/Button';
+import Button from '@/shared/ui/button/Button';
 
 const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers}) => {
   if (!isOpen) return null;
+  
   // console.log(score);
   return (
     <div className="modal-overlay">
@@ -9,14 +10,17 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
         <h2>Результаты раунда {cardIndex + 1}</h2>
         <p>Набрано баллов: {score}</p>
         <div className="answers-list">
-          {cardData.map((question, index) => (
-            <div key={index} className="answer-item">
-              <p>{question.question}</p>
-              <p>Правильный ответ: {question.correctAnswer ? 'Да' : 'Нет'}</p>
-              <p>Ваш ответ: {userAnswers[index].answer ? 'Да' : 'Нет'}</p>
-              {(userAnswers[index].answer === question.correctAnswer) && userAnswers[index].bonus && <p>Бонус</p>}
-            </div>
-          ))}
+          {cardData.map((question) => {
+            const answer = userAnswers?.[question.id];
+            return (
+              <div key={question.id} className="answer-item">
+                <p>{question.text}</p>
+                <p>Правильный ответ: {question.correctAnswer ? 'Да' : 'Нет'}</p>
+                <p>Ваш ответ: {answer?.answer ? 'Да' : 'Нет'}</p>
+                {(answer?.answer === question.correctAnswer) && answer?.bonus && <p>Бонус</p>}
+              </div>
+            );
+          })}
         </div>
         <Button className= "modalBotton" onClick={onNext}>
           {isLastCard ? 'К результатам' : 'Следующий раунд'}

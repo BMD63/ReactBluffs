@@ -1,6 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { questions } from '@/entities/question/model/questions';
-import { calculateCardScore, setAnswer, toggleBonus } from '@/features/quiz-session/model/quizSessionModel';
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  answerQuestion,
+  toggleBonus,
+  submitCard,
+  nextCard,
+  setShowRules,
+  setNewPlayer,
+  resetGame,
+  initGame
+} from '@/entities/quiz-session/model/quizSessionSlice'
+
+import { calculateCardScore } from '@/entities/quiz-session/model/quizSessionModel'
+import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
+
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
@@ -8,75 +22,40 @@ import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 import '@/App.css';
 
 const QuizPage = () => {
-  const [cards, setCards] = useState([]);
-  const [currentCard, setCurrentCard] = useState(0);
-  const [userAnswers, setUserAnswers] = useState([]);
-  const [showRules, setShowRules] = useState(false);
-  const [showCardResults, setShowCardResults] = useState(false);
-  const [currentCardScore, setCurrentCardScore] = useState(0);
-  const [newPlayer, setNewPlayer] = useState(false);
 
-  useEffect(() => {
-    const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
-    const questionsCount = shuffledQuestions.length;
-    
-    // Автоматический расчет количества карточек
-    const cardsCount = Math.floor(questionsCount / 7);
-    const newCards = [];
-    
-    for(let i = 0; i < cardsCount; i++) {
-      newCards.push(shuffledQuestions.slice(i * 7, (i + 1) * 7));
-    }
-    setCards(newCards);
-    
-  }, []);
+  const dispatch = useDispatch()
+
+  const {
+    cards,
+    currentCard,
+    userAnswers,
+    showRules,
+    showCardResults,
+    currentCardScore,
+    newPlayer,
+     } = useSelector((state) => state.quizSession)
+ 
   useEffect(() => {
     const rulesShown = localStorage.getItem('rulesShown');
-    if (rulesShown==`false` || rulesShown==null) 
-      setShowRules(true);
-  }, [newPlayer]);
+
+    if (rulesShown !== 'true') {
+      dispatch(setShowRules(true));
+    }
+  }, [dispatch]);
   const handleNewPlayer = () => {
-    setNewPlayer(true);
-    localStorage.setItem('rulesShown', false);
+    dispatch(setNewPlayer());
+    localStorage.setItem('rulesShown', 'false');
   }
-  const calculateCurrentCardScore = (cardIndex) => {
-    return calculateCardScore(
-      cards[cardIndex],
-      userAnswers[cardIndex]
-    );
-  };
-
+  
   const handleNextCard = () => {
-    setShowCardResults(false);
-    setCurrentCard(prev => prev + 1);
+    dispatch(nextCard());
   };
 
-  const handleAnswerUpdate = (cardIndex, questionId, answer) => {
-    const newAnswers = [...userAnswers];
-
-    newAnswers[cardIndex] = setAnswer(
-      newAnswers[cardIndex] || {},
-      questionId,
-      answer
-    );
-
-    setUserAnswers(newAnswers);
-  };
-
-  const handleBonusUpdate = (cardIndex, questionId) => {
-    const newAnswers = [...userAnswers];
-
-    newAnswers[cardIndex] = toggleBonus(
-      newAnswers[cardIndex] || {},
-      questionId
-    );
-
-    setUserAnswers(newAnswers);
-  };
-
-    const totalScore = cards.reduce((total, _, index) => 
-      total + calculateCurrentCardScore(index), 0
-    );
+  const totalScore = useSelector(selectTotalScore);
+  
+  useEffect(() => {
+    dispatch(initGame());
+  }, []);
 
   return (
     <div className="app">
@@ -84,7 +63,7 @@ const QuizPage = () => {
         isOpen={showRules}
         onClose={() => {
           localStorage.setItem('rulesShown', 'true');
-          setShowRules(false);
+          dispatch(setShowRules(false));
         }}
       />
 
@@ -92,13 +71,14 @@ const QuizPage = () => {
         <Card
           cardData={cards[currentCard]}
           cardIndex={currentCard}
-          userAnswers={userAnswers[currentCard] || {}}
-          onAnswer={handleAnswerUpdate}
-          onBonus={handleBonusUpdate}
-          onSubmit={() => {
-            setCurrentCardScore(calculateCurrentCardScore(currentCard));
-            setShowCardResults(true);
-          }}
+          userAnswers={userAnswers?.[currentCard] || {}}
+          onAnswer={(cardIndex, questionId, answer) =>
+            dispatch(answerQuestion({ cardIndex, questionId, answer }))
+          }
+          onBonus={(cardIndex, questionId) =>
+            dispatch(toggleBonus({ cardIndex, questionId }))
+          }
+          onSubmit={() => dispatch(submitCard())}
           totalCards={cards.length}
         />
       )}
@@ -117,9 +97,7 @@ const QuizPage = () => {
         isOpen={currentCard >= cards.length}
         totalScore={totalScore}
         onRestart={() => {
-          setCurrentCard(0);
-          setUserAnswers([]);
-          window.location.reload();
+          dispatch(initGame());
         }}
         onNewPlayer={handleNewPlayer}
       />}
