@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { questions } from '@/entities/question/model/questions';
+import { calculateCardScore, setAnswer, toggleBonus } from '@/features/quiz-session/model/quizSessionModel';
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
@@ -39,20 +40,10 @@ const QuizPage = () => {
     localStorage.setItem('rulesShown', false);
   }
   const calculateCurrentCardScore = (cardIndex) => {
-    let score = 0;
-
-    cards[cardIndex].forEach((question) => {
-      const questionId = question.id;
-
-      const userAnswer = userAnswers[cardIndex]?.[questionId];
-
-      if (userAnswer && userAnswer.answer === question.correctAnswer) {
-        score += 1;
-        if (userAnswer.bonus) score += 1;
-      }
-    });
-
-    return score;
+    return calculateCardScore(
+      cards[cardIndex],
+      userAnswers[cardIndex]
+    );
   };
 
   const handleNextCard = () => {
@@ -63,35 +54,29 @@ const QuizPage = () => {
   const handleAnswerUpdate = (cardIndex, questionId, answer) => {
     const newAnswers = [...userAnswers];
 
-    if (!newAnswers[cardIndex]) newAnswers[cardIndex] = {};
-
-    newAnswers[cardIndex][questionId] = {
-      answer,
-      bonus: false,
-    };
+    newAnswers[cardIndex] = setAnswer(
+      newAnswers[cardIndex] || {},
+      questionId,
+      answer
+    );
 
     setUserAnswers(newAnswers);
   };
 
   const handleBonusUpdate = (cardIndex, questionId) => {
-    const cardAnswers = userAnswers[cardIndex] || {};
+    const newAnswers = [...userAnswers];
 
-    const currentBonusCount = Object.values(cardAnswers)
-      .filter((a) => a.bonus).length;
+    newAnswers[cardIndex] = toggleBonus(
+      newAnswers[cardIndex] || {},
+      questionId
+    );
 
-    if (currentBonusCount < 3 || cardAnswers[questionId]?.bonus) {
-      const newAnswers = [...userAnswers];
-
-      newAnswers[cardIndex][questionId].bonus =
-        !newAnswers[cardIndex][questionId].bonus;
-
-      setUserAnswers(newAnswers);
-    }
+    setUserAnswers(newAnswers);
   };
 
-  const totalScore = cards.reduce((total, _, index) => 
-    total + calculateCurrentCardScore(index), 0
-  );
+    const totalScore = cards.reduce((total, _, index) => 
+      total + calculateCurrentCardScore(index), 0
+    );
 
   return (
     <div className="app">
