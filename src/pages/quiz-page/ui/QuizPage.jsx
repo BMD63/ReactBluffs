@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { questions } from '@/entities/question/model/questions';
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -41,10 +41,12 @@ const QuizPage = () => {
     if (rulesShown !== 'true') {
       dispatch(setShowRules(true));
     }
-  }, [dispatch]);
+  }, []);
+
   const handleNewPlayer = () => {
     dispatch(setNewPlayer());
     localStorage.setItem('rulesShown', 'false');
+    dispatch(initGame(questions));
   }
   
   const handleNextCard = () => {
@@ -97,7 +99,7 @@ const QuizPage = () => {
         isOpen={currentCard >= cards.length}
         totalScore={totalScore}
         onRestart={() => {
-          dispatch(initGame());
+          dispatch(initGame(questions));
         }}
         onNewPlayer={handleNewPlayer}
       />}
