@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './styles.css';
 import { useEffect } from 'react';
 
-const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,totalCards }) => {
+const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit, totalCards, onRestart }) => {
   const allQuestionsAnswered = Object.keys(userAnswers).length === 7;
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -59,13 +59,24 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit,to
           </div>
         </div>
       ))}
-      <Button 
-        className="submit-btn"
-        disabled={!allQuestionsAnswered}
-        onClick={onSubmit}
-      >
-        Ответить
-      </Button>
+      <div className="card-actions">
+        <Button 
+          className="submit-btn"
+          disabled={!allQuestionsAnswered}
+          onClick={onSubmit}
+        >
+          Ответить
+        </Button>
+
+        {cardIndex > 0 && (
+          <Button 
+            className="restart-btn"
+            onClick={onRestart}
+          >
+            Начать сначала
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

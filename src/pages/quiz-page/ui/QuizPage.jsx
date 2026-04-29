@@ -53,11 +53,19 @@ const QuizPage = () => {
     dispatch(nextCard());
   };
 
+  const handleRestart = () => {
+    const confirmed = window.confirm('Начать игру сначала?');
+
+    if (confirmed) {
+      dispatch(initGame(questions));
+    }
+  };
+
   const totalScore = useSelector(selectTotalScore);
   
   useEffect(() => {
-    dispatch(initGame());
-  }, []);
+    dispatch(initGame(questions));
+  }, [dispatch]);
 
   return (
     <div className="app">
@@ -81,6 +89,7 @@ const QuizPage = () => {
             dispatch(toggleBonus({ cardIndex, questionId }))
           }
           onSubmit={() => dispatch(submitCard())}
+          onRestart={() => dispatch(initGame(questions))}
           totalCards={cards.length}
         />
       )}
@@ -93,8 +102,10 @@ const QuizPage = () => {
         onNext={handleNextCard}
         isLastCard={currentCard === cards.length - 1}
         userAnswers={userAnswers[currentCard]}
+        onRestart={() => dispatch(initGame(questions))}
       />
-
+      <div className="top-bar">
+      </div>
       {currentCard >= cards.length && <FinalResultsModal
         isOpen={currentCard >= cards.length}
         totalScore={totalScore}

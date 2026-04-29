@@ -47,6 +47,14 @@ transform: scale(1.2 , 1.2);
   border-radius: 8px;
 }
 
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  width: 100%;
+}
+
 .question {
   margin: 1.5rem 0;
   padding: 1rem;
@@ -75,9 +83,9 @@ transform: scale(1.2 , 1.2);
 .answer-item{
   margin-top: 1.3rem;
 }
-.modalBotton {
+/* .modalBotton {
   margin-top: 20px;
-}
+} */
 .bonus-label {
   display: flex;
   align-items: center;
