@@ -7,9 +7,9 @@ import {
   nextCard,
   setShowRules,
   setNewPlayer,
-  initGame
 } from '@/entities/quiz-session/model/quizSessionSlice'
 
+import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import { selectShowRules, selectShowCardResults, selectCurrentCardScore } from '@/entities/quiz-session/model/selectors';
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';

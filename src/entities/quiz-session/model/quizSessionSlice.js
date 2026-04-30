@@ -7,8 +7,6 @@ const initialState = {
   cards: [],
   currentCard: 0,
   userAnswers: [],
-  showRules: false,
-  showCardResults: false,
   currentCardScore: 0,
   newPlayer: false,
 }
@@ -68,10 +66,6 @@ const quizSessionSlice = createSlice({
       state.userAnswers = []
     },
 
-    setShowRules(state, action) {
-      state.showRules = action.payload
-    },
-
     setNewPlayer(state) {
       state.newPlayer = true
     },
@@ -81,7 +75,6 @@ const quizSessionSlice = createSlice({
       state.currentCard = 0
       state.userAnswers = []
       state.currentCardScore = 0
-      state.showCardResults = false
     }
   },
 })
@@ -97,18 +90,5 @@ export const {
   setNewPlayer,
   resetGame
 } = quizSessionSlice.actions
-
-export const initGame = () => (dispatch) => {
-  dispatch(resetGame());
-  
-  const cards = generateCards(questions);
-  dispatch(setCards(cards));
-
-  const rulesShown = localStorage.getItem('rulesShown');
-
-  if (rulesShown === 'false' || rulesShown === null) {
-    dispatch(setShowRules(true));
-  }
-};
 
 export const quizSessionReducer = quizSessionSlice.reducer

@@ -16,12 +16,6 @@ export const selectTotalScore = (state) => {
 
 const selectQuizSession = (state) => state.quizSession;
 
-export const selectShowRules = (state) =>
-  selectQuizSession(state).showRules;
-
-export const selectShowCardResults = (state) =>
-  selectQuizSession(state).showCardResults;
-
 export const selectCurrentCardScore = (state) =>
   selectQuizSession(state).currentCardScore;
 
@@ -44,3 +38,10 @@ export const selectCurrentCardData = createSelector(
   }
 );
 
+const selectQuizUI = (state) => state.quizUI;
+
+export const selectShowRules = (state) =>
+  selectQuizUI(state).showRules;
+
+export const selectShowCardResults = (state) =>
+  selectQuizUI(state).showCardResults;
