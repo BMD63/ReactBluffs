@@ -22,8 +22,7 @@ import '@/App.css';
 const QuizPage = () => {
 
   const dispatch = useDispatch()
-  const quizQuestions = questions;
-
+  
   const {
     showRules,
     showCardResults,
@@ -35,7 +34,7 @@ const QuizPage = () => {
  
   const handleNewPlayer = () => {
     localStorage.setItem('rulesShown', 'false');
-    dispatch(initGame(quizQuestions));
+    dispatch(initGame());
   };
   
   
@@ -46,7 +45,7 @@ const QuizPage = () => {
   const totalScore = useSelector(selectTotalScore);
   
   useEffect(() => {
-    dispatch(initGame(quizQuestions));
+    dispatch(initGame());
   }, [dispatch]);
 
   return (

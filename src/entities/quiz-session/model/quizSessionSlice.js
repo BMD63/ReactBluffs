@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { calculateCardScore } from './quizSessionModel'
 import { generateCards } from './generateCards';
+import { questions } from '@/entities/question/model/questions';
 
 const initialState = {
   cards: [],
@@ -97,7 +98,7 @@ export const {
   resetGame
 } = quizSessionSlice.actions
 
-export const initGame = (questions) => (dispatch) => {
+export const initGame = () => (dispatch) => {
   dispatch(resetGame());
   
   const cards = generateCards(questions);
