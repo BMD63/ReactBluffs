@@ -11,9 +11,8 @@ import {
 } from '@/entities/quiz-session/model/quizSessionSlice'
 
 import { questions } from '@/entities/question/model/questions';
-import { calculateCardScore } from '@/entities/quiz-session/model/quizSessionModel'
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
-
+import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
@@ -26,18 +25,18 @@ const QuizPage = () => {
   const quizQuestions = questions;
 
   const {
-    cards,
-    currentCard,
-    userAnswers,
     showRules,
     showCardResults,
     currentCardScore,
   } = useSelector((state) => state.quizSession)
+
+  const { card, answers, index, total, isFinished } =
+  useSelector(selectCurrentCardData);
  
-    const handleNewPlayer = () => {
-      localStorage.setItem('rulesShown', 'false');
-      dispatch(initGame(quizQuestions));
-    };
+  const handleNewPlayer = () => {
+    localStorage.setItem('rulesShown', 'false');
+    dispatch(initGame(quizQuestions));
+  };
   
   
   const handleNextCard = () => {
@@ -60,11 +59,11 @@ const QuizPage = () => {
         }}
       />
 
-      {currentCard < cards.length && cards[currentCard] && (
+      { card?.length > 0 && (
         <Card
-          cardData={cards[currentCard]}
-          cardIndex={currentCard}
-          userAnswers={userAnswers?.[currentCard] || {}}
+          cardData={card}
+          cardIndex={index}
+          userAnswers={answers}
           onAnswer={(cardIndex, questionId, answer) =>
             dispatch(answerQuestion({ cardIndex, questionId, answer }))
           }
@@ -72,29 +71,27 @@ const QuizPage = () => {
             dispatch(toggleBonus({ cardIndex, questionId }))
           }
           onSubmit={() => dispatch(submitCard())}
-          onRestart={() => dispatch(initGame(quizQuestions))}
-          totalCards={cards.length}
+          onRestart={() => dispatch(initGame())}
+          totalCards={total}
         />
       )}
 
       <CardResultsModal
         isOpen={showCardResults}
-        cardData={cards[currentCard]}
-        cardIndex={currentCard}
+        cardData={card}
+        cardIndex={index}
         score={currentCardScore}
         onNext={handleNextCard}
-        isLastCard={currentCard === cards.length - 1}
-        userAnswers={userAnswers[currentCard]}
-        onRestart={() => dispatch(initGame(quizQuestions))}
+        isLastCard={isFinished}
+        userAnswers={answers}
+        onRestart={() => dispatch(initGame())}
       />
       <div className="top-bar">
       </div>
-      {currentCard >= cards.length && <FinalResultsModal
-        isOpen={currentCard >= cards.length}
+      {isFinished && <FinalResultsModal
+        isOpen={isFinished}
         totalScore={totalScore}
-        onRestart={() => {
-          dispatch(initGame(quizQuestions));
-        }}
+        onRestart={() => dispatch(initGame())}
         onNewPlayer={handleNewPlayer}
       />}
     </div>
