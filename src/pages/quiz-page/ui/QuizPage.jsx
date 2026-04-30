@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { questions } from '@/entities/question/model/questions';
 import { useSelector, useDispatch } from 'react-redux'
 import {
   answerQuestion,
@@ -8,10 +7,10 @@ import {
   nextCard,
   setShowRules,
   setNewPlayer,
-  resetGame,
   initGame
 } from '@/entities/quiz-session/model/quizSessionSlice'
 
+import { questions } from '@/entities/question/model/questions';
 import { calculateCardScore } from '@/entities/quiz-session/model/quizSessionModel'
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 
@@ -24,6 +23,7 @@ import '@/App.css';
 const QuizPage = () => {
 
   const dispatch = useDispatch()
+  const quizQuestions = questions;
 
   const {
     cards,
@@ -32,39 +32,22 @@ const QuizPage = () => {
     showRules,
     showCardResults,
     currentCardScore,
-    newPlayer,
-     } = useSelector((state) => state.quizSession)
+  } = useSelector((state) => state.quizSession)
  
-  useEffect(() => {
-    const rulesShown = localStorage.getItem('rulesShown');
-
-    if (rulesShown !== 'true') {
-      dispatch(setShowRules(true));
-    }
-  }, []);
-
-  const handleNewPlayer = () => {
-    dispatch(setNewPlayer());
-    localStorage.setItem('rulesShown', 'false');
-    dispatch(initGame(questions));
-  }
+    const handleNewPlayer = () => {
+      localStorage.setItem('rulesShown', 'false');
+      dispatch(initGame(quizQuestions));
+    };
+  
   
   const handleNextCard = () => {
     dispatch(nextCard());
   };
 
-  const handleRestart = () => {
-    const confirmed = window.confirm('Начать игру сначала?');
-
-    if (confirmed) {
-      dispatch(initGame(questions));
-    }
-  };
-
   const totalScore = useSelector(selectTotalScore);
   
   useEffect(() => {
-    dispatch(initGame(questions));
+    dispatch(initGame(quizQuestions));
   }, [dispatch]);
 
   return (
@@ -89,7 +72,7 @@ const QuizPage = () => {
             dispatch(toggleBonus({ cardIndex, questionId }))
           }
           onSubmit={() => dispatch(submitCard())}
-          onRestart={() => dispatch(initGame(questions))}
+          onRestart={() => dispatch(initGame(quizQuestions))}
           totalCards={cards.length}
         />
       )}
@@ -102,7 +85,7 @@ const QuizPage = () => {
         onNext={handleNextCard}
         isLastCard={currentCard === cards.length - 1}
         userAnswers={userAnswers[currentCard]}
-        onRestart={() => dispatch(initGame(questions))}
+        onRestart={() => dispatch(initGame(quizQuestions))}
       />
       <div className="top-bar">
       </div>
@@ -110,7 +93,7 @@ const QuizPage = () => {
         isOpen={currentCard >= cards.length}
         totalScore={totalScore}
         onRestart={() => {
-          dispatch(initGame(questions));
+          dispatch(initGame(quizQuestions));
         }}
         onNewPlayer={handleNewPlayer}
       />}
