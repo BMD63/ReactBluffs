@@ -14,13 +14,23 @@ export const selectTotalScore = (state) => {
   }, 0);
 };
 
+const selectQuizSession = (state) => state.quizSession;
+
+export const selectCards = (state) => selectQuizSession(state).cards;
+export const selectCurrentCardIndex = (state) => selectQuizSession(state).currentCard;
+export const selectUserAnswers = (state) => selectQuizSession(state).userAnswers;
+
 export const selectCurrentCardData = createSelector(
-  [(state) => state.quizSession],
-  (s) => ({
-    card: s.cards[s.currentCard],
-    answers: s.userAnswers[s.currentCard],
-    index: s.currentCard,
-    total: s.cards.length,
-    isFinished: s.currentCard >= s.cards.length
-  })
+  [selectCards, selectCurrentCardIndex, selectUserAnswers],
+  (cards, currentCard, userAnswers) => {
+    const card = cards[currentCard];
+
+    return {
+      card,
+      answers: userAnswers[currentCard],
+      index: currentCard,
+      total: cards.length,
+      isFinished: currentCard >= cards.length,
+    };
+  }
 );
