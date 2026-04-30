@@ -16,6 +16,15 @@ export const selectTotalScore = (state) => {
 
 const selectQuizSession = (state) => state.quizSession;
 
+export const selectShowRules = (state) =>
+  selectQuizSession(state).showRules;
+
+export const selectShowCardResults = (state) =>
+  selectQuizSession(state).showCardResults;
+
+export const selectCurrentCardScore = (state) =>
+  selectQuizSession(state).currentCardScore;
+
 export const selectCards = (state) => selectQuizSession(state).cards;
 export const selectCurrentCardIndex = (state) => selectQuizSession(state).currentCard;
 export const selectUserAnswers = (state) => selectQuizSession(state).userAnswers;
@@ -34,3 +43,4 @@ export const selectCurrentCardData = createSelector(
     };
   }
 );
+

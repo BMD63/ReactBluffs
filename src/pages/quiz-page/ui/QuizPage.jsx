@@ -10,7 +10,7 @@ import {
   initGame
 } from '@/entities/quiz-session/model/quizSessionSlice'
 
-import { questions } from '@/entities/question/model/questions';
+import { selectShowRules, selectShowCardResults, selectCurrentCardScore } from '@/entities/quiz-session/model/selectors';
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
@@ -23,11 +23,9 @@ const QuizPage = () => {
 
   const dispatch = useDispatch()
   
-  const {
-    showRules,
-    showCardResults,
-    currentCardScore,
-  } = useSelector((state) => state.quizSession)
+  const showRules = useSelector(selectShowRules);
+  const showCardResults = useSelector(selectShowCardResults);
+  const currentCardScore = useSelector(selectCurrentCardScore);
 
   const { card, answers, index, total, isFinished } =
   useSelector(selectCurrentCardData);
