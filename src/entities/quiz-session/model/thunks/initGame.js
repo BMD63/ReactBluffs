@@ -8,10 +8,4 @@ export const initGame = () => (dispatch) => {
 
   const cards = generateCards(questions);
   dispatch(setCards(cards));
-
-  const rulesShown = localStorage.getItem('rulesShown');
-
-  if (rulesShown === 'false' || rulesShown === null) {
-    dispatch(setShowRules(true));
-  }
 };

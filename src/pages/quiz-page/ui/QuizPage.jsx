@@ -55,6 +55,14 @@ const QuizPage = () => {
     dispatch(initGame());
   }, [dispatch]);
 
+  useEffect(() => {
+  const rulesShown = localStorage.getItem('rulesShown');
+
+  if (rulesShown === 'false' || rulesShown === null) {
+    dispatch(setShowRules(true));
+  }
+}, []);
+
   return (
     <div className="app">
       <RulesModal 
