@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { calculateCardScore } from './quizSessionModel'
-import { generateCards } from './generateCards';
-import { questions } from '@/entities/question/model/questions';
 
 const initialState = {
   cards: [],
@@ -52,12 +50,9 @@ const quizSessionSlice = createSlice({
       const answers = state.userAnswers[state.currentCard];
 
       state.currentCardScore = calculateCardScore(card, answers);
-
-      state.showCardResults = true;
     },
 
     nextCard(state) {
-      state.showCardResults = false
       state.currentCard += 1
     },
 
@@ -86,7 +81,6 @@ export const {
   submitCard,
   nextCard,
   restart,
-  setShowRules,
   setNewPlayer,
   resetGame
 } = quizSessionSlice.actions

@@ -5,9 +5,12 @@ import {
   toggleBonus,
   submitCard,
   nextCard,
-  setShowRules,
-  setNewPlayer,
 } from '@/entities/quiz-session/model/quizSessionSlice'
+
+import {
+  setShowCardResults,
+  setShowRules,
+} from '@/entities/quiz-session/model/quizUISlice';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import { selectShowRules, selectShowCardResults, selectCurrentCardScore } from '@/entities/quiz-session/model/selectors';
@@ -37,8 +40,14 @@ const QuizPage = () => {
   
   
   const handleNextCard = () => {
+    dispatch(setShowCardResults(false));
     dispatch(nextCard());
   };
+
+  const handleRestart = () => {
+  dispatch(setShowCardResults(false));
+  dispatch(initGame());
+};
 
   const totalScore = useSelector(selectTotalScore);
   
@@ -67,8 +76,11 @@ const QuizPage = () => {
           onBonus={(cardIndex, questionId) =>
             dispatch(toggleBonus({ cardIndex, questionId }))
           }
-          onSubmit={() => dispatch(submitCard())}
-          onRestart={() => dispatch(initGame())}
+          onSubmit={() => 
+            { dispatch(submitCard());
+            dispatch(setShowCardResults(true));
+          }}
+          onRestart={handleRestart}
           totalCards={total}
         />
       )}
@@ -79,16 +91,16 @@ const QuizPage = () => {
         cardIndex={index}
         score={currentCardScore}
         onNext={handleNextCard}
-        isLastCard={isFinished}
+        isLastCard={index === total - 1}
         userAnswers={answers}
-        onRestart={() => dispatch(initGame())}
+        onRestart={handleRestart}
       />
       <div className="top-bar">
       </div>
       {isFinished && <FinalResultsModal
         isOpen={isFinished}
         totalScore={totalScore}
-        onRestart={() => dispatch(initGame())}
+        onRestart={handleRestart}
         onNewPlayer={handleNewPlayer}
       />}
     </div>
