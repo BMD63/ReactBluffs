@@ -23,8 +23,14 @@ export const selectCurrentCardData = createSelector(
       answers: userAnswers?.[currentCard] || {},
       index: currentCard,
       total: cards.length,
-      isFinished: currentCard >= cards.length,
     };
+  }
+);
+
+export const selectIsFinished = createSelector(
+  [selectCards, selectCurrentCardIndex],
+  (cards, currentCard) => {
+    return cards.length > 0 && currentCard >= cards.length;
   }
 );
 

@@ -13,7 +13,12 @@ import {
 } from '@/entities/quiz-session/model/quizUISlice';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
-import { selectShowRules, selectShowCardResults, selectCurrentCardScore } from '@/entities/quiz-session/model/selectors';
+import { 
+  selectShowRules, 
+  selectShowCardResults, 
+  selectCurrentCardScore, 
+  selectIsFinished 
+} from '@/entities/quiz-session/model/selectors';
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
@@ -30,7 +35,9 @@ const QuizPage = () => {
   const showCardResults = useSelector(selectShowCardResults);
   const currentCardScore = useSelector(selectCurrentCardScore);
 
-  const { card, answers, index, total, isFinished } =
+  isFinished = useSelector(selectIsFinished);
+
+  const { card, answers, index, total } =
   useSelector(selectCurrentCardData);
  
   const handleNewPlayer = () => {
@@ -73,7 +80,7 @@ const QuizPage = () => {
         }}
       />
 
-      { card?.length > 0 && (
+      { card?.length > 0 && !isFinished && (
         <Card
           cardData={card}
           cardIndex={index}

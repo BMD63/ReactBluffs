@@ -1,11 +1,18 @@
-export const generateCards = (questions) => {
-  const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+import { gameConfig } from './gameConfig';
 
-  const cardsCount = Math.floor(shuffledQuestions.length / 7);
+export const generateCards = (questions) => {
+  const { questionsPerCard } = gameConfig;
+
+  const shuffledQuestions = [...questions].sort(
+    () => Math.random() - 0.5
+  );
+
   const newCards = [];
 
-  for (let i = 0; i < cardsCount; i++) {
-    newCards.push(shuffledQuestions.slice(i * 7, (i + 1) * 7));
+  for (let i = 0; i < shuffledQuestions.length; i += questionsPerCard) {
+    newCards.push(
+      shuffledQuestions.slice(i, i + questionsPerCard)
+    );
   }
 
   return newCards;
