@@ -35,7 +35,7 @@ const QuizPage = () => {
   const showCardResults = useSelector(selectShowCardResults);
   const currentCardScore = useSelector(selectCurrentCardScore);
 
-  isFinished = useSelector(selectIsFinished);
+  const isFinished = useSelector(selectIsFinished);
 
   const { card, answers, index, total } =
   useSelector(selectCurrentCardData);
