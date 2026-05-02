@@ -26,6 +26,7 @@ import {
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
 import Menu from '@/widgets/quiz/ui/menu/Menu';
+import Settings from '@/widgets/quiz/ui/setting/Settings';
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
@@ -116,6 +117,7 @@ const QuizPage = () => {
         </>
       )}
       {screen === 'menu' && <Menu />}
+      {screen === 'settings' && <Settings />}
       <CardResultsModal
         isOpen={showCardResults}
         cardData={card}
