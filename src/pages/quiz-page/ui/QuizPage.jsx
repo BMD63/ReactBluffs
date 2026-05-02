@@ -10,6 +10,8 @@ import {
 import {
   setShowCardResults,
   setShowRules,
+  setScreen,
+  resetUI
 } from '@/entities/quiz-session/model/quizUISlice';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
@@ -18,10 +20,12 @@ import {
   selectShowRules, 
   selectShowCardResults, 
   selectCurrentCardScore, 
-  selectIsFinished 
+  selectIsFinished,
+  selectScreen, 
 } from '@/entities/quiz-session/model/selectors';
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
+import Menu from '@/widgets/quiz/ui/menu/Menu';
 import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
@@ -31,7 +35,8 @@ import '@/App.css';
 const QuizPage = () => {
 
   const dispatch = useDispatch()
-  
+
+  const screen = useSelector(selectScreen);
   const showRules = useSelector(selectShowRules);
   const showCardResults = useSelector(selectShowCardResults);
   const currentCardScore = useSelector(selectCurrentCardScore);
@@ -40,6 +45,11 @@ const QuizPage = () => {
 
   const { card, answers, index, total } =
   useSelector(selectCurrentCardData);
+
+  const handleGoToMenu = () => {
+    dispatch(resetUI());
+    dispatch(setScreen('menu'));
+  };
  
   const handleNewPlayer = () => {
     localStorage.setItem('rulesShown', 'false');
@@ -82,27 +92,30 @@ const QuizPage = () => {
           dispatch(setShowRules(false));
         }}
       />
-
-      { card?.length > 0 && !isFinished && (
-        <Card
-          cardData={card}
-          cardIndex={index}
-          userAnswers={answers}
-          onAnswer={(cardIndex, questionId, answer) =>
-            dispatch(answerQuestion({ cardIndex, questionId, answer }))
-          }
-          onBonus={(cardIndex, questionId) =>
-            dispatch(toggleBonus({ cardIndex, questionId }))
-          }
-          onSubmit={() => 
-            { dispatch(submitCard());
-            dispatch(setShowCardResults(true));
-          }}
-          onRestart={handleRestart}
-          totalCards={total}
-        />
+      {screen === 'game' && (
+        <>
+          { card?.length > 0 && !isFinished && (
+            <Card
+              cardData={card}
+              cardIndex={index}
+              userAnswers={answers}
+              onAnswer={(cardIndex, questionId, answer) =>
+                dispatch(answerQuestion({ cardIndex, questionId, answer }))
+              }
+              onBonus={(cardIndex, questionId) =>
+                dispatch(toggleBonus({ cardIndex, questionId }))
+              }
+              onSubmit={() => 
+                { dispatch(submitCard());
+                dispatch(setShowCardResults(true));
+              }}
+              onRestart={handleRestart}
+              totalCards={total}
+            />
+          )}
+        </>
       )}
-
+      {screen === 'menu' && <Menu />}
       <CardResultsModal
         isOpen={showCardResults}
         cardData={card}
@@ -112,6 +125,7 @@ const QuizPage = () => {
         isLastCard={index === total - 1}
         userAnswers={answers}
         onRestart={handleRestart}
+        onMenu={handleGoToMenu}
       />
       <div className="top-bar">
       </div>
@@ -120,6 +134,7 @@ const QuizPage = () => {
         totalScore={totalScore}
         onRestart={handleRestart}
         onNewPlayer={handleNewPlayer}
+        onMenu={handleGoToMenu}
       />}
     </div>
   );

@@ -5,6 +5,7 @@ const initialState = {
   showRules: false,
   showCardResults: false,
   difficulty: DIFFICULTY.MEDIUM, // дефолт
+  currentScreen: 'menu',
 };
 
 const quizUISlice = createSlice({
@@ -19,6 +20,13 @@ const quizUISlice = createSlice({
     },
     setDifficulty(state, action) {
       state.difficulty = action.payload;
+    },
+    setScreen(state, action) {
+      state.currentScreen = action.payload;
+    },
+    resetUI(state) {
+      state.showRules = false;
+      state.showCardResults = false;
     }
   },
 });
@@ -27,6 +35,8 @@ export const {
   setShowRules,
   setShowCardResults,
   setDifficulty,
+  setScreen,
+  resetUI,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

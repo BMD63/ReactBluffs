@@ -1,6 +1,6 @@
 import Button from '@/shared/ui/button/Button';
 
-const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart}) => {
+const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}) => {
   if (!isOpen) return null;
   
   // console.log(score);
@@ -25,13 +25,14 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
         <div className="card-actions">
           <Button className= "modalBotton" onClick={onNext}>
           {isLastCard ? 'К результатам' : 'Следующий раунд'}
-        </Button>
-        <Button 
-            className="restart-btn"
-            onClick={onRestart}
-        >
-            Начать сначала
-        </Button>
+          </Button>
+          <Button 
+              className="restart-btn"
+              onClick={onRestart}
+          >
+              Начать сначала
+          </Button>
+          <Button onClick={onMenu}> В меню </Button>
         </div>
         
         

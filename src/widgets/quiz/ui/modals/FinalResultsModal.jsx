@@ -1,6 +1,6 @@
-import Button from '../../../../shared/ui/button/Button';
+import Button from '@/shared/ui/button/Button';
 
-const FinalResultsModal = ({ isOpen, totalScore, onRestart, onNewPlayer }) => {
+const FinalResultsModal = ({ isOpen, totalScore, onRestart, onNewPlayer, onMenu, }) => {
   const handleNewPlayer = () => {
     localStorage.clear();
     onNewPlayer();
@@ -16,6 +16,7 @@ const FinalResultsModal = ({ isOpen, totalScore, onRestart, onNewPlayer }) => {
         <nav>
           <Button onClick={onRestart}>Начать заново</Button>
           <Button onClick={handleNewPlayer}> Новый игрок </Button>
+          <Button onClick={onMenu}> В меню </Button>
         </nav>
       </div>
     </div>
