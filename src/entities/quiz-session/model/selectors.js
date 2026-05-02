@@ -9,6 +9,7 @@ export const selectCurrentCardIndex = (state) => selectQuizSession(state).curren
 export const selectUserAnswers = (state) => selectQuizSession(state).userAnswers;
 
 const selectQuizUI = (state) => state.quizUI;
+export const selectDifficulty = (state) => state.quizUI.difficulty;
 
 export const selectShowRules = (state) => selectQuizUI(state).showRules;
 export const selectShowCardResults = (state) => selectQuizUI(state).showCardResults;
