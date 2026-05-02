@@ -43,6 +43,7 @@ const QuizPage = () => {
   const handleNewPlayer = () => {
     localStorage.setItem('rulesShown', 'false');
     dispatch(initGame());
+    dispatch(setShowRules(true));
   };
   
   

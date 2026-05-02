@@ -4,7 +4,7 @@ import './styles.css';
 import { useEffect } from 'react';
 
 const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit, totalCards, onRestart }) => {
-  const allQuestionsAnswered = Object.keys(userAnswers).length === 7;
+  const allQuestionsAnswered = Object.keys(userAnswers).length === cardData.length;
   useEffect(() => {
     window.scrollTo(0, 0);
   }

@@ -1,4 +1,4 @@
 export const gameConfig = {
-  manualCardsCount: 6,
-  questionsPerCard: 5,
+  manualCardsCount: 2,
+  questionsPerCard: 3,
 };
