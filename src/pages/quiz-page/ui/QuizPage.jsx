@@ -13,6 +13,7 @@ import {
 } from '@/entities/quiz-session/model/quizUISlice';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
+import { initUI } from '@/entities/quiz-session/model/thunks/initUI';
 import { 
   selectShowRules, 
   selectShowCardResults, 
@@ -43,7 +44,7 @@ const QuizPage = () => {
   const handleNewPlayer = () => {
     localStorage.setItem('rulesShown', 'false');
     dispatch(initGame());
-    dispatch(setShowRules(true));
+    dispatch(initUI());
   };
   
   
@@ -61,6 +62,7 @@ const QuizPage = () => {
   
   useEffect(() => {
     dispatch(initGame());
+    dispatch(initUI());
   }, [dispatch]);
 
   useEffect(() => {
