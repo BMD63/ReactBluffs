@@ -5,16 +5,29 @@ export const DIFFICULTY = {
 };
 
 export const difficultyConfig = {
-  [DIFFICULTY.EASY]: {
+  easy: {
+    title: 'Легко',
+    description: 'Быстрые и простые раунды',
     questionsPerCard: 3,
     manualCardsCount: 2,
+    color: '#4caf50',
+    icon: '🟢',
   },
-  [DIFFICULTY.MEDIUM]: {
-    questionsPerCard: 4,
-    manualCardsCount: 3,
+  medium: {
+    title: 'Средне',
+    description: 'Оптимальный баланс',
+    questionsPerCard: 5,
+    manualCardsCount: 4,
+    color: '#ff9800',
+    icon: '🟡',
   },
-  [DIFFICULTY.HARD]: {
+  hard: {
+    title: 'Сложно',
+    description: 'Максимальный челлендж',
     questionsPerCard: 7,
     manualCardsCount: 7,
+    color: '#f44336',
+    icon: '🔴',
   },
 };
+
