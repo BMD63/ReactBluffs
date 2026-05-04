@@ -8,17 +8,14 @@ import {
 } from '@/entities/quiz-session/model/quizSessionSlice'
 
 import {
-  setShowCardResults,
-  setShowRules,
+  SCREEN,
   setScreen,
-  resetUI
+  resetUI,
 } from '@/entities/quiz-session/model/quizUISlice';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import { initUI } from '@/entities/quiz-session/model/thunks/initUI';
 import { 
-  selectShowRules, 
-  selectShowCardResults, 
   selectCurrentCardScore, 
   selectIsFinished,
   selectScreen, 
@@ -38,8 +35,6 @@ const QuizPage = () => {
   const dispatch = useDispatch()
 
   const screen = useSelector(selectScreen);
-  const showRules = useSelector(selectShowRules);
-  const showCardResults = useSelector(selectShowCardResults);
   const currentCardScore = useSelector(selectCurrentCardScore);
 
   const isFinished = useSelector(selectIsFinished);
@@ -49,25 +44,17 @@ const QuizPage = () => {
 
   const handleGoToMenu = () => {
     dispatch(resetUI());
-    dispatch(setScreen('menu'));
   };
  
-  const handleNewPlayer = () => {
-    localStorage.setItem('rulesShown', 'false');
-    dispatch(initGame());
-    dispatch(initUI());
-  };
-  
-  
   const handleNextCard = () => {
-    dispatch(setShowCardResults(false));
     dispatch(nextCard());
+    dispatch(setScreen(SCREEN.GAME));
   };
 
   const handleRestart = () => {
-  dispatch(setShowCardResults(false));
-  dispatch(initGame());
-};
+    dispatch(initGame());
+    dispatch(setScreen(SCREEN.GAME));
+  };
 
   const totalScore = useSelector(selectTotalScore);
   
@@ -77,67 +64,87 @@ const QuizPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-  const rulesShown = localStorage.getItem('rulesShown');
+    if (isFinished) {
+      dispatch(setScreen(SCREEN.FINAL));
+    }
+  }, [isFinished, dispatch]);
 
-  if (rulesShown === 'false' || rulesShown === null) {
-    dispatch(setShowRules(true));
-  }
-}, []);
+  const renderScreen = () => {
+    switch (screen) {
+      case SCREEN.MENU:
+        return <Menu />;
+
+      case SCREEN.SETTINGS:
+        return <Settings />;
+
+      case SCREEN.GAME:
+        return (
+          <>
+            {card?.length > 0 && (
+              <Card
+                cardData={card}
+                cardIndex={index}
+                userAnswers={answers}
+                onAnswer={(cardIndex, questionId, answer) =>
+                  dispatch(answerQuestion({ cardIndex, questionId, answer }))
+                }
+                onBonus={(cardIndex, questionId) =>
+                  dispatch(toggleBonus({ cardIndex, questionId }))
+                }
+                onSubmit={() => {
+                  dispatch(submitCard());
+                  dispatch(setScreen(SCREEN.CARD_RESULT));
+                }}
+                onRestart={handleRestart}
+                totalCards={total}
+              />
+            )}
+          </>
+        );
+
+      case SCREEN.RULES:
+        return (
+          <RulesModal
+            isOpen
+            onClose={() => {
+              dispatch(setScreen(SCREEN.MENU));
+            }}
+          />
+        );
+
+      case SCREEN.CARD_RESULT:
+        return (
+          <CardResultsModal
+            isOpen
+            cardData={card}
+            cardIndex={index}
+            score={currentCardScore}
+            onNext={handleNextCard}
+            isLastCard={index === total - 1}
+            userAnswers={answers}
+            onRestart={handleRestart}
+            onMenu={handleGoToMenu}
+          />
+        );
+
+      case SCREEN.FINAL:
+        return (
+          <FinalResultsModal
+            isOpen
+            totalScore={totalScore}
+            onRestart={handleRestart}
+            onMenu={handleGoToMenu}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="app">
-      <RulesModal 
-        isOpen={showRules}
-        onClose={() => {
-          localStorage.setItem('rulesShown', 'true');
-          dispatch(setShowRules(false));
-        }}
-      />
-      {screen === 'game' && (
-        <>
-          { card?.length > 0 && !isFinished && (
-            <Card
-              cardData={card}
-              cardIndex={index}
-              userAnswers={answers}
-              onAnswer={(cardIndex, questionId, answer) =>
-                dispatch(answerQuestion({ cardIndex, questionId, answer }))
-              }
-              onBonus={(cardIndex, questionId) =>
-                dispatch(toggleBonus({ cardIndex, questionId }))
-              }
-              onSubmit={() => 
-                { dispatch(submitCard());
-                dispatch(setShowCardResults(true));
-              }}
-              onRestart={handleRestart}
-              totalCards={total}
-            />
-          )}
-        </>
-      )}
-      {screen === 'menu' && <Menu />}
-      {screen === 'settings' && <Settings />}
-      <CardResultsModal
-        isOpen={showCardResults}
-        cardData={card}
-        cardIndex={index}
-        score={currentCardScore}
-        onNext={handleNextCard}
-        isLastCard={index === total - 1}
-        userAnswers={answers}
-        onRestart={handleRestart}
-        onMenu={handleGoToMenu}
-      />
-      <div className="top-bar">
-      </div>
-      {isFinished && <FinalResultsModal
-        isOpen={isFinished}
-        totalScore={totalScore}
-        onRestart={handleRestart}
-        onNewPlayer={handleNewPlayer}
-        onMenu={handleGoToMenu}
-      />}
+      {renderScreen()}
     </div>
   );
 };

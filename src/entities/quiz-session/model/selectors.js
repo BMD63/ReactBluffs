@@ -8,11 +8,8 @@ export const selectCards = (state) => selectQuizSession(state).cards;
 export const selectCurrentCardIndex = (state) => selectQuizSession(state).currentCard;
 export const selectUserAnswers = (state) => selectQuizSession(state).userAnswers;
 
-const selectQuizUI = (state) => state.quizUI;
 export const selectDifficulty = (state) => state.quizUI.difficulty;
 export const selectScreen = (state) => state.quizUI.currentScreen;
-export const selectShowRules = (state) => selectQuizUI(state).showRules;
-export const selectShowCardResults = (state) => selectQuizUI(state).showCardResults;
 
 export const selectCurrentCardData = createSelector(
   [selectCards, selectCurrentCardIndex, selectUserAnswers],

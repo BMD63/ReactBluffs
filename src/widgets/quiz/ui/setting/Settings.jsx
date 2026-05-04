@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setScreen, setDifficulty } from '@/entities/quiz-session/model/quizUISlice';
+import { SCREEN, setScreen, setDifficulty } from '@/entities/quiz-session/model/quizUISlice';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { DIFFICULTY, difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
 
@@ -46,7 +46,7 @@ const Settings = () => {
 
       <button
         className="back-btn"
-        onClick={() => dispatch(setScreen('menu'))}
+        onClick={() => dispatch(setScreen(SCREEN.MENU))}
       >
         ← Назад
       </button>

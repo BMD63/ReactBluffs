@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setScreen, setShowRules } from '@/entities/quiz-session/model/quizUISlice';
+import { SCREEN, setScreen } from '@/entities/quiz-session/model/quizUISlice';
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
-import { initUI } from '@/entities/quiz-session/model/thunks/initUI';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
 import Button from '@/shared/ui/button/Button';
@@ -13,9 +12,8 @@ const Menu = () => {
   const difficulty = useSelector(selectDifficulty);
 
   const handleStart = () => {
-    dispatch(setScreen('game'));
     dispatch(initGame());
-    dispatch(initUI());
+    dispatch(setScreen(SCREEN.GAME));
   };
 
   const currentDifficulty = difficultyConfig[difficulty];
@@ -31,7 +29,7 @@ const Menu = () => {
 
         <Button
           variant="card"
-          onClick={() => dispatch(setScreen('settings'))}
+          onClick={() => dispatch(setScreen(SCREEN.SETTINGS))}
         >
           <span>{currentDifficulty.icon}</span>
           <div className="menu-card-content">
@@ -44,7 +42,7 @@ const Menu = () => {
 
         <Button
           variant="card"
-          onClick={() => dispatch(setShowRules(true))}
+          onClick={() => dispatch(setScreen(SCREEN.RULES))}
         >
           Правила
         </Button>

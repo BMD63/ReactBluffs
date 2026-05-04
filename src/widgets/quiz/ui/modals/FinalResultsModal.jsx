@@ -1,12 +1,6 @@
 import Button from '@/shared/ui/button/Button';
 
-const FinalResultsModal = ({ isOpen, totalScore, onRestart, onNewPlayer, onMenu, }) => {
-  const handleNewPlayer = () => {
-    localStorage.clear();
-    onNewPlayer();
-    window.scrollTo(0, 0);
-    onRestart();
-  }
+const FinalResultsModal = ({ isOpen, totalScore, onRestart, onMenu, }) => {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">
@@ -15,7 +9,6 @@ const FinalResultsModal = ({ isOpen, totalScore, onRestart, onNewPlayer, onMenu,
         <p>Общее количество баллов: {totalScore}</p>
         <nav>
           <Button onClick={onRestart}>Начать заново</Button>
-          <Button onClick={handleNewPlayer}> Новый игрок </Button>
           <Button onClick={onMenu}> В меню </Button>
         </nav>
       </div>

@@ -1,23 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DIFFICULTY } from '@/entities/quiz-session/model/config/difficultyConfig.js';
 
+export const SCREEN = {
+  MENU: 'menu',
+  SETTINGS: 'settings',
+  GAME: 'game',
+  RULES: 'rules',
+  CARD_RESULT: 'cardResult',
+  FINAL: 'final',
+};
+
 const initialState = {
-  showRules: false,
-  showCardResults: false,
-  difficulty: DIFFICULTY.MEDIUM, // дефолт
-  currentScreen: 'menu',
+  difficulty: DIFFICULTY.MEDIUM,
+  currentScreen: SCREEN.MENU,
 };
 
 const quizUISlice = createSlice({
   name: 'quizUI',
   initialState,
   reducers: {
-    setShowRules(state, action) {
-      state.showRules = action.payload;
-    },
-    setShowCardResults(state, action) {
-      state.showCardResults = action.payload;
-    },
     setDifficulty(state, action) {
       state.difficulty = action.payload;
     },
@@ -25,15 +26,12 @@ const quizUISlice = createSlice({
       state.currentScreen = action.payload;
     },
     resetUI(state) {
-      state.showRules = false;
-      state.showCardResults = false;
-    }
+      state.currentScreen = SCREEN.MENU;
+    },
   },
 });
 
 export const {
-  setShowRules,
-  setShowCardResults,
   setDifficulty,
   setScreen,
   resetUI,
