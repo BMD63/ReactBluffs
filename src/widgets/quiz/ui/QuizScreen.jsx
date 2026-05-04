@@ -2,8 +2,8 @@ import { SCREEN } from '@/entities/quiz-session/model/quizUISlice';
 
 import Menu from '@/widgets/quiz/ui/menu/Menu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
-import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
+import PlayQuiz from '@/features/play-quiz/ui/PlayQuiz';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 
@@ -31,18 +31,18 @@ const QuizScreen = ({
       return <Settings />;
 
     case SCREEN.GAME:
-      return card?.length > 0 ? (
-        <Card
-          cardData={card}
-          cardIndex={index}
-          userAnswers={answers}
-          onAnswer={onAnswer}
-          onBonus={onBonus}
-          onSubmit={onSubmit}
-          onRestart={onRestart}
-          totalCards={total}
-        />
-      ) : null;
+        return (
+            <PlayQuiz
+            card={card}
+            answers={answers}
+            index={index}
+            total={total}
+            onAnswer={onAnswer}
+            onBonus={onBonus}
+            onSubmit={onSubmit}
+            onRestart={onRestart}
+            />
+        );
 
     case SCREEN.RULES:
       return (
