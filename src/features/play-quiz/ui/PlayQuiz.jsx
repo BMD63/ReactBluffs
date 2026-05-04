@@ -1,4 +1,4 @@
-import Card from '@/widgets/quiz/ui/quiz-card/QuizCard';
+import Card from '@/features/play-quiz/ui/quiz-card/QuizCard';
 
 const PlayQuiz = ({
   card,

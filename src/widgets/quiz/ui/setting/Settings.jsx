@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { SCREEN, setScreen, setDifficulty } from '@/entities/quiz-session/model/quizUISlice';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
-import { DIFFICULTY, difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
+import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
+import './settings.css'
 
 const Settings = () => {
   const dispatch = useDispatch();

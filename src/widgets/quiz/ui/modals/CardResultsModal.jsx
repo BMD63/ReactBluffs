@@ -1,4 +1,5 @@
 import Button from '@/shared/ui/button/Button';
+import './modals.css'
 
 const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}) => {
   if (!isOpen) return null;

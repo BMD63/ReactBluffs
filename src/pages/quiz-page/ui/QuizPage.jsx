@@ -16,7 +16,6 @@ import {
 } from '@/entities/quiz-session/model/selectors';
 import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
 import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
-import '@/App.css';
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
 
 const QuizPage = () => {

@@ -1,3 +1,4 @@
+import './button.css'
 const Button = ({ children, className = '', ...props }) => {
     return (
       <button 

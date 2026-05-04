@@ -1,6 +1,6 @@
 import Button from '@/shared/ui/button/Button';
 import PropTypes from 'prop-types';
-import './styles.css';
+import './quiz-card.css'
 import { useEffect } from 'react';
 
 const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit, totalCards, onRestart }) => {
