@@ -1,5 +1,11 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
 :root {
-  display: flex;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -12,16 +18,74 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 800px;
-  margin: auto;
-  margin-bottom: 5rem;
+  
+  --color-bg: #020617;
+  --color-bg-soft: #0f172a;
+
+  --color-surface: rgba(15, 23, 42, 0.72);
+  --color-surface-light: rgba(255, 255, 255, 0.08);
+  --color-surface-strong: rgba(15, 23, 42, 0.9);
+
+  --color-border: rgba(255, 255, 255, 0.14);
+
+  --color-text: #f8fafc;
+  --color-text-muted: rgba(248, 250, 252, 0.68);
+
+  --color-primary: #38bdf8;
+  --color-primary-strong: #2563eb;
+
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+
+  --shadow-glow: 0 0 24px rgba(56, 189, 248, 0.24);
+  --shadow-card: 0 20px 50px rgba(0, 0, 0, 0.32);
+
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.45), transparent 75%);
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  max-width: 800px;
+  width: 100%;
+
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.18), transparent 34%),
+    linear-gradient(135deg, #020617, #0f172a 55%, #020617);
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 h1 {
@@ -29,14 +93,3 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
