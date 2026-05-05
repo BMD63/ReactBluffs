@@ -102,20 +102,33 @@
 
 .btn--answer {
   min-width: 96px;
-  background: #ffffff;
-  color: #1f2937;
-  border-color: #cbd5e1;
+
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .btn--answer:hover:not(:disabled) {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, 0.55),
+    0 0 16px rgba(56, 189, 248, 0.28);
+
+  transform: scale(1.04);
 }
 
 .btn--answer.selected {
-  background: #16a34a;
-  color: #ffffff;
-  border-color: #15803d;
+  background: rgba(34, 197, 94, 0.18);
+  color: var(--color-text);
+  border-color: var(--color-success);
+
+  box-shadow:
+    0 0 8px rgba(34, 197, 94, 0.45),
+    0 0 16px rgba(34, 197, 94, 0.22);
 }
 
 .btn--submit {
