@@ -1,4 +1,5 @@
 import Button from '@/shared/ui/button/Button';
+import { pluralizeRu } from '@/shared/lib/format/pluralizeRu';
 import './modals.css'
 
 const FinalResultsModal = ({ isOpen, totalScore, onRestart, onMenu, }) => {
@@ -13,7 +14,9 @@ const FinalResultsModal = ({ isOpen, totalScore, onRestart, onMenu, }) => {
             <span className="final-score-value">{totalScore}</span>
           </div>
 
-          <span className="final-score-label">баллов</span>
+          <span className="final-score-label">
+            {pluralizeRu(totalScore, ['балл', 'балла', 'баллов'])}
+          </span>
         </div>
         <nav className = "final-nav modal-actions">
           <Button variant="primary" onClick={onRestart}>Начать заново</Button>
