@@ -92,10 +92,12 @@
 .btn--primary {
   background: #2563eb;
   color: #ffffff;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
 }
 
 .btn--primary:hover:not(:disabled) {
   background: #1d4ed8;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.45);
 }
 
 .btn--answer {

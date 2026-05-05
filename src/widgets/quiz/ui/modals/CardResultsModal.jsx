@@ -4,7 +4,6 @@ import './modals.css'
 const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}) => {
   if (!isOpen) return null;
   
-  // console.log(score);
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -17,7 +16,14 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
               <div key={question.id} className="answer-item">
                 <p>{question.text}</p>
                 <p>Правильный ответ: {question.correctAnswer ? 'Да' : 'Нет'}</p>
-                <p>Ваш ответ: {answer?.answer ? 'Да' : 'Нет'}</p>
+                <p>
+                  Ваш ответ: {answer?.answer ? 'Да' : 'Нет'}
+                  {(answer?.answer === question.correctAnswer) ? (
+                      <span className="result-icon success"> ✔</span>
+                    ) : (
+                      <span className="result-icon error"> ✖</span>
+                    )}
+                </p>
                 {(answer?.answer === question.correctAnswer) && answer?.bonus && <p>Бонус</p>}
               </div>
             );
@@ -29,7 +35,7 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
             className= "modalBotton" 
             onClick={onNext}
           >
-            {isLastCard ? 'К результатам' : 'Следующий раунд'}
+            {isLastCard ? 'К результатам' : 'Следующий'}
           </Button>
           <Button 
             variant="secondary"

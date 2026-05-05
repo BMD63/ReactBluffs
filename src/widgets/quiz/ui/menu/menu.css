@@ -38,21 +38,6 @@
   margin-bottom: 32px;
 }
 
-/* .menu .btn:hover {
-  border-color: #38bdf8;
-
-  box-shadow:
-    0 0 8px rgba(56, 189, 248, 0.6),
-    0 0 16px rgba(56, 189, 248, 0.4);
-
-  transform: translateY(-2px);
-}
-
-.menu .btn:active {
-  transform: translateY(0);
-  box-shadow: 0 0 4px rgba(56, 189, 248, 0.4);
-} */
-
 .menu-title {
   font-size: 48px;
   color: white;
