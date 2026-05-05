@@ -1,34 +1,57 @@
 .btn {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 4px;
+  min-height: 44px;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+
+  color: #ffffff;
+  background: #1f2937;
+
   cursor: pointer;
-  transition: opacity 0.2s;
-  border: 1px solid #ffffff;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
+  transform: none;
 }
 
-.btn.selected {
-  background: #4CAF50;
-  color: white;
-}
-.btn:hover {
- transform: scale(1.2 , 1.2);
- border-color: #646cff;
-}
-
+.btn.selected,
 .btn.active {
-  border: 2px solid #000;
-  font-weight: bold;
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #15803d;
+}
+
+.btn:hover {
+ transform: scale(1.05 , 1.05);
+ border-color: #646cff;
 }
 
 .btn:focus,
 .btn:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 3px solid rgba(56, 189, 248, 0.45);
+  outline-offset: 3px;
 }
 
 .btn--menu {
@@ -64,4 +87,47 @@
 .btn--menu:active {
   transform: translateY(0);
   box-shadow: 0 0 4px rgba(56, 189, 248, 0.4);
+}
+
+.btn--primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn--answer {
+  min-width: 96px;
+  background: #ffffff;
+  color: #1f2937;
+  border-color: #cbd5e1;
+}
+
+.btn--answer:hover:not(:disabled) {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+}
+
+.btn--answer.selected {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #15803d;
+}
+
+.btn--submit {
+  min-width: 160px;
+  background: #111827;
+  color: #ffffff;
+}
+
+.btn--secondary {
+  background: #ffffff;
+  color: #1f2937;
+  border-color: #cbd5e1;
+}
+
+.btn--secondary:hover:not(:disabled) {
+  border-color: #64748b;
 }

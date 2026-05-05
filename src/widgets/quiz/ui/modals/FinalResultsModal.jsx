@@ -8,9 +8,9 @@ const FinalResultsModal = ({ isOpen, totalScore, onRestart, onMenu, }) => {
       <div className="modal">
         <h2>Итоговый результат</h2>
         <p>Общее количество баллов: {totalScore}</p>
-        <nav className = "final-nav">
-          <Button onClick={onRestart}>Начать заново</Button>
-          <Button onClick={onMenu}> В меню </Button>
+        <nav className = "final-nav modal-actions">
+          <Button variant="primary" onClick={onRestart}>Начать заново</Button>
+          <Button variant="secondary" onClick={onMenu}> В меню </Button>
         </nav>
       </div>
     </div>

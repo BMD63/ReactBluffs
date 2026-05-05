@@ -32,12 +32,14 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit, t
           <p>{question.text}</p>
           <div className="controls">
             <Button
+              variant="answer"
               className={`answer-btn ${userAnswers[question.id]?.answer === true ? 'selected' : ''}`}
               onClick={() => onAnswer(cardIndex, question.id, true)}
             >
               Да
             </Button>
             <Button
+              variant="answer"
               className={`answer-btn ${userAnswers[question.id]?.answer === false ? 'selected' : ''}`}
               onClick={() => onAnswer(cardIndex, question.id, false)}
             >
@@ -61,6 +63,7 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit, t
       ))}
       <div className="card-actions">
         <Button 
+          variant="submit"
           className="submit-btn"
           disabled={!allQuestionsAnswered}
           onClick={onSubmit}
@@ -70,6 +73,7 @@ const Card = ({ cardData, cardIndex, userAnswers, onAnswer, onBonus, onSubmit, t
 
         {cardIndex > 0 && (
           <Button 
+            variant="secondary"
             className="restart-btn"
             onClick={onRestart}
           >

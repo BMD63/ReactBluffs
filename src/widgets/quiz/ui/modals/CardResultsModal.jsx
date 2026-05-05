@@ -23,17 +23,27 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
             );
           })}
         </div>
-        <div className="card-actions">
-          <Button className= "modalBotton" onClick={onNext}>
-          {isLastCard ? 'К результатам' : 'Следующий раунд'}
+        <div className="modal-actions card-actions">
+          <Button 
+            variant="primary"
+            className= "modalBotton" 
+            onClick={onNext}
+          >
+            {isLastCard ? 'К результатам' : 'Следующий раунд'}
           </Button>
           <Button 
-              className="restart-btn"
-              onClick={onRestart}
+            variant="secondary"
+            className="restart-btn"
+            onClick={onRestart}
           >
-              Начать сначала
+            Начать сначала
           </Button>
-          <Button onClick={onMenu}> В меню </Button>
+          <Button 
+            variant="secondary"
+            onClick={onMenu}
+          > 
+            В меню 
+          </Button>
         </div>
         
         

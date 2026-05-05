@@ -52,3 +52,14 @@
     align-items: center; 
     padding: 1rem 0;
 }
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-actions .btn {
+  flex: 1;
+  min-width: 140px;
+}
