@@ -23,12 +23,12 @@ const Menu = () => {
       <h1 className="menu-title">QUIZ</h1>
 
       <div className="menu-actions">
-        <Button variant="primary" onClick={handleStart}>
+        <Button variant="menu" onClick={handleStart}>
           Начать игру
         </Button>
 
         <Button
-          variant="card"
+          variant="menu"
           onClick={() => dispatch(setScreen(SCREEN.SETTINGS))}
         >
           <span>{currentDifficulty.icon}</span>
@@ -41,7 +41,7 @@ const Menu = () => {
         </Button>
 
         <Button
-          variant="card"
+          variant="menu"
           onClick={() => dispatch(setScreen(SCREEN.RULES))}
         >
           Правила

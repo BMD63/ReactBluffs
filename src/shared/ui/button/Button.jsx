@@ -1,8 +1,8 @@
 import './button.css'
-const Button = ({ children, className = '', ...props }) => {
+const Button = ({ children, variant = 'default',className = '', ...props }) => {
     return (
       <button 
-        className={`btn ${className}`}
+        className={`btn btn--${variant} ${className}`}
         {...props}
       >
         {children}

@@ -26,8 +26,42 @@
   font-weight: bold;
 }
 
-
 .btn:focus,
 .btn:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.btn--menu {
+  padding: 14px 20px;
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+
+  color: #fff;
+  font-weight: 500;
+
+  background: rgba(255, 255, 255, 0.08); 
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(12px);
+
+  transition: all 0.2s ease;
+}
+
+.btn--menu:hover {
+  border-color: #38bdf8;
+
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, 0.6),
+    0 0 16px rgba(56, 189, 248, 0.4);
+
+  transform: translateY(-2px);
+}
+
+.btn--menu:active {
+  transform: translateY(0);
+  box-shadow: 0 0 4px rgba(56, 189, 248, 0.4);
 }
