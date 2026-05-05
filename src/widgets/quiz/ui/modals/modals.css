@@ -130,7 +130,7 @@
 }
 
 .modal p {
-  color: #4b5563;
+  color: var(--color-text-muted);
   margin-bottom: 10px;
 }
 
@@ -140,11 +140,11 @@
 }
 
 .result-icon.success {
-  color: #16a34a; /* зеленый */
+  color: var(--color-success);
 }
 
 .result-icon.error {
-  color: #dc2626; /* красный */
+  color: var(--color-error);
 }
 
 .final-result-card {
@@ -176,7 +176,7 @@
   margin: 0 0 18px;
   font-size: 20px;
   font-weight: 800;
-  color: #1d4ed8;
+  color: var(--color-primary-strong);
   letter-spacing: 0.02em;
 }
 
