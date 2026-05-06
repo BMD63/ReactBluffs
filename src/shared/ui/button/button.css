@@ -57,7 +57,7 @@
 .btn--menu {
   padding: 14px 20px;
   border-radius: 14px;
-
+  min-height: 72px;
   display: flex;
   align-items: center;
   gap: 10px;
