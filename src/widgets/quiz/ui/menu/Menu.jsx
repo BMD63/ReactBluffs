@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { SCREEN, setScreen } from '@/entities/quiz-session/model/quizUISlice';
+import { SCREEN, setScreen } from '@/entities/quiz-session';
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';

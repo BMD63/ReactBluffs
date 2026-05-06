@@ -1,14 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DIFFICULTY } from '@/entities/quiz-session/model/config/difficultyConfig.js';
 
-export const SCREEN = {
-  MENU: 'menu',
-  SETTINGS: 'settings',
-  GAME: 'game',
-  RULES: 'rules',
-  CARD_RESULT: 'cardResult',
-  FINAL: 'final',
-};
+import { SCREEN } from './config/screen';
 
 const initialState = {
   difficulty: DIFFICULTY.MEDIUM,

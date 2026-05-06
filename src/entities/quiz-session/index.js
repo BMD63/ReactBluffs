@@ -1,5 +1,6 @@
+export { SCREEN } from './model/config/screen';
+
 export {
-  SCREEN,
   setScreen,
   resetUI,
   setDifficulty,

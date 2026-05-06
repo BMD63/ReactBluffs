@@ -1,4 +1,4 @@
-import { SCREEN } from '@/entities/quiz-session/model/quizUISlice';
+import { SCREEN } from '@/entities/quiz-session';
 
 import Menu from '@/widgets/quiz/ui/menu/Menu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
