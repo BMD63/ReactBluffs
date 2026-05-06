@@ -64,7 +64,7 @@
 }
 
 .difficulty-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   border-color: var(--color-primary);
 
   box-shadow:

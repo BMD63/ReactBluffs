@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Card from '@/features/play-quiz/ui/quiz-card/QuizCard';
 
 const PlayQuiz = ({
@@ -10,9 +11,20 @@ const PlayQuiz = ({
   onSubmit,
   onRestart,
 }) => {
+    const [transitionStage, setTransitionStage] = useState('enter');
+    useEffect(() => {
+        setTransitionStage('exit');
+
+        const timeout = setTimeout(() => {
+            setTransitionStage('enter');
+        }, 140);
+
+  return () => clearTimeout(timeout);
+}, [index]);
   if (!card?.length) return null;
 
   return (
+    <div className={`quiz-card-transition quiz-card-transition--${transitionStage}`} key={index}>
     <Card
       cardData={card}
       cardIndex={index}
@@ -23,6 +35,7 @@ const PlayQuiz = ({
       onRestart={onRestart}
       totalCards={total}
     />
+  </div>
   );
 };
 

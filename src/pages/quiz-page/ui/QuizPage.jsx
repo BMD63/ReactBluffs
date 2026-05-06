@@ -55,7 +55,8 @@ const QuizPage = () => {
 
   return (
     <div className="app">
-      <QuizScreen
+      <div className="screen-transition">
+        <QuizScreen
         screen={screen}
         card={card}
         answers={answers}
@@ -71,6 +72,8 @@ const QuizPage = () => {
         onNextCard={nextQuizCard}
         onGoToMenu={goToMenu}
       />
+      </div>
+      
     </div>
  );
 };
