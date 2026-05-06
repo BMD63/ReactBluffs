@@ -1,0 +1,1 @@
+export { default as PlayQuiz } from './ui/PlayQuiz';

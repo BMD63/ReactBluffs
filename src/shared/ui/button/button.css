@@ -83,7 +83,7 @@ box-shadow: var(--shadow-glow-strong);
 .btn--menu:hover {
   border-color: #38bdf8;
   box-shadow: var(--shadow-glow-strong);
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);;
 }
 
 .btn--menu:active {

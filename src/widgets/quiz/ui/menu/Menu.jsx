@@ -3,7 +3,7 @@ import { SCREEN, setScreen } from '@/entities/quiz-session/model/quizUISlice';
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
-import Button from '@/shared/ui/button/Button';
+import { Button } from '@/shared/ui/button';
 import './menu.css';
 
 

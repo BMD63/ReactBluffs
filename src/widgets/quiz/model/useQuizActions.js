@@ -1,19 +1,15 @@
 import { useDispatch } from 'react-redux';
 
 import {
+  SCREEN,
+  setScreen,
+  resetUI,
   answerQuestion,
   toggleBonus,
   submitCard,
   nextCard,
-} from '@/entities/quiz-session/model/quizSessionSlice';
-
-import {
-  SCREEN,
-  setScreen,
-  resetUI,
-} from '@/entities/quiz-session/model/quizUISlice';
-
-import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
+  initGame,
+} from '@/entities/quiz-session';
 
 export const useQuizActions = () => {
   const dispatch = useDispatch();

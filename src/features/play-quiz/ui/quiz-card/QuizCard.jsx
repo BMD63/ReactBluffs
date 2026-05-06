@@ -1,4 +1,4 @@
-import Button from '@/shared/ui/button/Button';
+import { Button } from '@/shared/ui/button';
 import PropTypes from 'prop-types';
 import './quiz-card.css'
 import { useEffect } from 'react';

@@ -1,4 +1,4 @@
-import Button from '@/shared/ui/button/Button';
+import { Button } from '@/shared/ui/button';
 import { pluralizeRu } from '@/shared/lib/format/pluralizeRu';
 import './modals.css'
 

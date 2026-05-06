@@ -1,4 +1,4 @@
-import Button from '@/shared/ui/button/Button';
+import { Button } from '@/shared/ui/button';
 import './modals.css'
 
 const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}) => {

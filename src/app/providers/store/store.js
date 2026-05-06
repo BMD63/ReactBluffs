@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { quizSessionReducer } from '@/entities/quiz-session/model/quizSessionSlice'
-import { quizUIReducer } from '@/entities/quiz-session/model/quizUISlice';
+import {
+  quizSessionReducer,
+    quizUIReducer,
+  } from '@/entities/quiz-session';
 
 export const store = configureStore({
   reducer: {

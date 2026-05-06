@@ -3,7 +3,7 @@ import { SCREEN } from '@/entities/quiz-session/model/quizUISlice';
 import Menu from '@/widgets/quiz/ui/menu/Menu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
-import PlayQuiz from '@/features/play-quiz/ui/PlayQuiz';
+import { PlayQuiz } from '@/features/play-quiz';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 

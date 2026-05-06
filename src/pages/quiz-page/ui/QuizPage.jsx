@@ -5,17 +5,15 @@ import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import {
   SCREEN,
   setScreen,
-} from '@/entities/quiz-session/model/quizUISlice';
-
-import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
-import { initUI } from '@/entities/quiz-session/model/thunks/initUI';
-import { 
-  selectCurrentCardScore, 
+  initGame,
+  initUI,
+  selectScreen,
   selectIsFinished,
-  selectScreen, 
-} from '@/entities/quiz-session/model/selectors';
-import { selectTotalScore } from '@/entities/quiz-session/model/selectors';
-import { selectCurrentCardData } from '@/entities/quiz-session/model/selectors';
+  selectCurrentCardScore,
+  selectCurrentCardData,
+  selectTotalScore,
+} from '@/entities/quiz-session';
+
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
 
 const QuizPage = () => {
@@ -23,14 +21,14 @@ const QuizPage = () => {
   const dispatch = useDispatch()
 
   const {
-  goToMenu,
-  nextQuizCard,
-  restartQuiz,
-  answerQuizQuestion,
-  toggleQuestionBonus,
-  submitQuizCard,
-  closeRules,
-} = useQuizActions();
+    goToMenu,
+    nextQuizCard,
+    restartQuiz,
+    answerQuizQuestion,
+    toggleQuestionBonus,
+    submitQuizCard,
+    closeRules,
+  } = useQuizActions();
 
   const screen = useSelector(selectScreen);
   const currentCardScore = useSelector(selectCurrentCardScore);
@@ -55,25 +53,24 @@ const QuizPage = () => {
 
   return (
     <div className="app">
-      <div className="screen-transition">
+      <div className="screen-transition" key={screen}>
         <QuizScreen
-        screen={screen}
-        card={card}
-        answers={answers}
-        index={index}
-        total={total}
-        currentCardScore={currentCardScore}
-        totalScore={totalScore}
-        onAnswer={answerQuizQuestion}
-        onBonus={toggleQuestionBonus}
-        onSubmit={submitQuizCard}
-        onRestart={restartQuiz}
-        onRulesClose={closeRules}
-        onNextCard={nextQuizCard}
-        onGoToMenu={goToMenu}
-      />
+          screen={screen}
+          card={card}
+          answers={answers}
+          index={index}
+          total={total}
+          currentCardScore={currentCardScore}
+          totalScore={totalScore}
+          onAnswer={answerQuizQuestion}
+          onBonus={toggleQuestionBonus}
+          onSubmit={submitQuizCard}
+          onRestart={restartQuiz}
+          onRulesClose={closeRules}
+          onNextCard={nextQuizCard}
+          onGoToMenu={goToMenu}
+        />
       </div>
-      
     </div>
  );
 };
