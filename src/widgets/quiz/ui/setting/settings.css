@@ -1,8 +1,8 @@
 .settings {
-  width: min(100%, 520px);
+  width: 100%;
+  max-width: min(760px, calc(100vw - 24px));
+  padding: 24px 16px;
   margin: 0 auto;
-  padding: 28px 24px;
-
   color: var(--color-text);
 
   background:

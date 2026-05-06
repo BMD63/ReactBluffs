@@ -28,8 +28,8 @@
   padding: 28px 24px;
   border-radius: 16px;
 
-  max-width: 520px;
-  width: 90%;
+  max-width: min(520px, calc(100vw - 24px));
+  padding: 24px 16px;
 
   color: var(--color-text);
 
@@ -114,6 +114,8 @@
 }
 
 .modal-actions {
+  max-width: min(520px, calc(100vw - 24px));
+  padding: 24px 16px;
   display: flex;
   gap: 12px;
   margin-top: 24px;
@@ -121,7 +123,7 @@
 
 .modal-actions .btn {
   flex: 1;
-  min-width: 140px;
+  min-width: 0;
 }
 
 .modal h2 {
@@ -214,4 +216,14 @@
   color: #1d4ed8;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+@media (max-width: 560px) {
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
 }
