@@ -105,3 +105,14 @@
     padding-right: 12px;
   }
 }
+
+@media (max-width: 430px) {
+  .menu {
+    padding: 28px 18px;
+    gap: 28px;
+  }
+
+  .menu-title {
+    margin-bottom: 4px;
+  }
+}

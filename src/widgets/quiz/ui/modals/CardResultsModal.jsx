@@ -42,7 +42,7 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
             className="restart-btn"
             onClick={onRestart}
           >
-            Начать сначала
+            Заново
           </Button>
           <Button 
             variant="secondary"

@@ -48,6 +48,9 @@
 .btn:hover {
  transform: scale(1.05 , 1.05);
  border-color: var(--color-primary);
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, 0.35),
+    0 0 16px rgba(56, 189, 248, 0.18);
 }
 
 .btn:focus,

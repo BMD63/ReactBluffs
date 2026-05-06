@@ -201,3 +201,8 @@ h1 {
   line-height: 1.1;
 }
 
+@media (max-width: 430px) {
+  .app {
+    padding: 24px 12px;
+  }
+}
