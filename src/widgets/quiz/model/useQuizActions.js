@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   SCREEN,
@@ -9,19 +9,23 @@ import {
   submitCard,
   nextCard,
   initGame,
+  selectCurrentCardData,
 } from '@/entities/quiz-session';
 
 export const useQuizActions = () => {
   const dispatch = useDispatch();
-
+  const { index, total } = useSelector(selectCurrentCardData);
   const goToMenu = () => {
     dispatch(resetUI());
   };
 
   const nextQuizCard = () => {
-    dispatch(nextCard());
-    dispatch(setScreen(SCREEN.GAME));
-  };
+  dispatch(nextCard());
+
+  const isLastCard = index >= total - 1;
+
+  dispatch(setScreen(isLastCard ? SCREEN.FINAL : SCREEN.GAME));
+};
 
   const restartQuiz = () => {
     dispatch(initGame());

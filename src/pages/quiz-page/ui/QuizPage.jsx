@@ -3,12 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 
 import {
-  SCREEN,
-  setScreen,
   initGame,
   initUI,
   selectScreen,
-  selectIsFinished,
   selectCurrentCardScore,
   selectCurrentCardData,
   selectTotalScore,
@@ -33,8 +30,6 @@ const QuizPage = () => {
   const screen = useSelector(selectScreen);
   const currentCardScore = useSelector(selectCurrentCardScore);
 
-  const isFinished = useSelector(selectIsFinished);
-
   const { card, answers, index, total } =
   useSelector(selectCurrentCardData);
 
@@ -44,12 +39,6 @@ const QuizPage = () => {
     dispatch(initGame());
     dispatch(initUI());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (isFinished) {
-      dispatch(setScreen(SCREEN.FINAL));
-    }
-  }, [isFinished, dispatch]);
 
   return (
     <div className="app">
