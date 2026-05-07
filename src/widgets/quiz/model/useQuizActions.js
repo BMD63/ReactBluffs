@@ -14,7 +14,10 @@ import {
 
 export const useQuizActions = () => {
   const dispatch = useDispatch();
-  const { index, total } = useSelector(selectCurrentCardData);
+  const {
+  currentCardIndex,
+  totalCards,
+} = useSelector(selectCurrentCardData);
   const goToMenu = () => {
     dispatch(resetUI());
   };
@@ -22,7 +25,7 @@ export const useQuizActions = () => {
   const nextQuizCard = () => {
   dispatch(nextCard());
 
-  const isLastCard = index >= total - 1;
+  const isLastCard = currentCardIndex >= totalCards - 1;
 
   dispatch(setScreen(isLastCard ? SCREEN.FINAL : SCREEN.GAME));
 };

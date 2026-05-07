@@ -17,10 +17,10 @@ export const selectCurrentCardData = createSelector(
     const card = cards[currentCard];
 
     return {
-      card,
-      answers: userAnswers?.[currentCard] || {},
-      index: currentCard,
-      total: cards.length,
+      currentCard: card,
+      currentCardAnswers: userAnswers?.[currentCard] || {},
+      currentCardIndex: currentCard,
+      totalCards: cards.length,
     };
   }
 );

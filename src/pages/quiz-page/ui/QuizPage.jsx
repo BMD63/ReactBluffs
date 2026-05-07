@@ -30,8 +30,12 @@ const QuizPage = () => {
   const screen = useSelector(selectScreen);
   const currentCardScore = useSelector(selectCurrentCardScore);
 
-  const { card, answers, index, total } =
-  useSelector(selectCurrentCardData);
+  const {
+  currentCard,
+  currentCardAnswers,
+  currentCardIndex,
+  totalCards,
+} = useSelector(selectCurrentCardData);
 
   const totalScore = useSelector(selectTotalScore);
   
@@ -45,10 +49,10 @@ const QuizPage = () => {
       <div className="screen-transition" key={screen}>
         <QuizScreen
           screen={screen}
-          card={card}
-          answers={answers}
-          index={index}
-          total={total}
+          currentCard={currentCard}
+          currentCardAnswers={currentCardAnswers}
+          currentCardIndex={currentCardIndex}
+          totalCards={totalCards}
           currentCardScore={currentCardScore}
           totalScore={totalScore}
           onAnswer={answerQuizQuestion}

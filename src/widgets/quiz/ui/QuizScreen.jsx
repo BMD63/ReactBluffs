@@ -9,10 +9,10 @@ import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 
 const QuizScreen = ({
   screen,
-  card,
-  answers,
-  index,
-  total,
+  currentCard,
+  currentCardAnswers,
+  currentCardIndex,
+  totalCards,
   currentCardScore,
   totalScore,
   onAnswer,
@@ -32,16 +32,16 @@ const QuizScreen = ({
 
     case SCREEN.GAME:
         return (
-            <PlayQuiz
-            card={card}
-            answers={answers}
-            index={index}
-            total={total}
+          <PlayQuiz
+            currentCard={currentCard}
+            currentCardAnswers={currentCardAnswers}
+            currentCardIndex={currentCardIndex}
+            totalCards={totalCards}
             onAnswer={onAnswer}
             onBonus={onBonus}
             onSubmit={onSubmit}
             onRestart={onRestart}
-            />
+          />
         );
 
     case SCREEN.RULES:
@@ -56,12 +56,12 @@ const QuizScreen = ({
       return (
         <CardResultsModal
           isOpen
-          cardData={card}
-          cardIndex={index}
+          cardData={currentCard}
+          cardIndex={currentCardIndex}
           score={currentCardScore}
           onNext={onNextCard}
-          isLastCard={index === total - 1}
-          userAnswers={answers}
+          isLastCard={currentCardIndex === totalCards - 1}
+          userAnswers={currentCardAnswers}
           onRestart={onRestart}
           onMenu={onGoToMenu}
         />
