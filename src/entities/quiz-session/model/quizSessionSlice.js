@@ -3,10 +3,9 @@ import { calculateCardScore } from './quizSessionModel'
 
 const initialState = {
   cards: [],
-  currentCard: 0,
-  userAnswers: [],
+  currentCardIndex: 0,
+  answersByCard: [],
   currentCardScore: 0,
-  newPlayer: false,
 }
 
 const quizSessionSlice = createSlice({
@@ -15,60 +14,51 @@ const quizSessionSlice = createSlice({
   reducers: {
     setCards(state, action) {
       state.cards = action.payload
-      state.userAnswers = action.payload.map(() => ({}))
+      state.answersByCard = action.payload.map(() => ({}))
     },
 
     answerQuestion(state, action) {
-      const { cardIndex, questionId, answer } = action.payload
+      const { cardIndex, questionId, answer } = action.payload;
 
-      if (!state.userAnswers[cardIndex]) {
-        state.userAnswers[cardIndex] = {}
+      if (!state.answersByCard[cardIndex]) {
+        state.answersByCard[cardIndex] = {};
       }
 
-      state.userAnswers[cardIndex][questionId] = {
+      state.answersByCard[cardIndex][questionId] = {
         answer,
         bonus: false,
-      }
+      };
     },
 
     toggleBonus(state, action) {
-      const { cardIndex, questionId } = action.payload
+      const { cardIndex, questionId } = action.payload;
 
-      const cardAnswers = state.userAnswers[cardIndex] || {}
+      const cardAnswers = state.answersByCard[cardIndex] || {};
 
       const bonusCount = Object.values(cardAnswers)
-        .filter((a) => a.bonus).length
+        .filter((a) => a.bonus).length;
 
-      if (bonusCount >= 3 && !cardAnswers[questionId]?.bonus) return
+      if (bonusCount >= 3 && !cardAnswers[questionId]?.bonus) return;
 
-      state.userAnswers[cardIndex][questionId].bonus =
-        !state.userAnswers[cardIndex][questionId].bonus
+      state.answersByCard[cardIndex][questionId].bonus =
+        !state.answersByCard[cardIndex][questionId].bonus;
     },
 
     submitCard(state) {
-      const card = state.cards[state.currentCard];
-      const answers = state.userAnswers[state.currentCard];
+      const card = state.cards[state.currentCardIndex];
+      const answers = state.answersByCard[state.currentCardIndex];
 
       state.currentCardScore = calculateCardScore(card, answers);
     },
 
     nextCard(state) {
-      state.currentCard += 1
-    },
-
-    restart(state) {
-      state.currentCard = 0
-      state.userAnswers = []
-    },
-
-    setNewPlayer(state) {
-      state.newPlayer = true
+      state.currentCardIndex += 1
     },
 
     resetGame: (state) => {
       state.cards = []
-      state.currentCard = 0
-      state.userAnswers = []
+      state.currentCardIndex = 0
+      state.answersByCard = []
       state.currentCardScore = 0
     }
   },
@@ -80,8 +70,6 @@ export const {
   toggleBonus,
   submitCard,
   nextCard,
-  restart,
-  setNewPlayer,
   resetGame
 } = quizSessionSlice.actions
 
