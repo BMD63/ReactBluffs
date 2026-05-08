@@ -73,15 +73,27 @@ const quizSessionSlice = createSlice({
 
       if (bonusCount >= 3 && !cardAnswers[questionId]?.bonus) return;
 
-      state.answersByCard[cardIndex][questionId].bonus =
-        !state.answersByCard[cardIndex][questionId].bonus;
+      const answer =
+        state.answersByCard[cardIndex]?.[questionId];
+
+      if (!answer) {
+        return;
+      }
+
+      answer.bonus = !answer.bonus;
     },
 
     submitCard(state) {
       const card = state.cards[state.currentCardIndex];
-      const answers = state.answersByCard[state.currentCardIndex];
+        const answers =
+          state.answersByCard[state.currentCardIndex];
 
-      state.currentCardScore = calculateCardScore(card, answers);
+        if (!card || !answers) {
+          return;
+        }
+
+state.currentCardScore =
+  calculateCardScore(card, answers);
     },
 
     nextCard(state) {

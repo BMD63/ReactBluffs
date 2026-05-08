@@ -6,22 +6,22 @@ const selectQuizSession = (
   state: RootState
 ) => state.quizSession;
 
-export const selectCurrentCardScore = (state) =>
+export const selectCurrentCardScore = (state: RootState) =>
   selectQuizSession(state).currentCardScore;
 
-export const selectCards = (state) =>
+export const selectCards = (state: RootState) =>
   selectQuizSession(state).cards;
 
-export const selectCurrentCardIndex = (state) =>
+export const selectCurrentCardIndex = (state: RootState) =>  
   selectQuizSession(state).currentCardIndex;
 
-export const selectAnswersByCard = (state) =>
+export const selectAnswersByCard = (state: RootState) =>
   selectQuizSession(state).answersByCard;
 
-export const selectDifficulty = (state) =>
+export const selectDifficulty = (state: RootState) =>
   state.quizUI.difficulty;
 
-export const selectScreen = (state) =>
+export const selectScreen = (state: RootState) =>
   state.quizUI.currentScreen;
 
 export const selectCurrentCardData = createSelector(
@@ -45,7 +45,7 @@ export const selectIsFinished = createSelector(
   }
 );
 
-export const selectTotalScore = (state) => {
+export const selectTotalScore = (state: RootState) => {
   const { cards, answersByCard } = selectQuizSession(state);
 
   if (!cards.length) return 0;

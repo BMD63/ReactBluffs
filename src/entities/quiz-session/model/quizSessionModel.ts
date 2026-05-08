@@ -63,11 +63,17 @@ export const toggleBonus = (
     return answers;
   }
 
+  const currentAnswer = answers[questionId];
+
+  if (!currentAnswer) {
+    return answers;
+  }
+
   return {
     ...answers,
     [questionId]: {
-      ...answers[questionId],
-      bonus: !answers[questionId]?.bonus,
+      ...currentAnswer,
+      bonus: !currentAnswer.bonus,
     },
   };
 };
