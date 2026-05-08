@@ -1,7 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { calculateCardScore } from './quizSessionModel';
+import type { RootState } from '@/app/providers/store/store';
 
-const selectQuizSession = (state) => state.quizSession;
+const selectQuizSession = (
+  state: RootState
+) => state.quizSession;
 
 export const selectCurrentCardScore = (state) =>
   selectQuizSession(state).currentCardScore;

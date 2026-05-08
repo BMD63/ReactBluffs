@@ -10,3 +10,6 @@ export const store = configureStore({
     quizUI: quizUIReducer,
   },
 })
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

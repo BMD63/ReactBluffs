@@ -1,5 +1,4 @@
 export const SCREEN = {
-  START: 'start',
   MENU: 'menu',
   SETTINGS: 'settings',
   GAME: 'game',

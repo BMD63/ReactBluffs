@@ -1,36 +1,69 @@
+import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { CardAnswers } from './quizSessionModel';
+import type { PayloadAction } from '@reduxjs/toolkit';
+
+type AnswerQuestionPayload = {
+  cardIndex: number;
+  questionId: string;
+  answer: boolean;
+};
+
+
+type SetCardsPayload = BooleanQuestion[][];
+
+type ToggleBonusPayload = {
+  cardIndex: number;
+  questionId: string;
+};
+
+type QuizSessionState = {
+  cards: BooleanQuestion[][];
+  currentCardIndex: number;
+  answersByCard: CardAnswers[];
+  currentCardScore: number;
+};
+
 import { createSlice } from '@reduxjs/toolkit'
 import { calculateCardScore } from './quizSessionModel'
 
-const initialState = {
+const initialState: QuizSessionState = {
   cards: [],
   currentCardIndex: 0,
   answersByCard: [],
   currentCardScore: 0,
-}
+};
 
 const quizSessionSlice = createSlice({
   name: 'quizSession',
   initialState,
   reducers: {
-    setCards(state, action) {
+    setCards(
+      state,
+      action: PayloadAction<SetCardsPayload>
+    ) {
       state.cards = action.payload
       state.answersByCard = action.payload.map(() => ({}))
     },
 
-    answerQuestion(state, action) {
-      const { cardIndex, questionId, answer } = action.payload;
+    answerQuestion(
+      state,
+      action: PayloadAction<AnswerQuestionPayload>
+      ) {
+          const { cardIndex, questionId, answer } = action.payload;
+          if (!state.answersByCard[cardIndex]) {
+            state.answersByCard[cardIndex] = {};
+          }
 
-      if (!state.answersByCard[cardIndex]) {
-        state.answersByCard[cardIndex] = {};
-      }
+          state.answersByCard[cardIndex][questionId] = {
+            answer,
+            bonus: false,
+          };
+        },
 
-      state.answersByCard[cardIndex][questionId] = {
-        answer,
-        bonus: false,
-      };
-    },
-
-    toggleBonus(state, action) {
+    toggleBonus(
+      state,
+      action: PayloadAction<ToggleBonusPayload>
+    ) {
       const { cardIndex, questionId } = action.payload;
 
       const cardAnswers = state.answersByCard[cardIndex] || {};
