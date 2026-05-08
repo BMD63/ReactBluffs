@@ -1,4 +1,13 @@
-export const questions = [
+export type BooleanQuestion = {
+  id: string;
+  type: 'boolean';
+  text: string;
+  correctAnswer: boolean;
+};
+
+
+
+export const questions: BooleanQuestion[] = [
     { id: 'q1', type: "boolean", text: `Самая большая жемчужина в мире весит 6 кг.`, correctAnswer: true },
     { id: 'q2', type: "boolean", text: `В США до 1913 года разрешалось отправлять детей по почте.`, correctAnswer: true },
     { id: 'q3', type: "boolean", text: `В топ-250 лучших фильмов, по мнению американской киноакадемии входят 12 советских/российских картин`, correctAnswer: false },

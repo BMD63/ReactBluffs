@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { DIFFICULTY } from '@/entities/quiz-session/model/config/difficultyConfig.js';
+import { DIFFICULTY } from '@/entities/quiz-session/model/config/difficultyConfig';
 
 import { SCREEN } from './config/screen';
 

@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* Base */
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+
+    /* React */
+    "jsx": "react-jsx",
+
+    /* Paths */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    /* JS migration */
+    "allowJs": true,
+    "checkJs": false,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    /* DX */
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+
+    /* Output behavior */
+    "noEmit": true,
+
+    /* Types */
+    "types": ["vite/client"]
+  },
+
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

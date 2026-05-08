@@ -2,9 +2,21 @@ export const DIFFICULTY = {
   EASY: 'easy',
   MEDIUM: 'medium',
   HARD: 'hard',
+} as const;
+
+export type Difficulty =
+  typeof DIFFICULTY[keyof typeof DIFFICULTY];
+
+type DifficultyConfig = {
+  title: string;
+  description: string;
+  questionsPerCard: number;
+  manualCardsCount: number;
+  color: string;
+  icon: string;
 };
 
-export const difficultyConfig = {
+export const difficultyConfig: Record<Difficulty, DifficultyConfig> = {
   easy: {
     title: 'Легко',
     description: 'Быстрые и простые раунды',
@@ -30,4 +42,3 @@ export const difficultyConfig = {
     icon: '🔴',
   },
 };
-
