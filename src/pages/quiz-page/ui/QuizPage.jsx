@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 
 import {
@@ -15,7 +18,7 @@ import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
 
 const QuizPage = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch();
 
   const {
     goToMenu,
@@ -27,17 +30,17 @@ const QuizPage = () => {
     closeRules,
   } = useQuizActions();
 
-  const screen = useSelector(selectScreen);
-  const currentCardScore = useSelector(selectCurrentCardScore);
+  const screen = useAppSelector(selectScreen);
+  const currentCardScore = useAppSelector(selectCurrentCardScore);
 
   const {
   currentCard,
   currentCardAnswers,
   currentCardIndex,
   totalCards,
-} = useSelector(selectCurrentCardData);
+} = useAppSelector(selectCurrentCardData);
 
-  const totalScore = useSelector(selectTotalScore);
+  const totalScore = useAppSelector(selectTotalScore);
   
   useEffect(() => {
     dispatch(initGame());

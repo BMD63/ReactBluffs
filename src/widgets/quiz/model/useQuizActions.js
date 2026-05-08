@@ -1,5 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux';
-
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/shared/lib/hooks/redux';
 import {
   SCREEN,
   setScreen,
@@ -13,11 +15,11 @@ import {
 } from '@/entities/quiz-session';
 
 export const useQuizActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
   currentCardIndex,
   totalCards,
-} = useSelector(selectCurrentCardData);
+} = useAppSelector(selectCurrentCardData);
   const goToMenu = () => {
     dispatch(resetUI());
   };
