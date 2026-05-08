@@ -1,4 +1,4 @@
-import type { BooleanQuestion } from '@/entities/question/model/questions';
+import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
 
 type DifficultyCardConfig = {
   questionsPerCard: number;

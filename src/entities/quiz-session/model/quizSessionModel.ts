@@ -1,11 +1,15 @@
-import type { BooleanQuestion } from '@/entities/question/model/questions';
+import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type {
+  BooleanQuestionAnswer,
+} from '@/entities/question/model/questionAnswerTypes';
 
 export type QuestionAnswer = {
   answer: boolean;
   bonus: boolean;
 };
 
-export type CardAnswers = Record<string, QuestionAnswer>;
+export type CardAnswers =
+  Record<string, BooleanQuestionAnswer>;
 
 export const calculateCardScore = (
   card: BooleanQuestion[],

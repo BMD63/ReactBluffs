@@ -1,11 +1,4 @@
-export type BooleanQuestion = {
-  id: string;
-  type: 'boolean';
-  text: string;
-  correctAnswer: boolean;
-};
-
-
+import type { BooleanQuestion } from './questionTypes';
 
 export const questions: BooleanQuestion[] = [
     { id: 'q1', type: "boolean", text: `Самая большая жемчужина в мире весит 6 кг.`, correctAnswer: true },
