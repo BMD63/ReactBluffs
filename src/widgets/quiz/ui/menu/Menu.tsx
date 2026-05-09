@@ -6,11 +6,16 @@ import { difficultyConfig } from '@/entities/quiz-session/model/config/difficult
 import { Button } from '@/shared/ui/button';
 import './menu.css';
 
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/shared/lib/hooks/redux';
+
 
 const Menu = () => {
-  const dispatch = useDispatch();
-  const difficulty = useSelector(selectDifficulty);
-
+  const dispatch = useAppDispatch();
+  const difficulty = useAppSelector(selectDifficulty);
+  
   const handleStart = () => {
     dispatch(initGame());
     dispatch(setScreen(SCREEN.GAME));

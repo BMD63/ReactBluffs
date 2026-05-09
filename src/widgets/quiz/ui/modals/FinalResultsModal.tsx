@@ -2,7 +2,19 @@ import { Button } from '@/shared/ui/button';
 import { pluralizeRu } from '@/shared/lib/format/pluralizeRu';
 import './modals.css'
 
-const FinalResultsModal = ({ isOpen, totalScore, onRestart, onMenu, }) => {
+type FinalResultsModalProps = {
+  isOpen: boolean;
+  totalScore: number;
+  onRestart: () => void;
+  onMenu: () => void;
+};
+
+const FinalResultsModal = ({
+  isOpen,
+  totalScore,
+  onRestart,
+  onMenu,
+}: FinalResultsModalProps) => {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">

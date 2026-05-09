@@ -1,7 +1,12 @@
 import { Button } from '@/shared/ui/button';
 import './modals.css'
 
-const RulesModal = ({ isOpen, onClose }) => {
+type RulesModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const RulesModal = ({ isOpen, onClose }:RulesModalProps) => {
   if (!isOpen) return null;
 
   return (

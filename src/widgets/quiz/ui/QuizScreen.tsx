@@ -7,6 +7,39 @@ import { PlayQuiz } from '@/features/play-quiz';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 
+import type { Screen } from '@/entities/quiz-session/model/config/screen';
+import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
+
+type QuizScreenProps = {
+  screen: Screen;
+
+  currentCard: BooleanQuestion[];
+  currentCardAnswers: CardAnswers;
+  currentCardIndex: number;
+  totalCards: number;
+
+  currentCardScore: number;
+  totalScore: number;
+
+  onAnswer: (
+    cardIndex: number,
+    questionId: string,
+    answer: boolean
+  ) => void;
+
+  onBonus: (
+    cardIndex: number,
+    questionId: string
+  ) => void;
+
+  onSubmit: () => void;
+  onRestart: () => void;
+  onRulesClose: () => void;
+  onNextCard: () => void;
+  onGoToMenu: () => void;
+};
+
 const QuizScreen = ({
   screen,
   currentCard,
@@ -22,7 +55,7 @@ const QuizScreen = ({
   onRulesClose,
   onNextCard,
   onGoToMenu,
-}) => {
+}: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.MENU:
       return <Menu />;
@@ -31,18 +64,19 @@ const QuizScreen = ({
       return <Settings />;
 
     case SCREEN.GAME:
-        return (
-          <PlayQuiz
-            currentCard={currentCard}
-            currentCardAnswers={currentCardAnswers}
-            currentCardIndex={currentCardIndex}
-            totalCards={totalCards}
-            onAnswer={onAnswer}
-            onBonus={onBonus}
-            onSubmit={onSubmit}
-            onRestart={onRestart}
-          />
-        );
+      if (!currentCard) return null;
+      return (
+        <PlayQuiz
+          currentCard={currentCard}
+          currentCardAnswers={currentCardAnswers}
+          currentCardIndex={currentCardIndex}
+          totalCards={totalCards}
+          onAnswer={onAnswer}
+          onBonus={onBonus}
+          onSubmit={onSubmit}
+          onRestart={onRestart}
+        />
+      );
 
     case SCREEN.RULES:
       return (
@@ -53,6 +87,7 @@ const QuizScreen = ({
       );
 
     case SCREEN.CARD_RESULT:
+      if (!currentCard) return null;
       return (
         <CardResultsModal
           isOpen

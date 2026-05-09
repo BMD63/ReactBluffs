@@ -9,9 +9,14 @@ import { difficultyConfig } from '@/entities/quiz-session/model/config/difficult
 import { Button } from '@/shared/ui/button';
 import './settings.css'
 
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/shared/lib/hooks/redux';
+
 const Settings = () => {
-  const dispatch = useDispatch();
-  const difficulty = useSelector(selectDifficulty);
+  const dispatch = useAppDispatch();
+  const difficulty = useAppSelector(selectDifficulty);
   const currentDifficulty = difficultyConfig[difficulty];
 
   return (

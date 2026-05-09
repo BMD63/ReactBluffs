@@ -1,9 +1,23 @@
 import { Button } from '@/shared/ui/button';
 import './modals.css'
 
-const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}) => {
-  if (!isOpen) return null;
-  
+import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
+
+type CardResultsModalProps = {
+  isOpen: boolean;
+  cardData?: BooleanQuestion[];
+  cardIndex: number;
+  score: number;
+  isLastCard: boolean;
+  userAnswers: CardAnswers;
+  onNext: () => void;
+  onRestart: () => void;
+  onMenu: () => void;
+};
+
+const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}:CardResultsModalProps) => {
+  if (!isOpen || !cardData) return null;
   return (
     <div className="modal-overlay">
       <div className="modal">
