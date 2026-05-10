@@ -1,10 +1,9 @@
 export {
-  SCREEN,
   setScreen,
   resetUI,
   setDifficulty,
   quizUIReducer,
-} from './model/quizUISlice';
+} from './quizUISlice';
 
 export {
   answerQuestion,
@@ -12,7 +11,7 @@ export {
   submitCard,
   nextCard,
   quizSessionReducer,
-} from './model/quizSessionSlice';
+} from './quizSessionSlice';
 
 export {
   selectScreen,
@@ -21,7 +20,7 @@ export {
   selectCurrentCardData,
   selectIsFinished,
   selectTotalScore,
-} from './model/selectors';
+} from './selectors';
 
-export { initGame } from './model/thunks/initGame';
-export { initUI } from './model/thunks/initUI';
+export { initGame } from './thunks/initGame';
+export { initUI } from './thunks/initUI';
