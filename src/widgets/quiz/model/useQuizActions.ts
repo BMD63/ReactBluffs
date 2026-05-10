@@ -37,11 +37,18 @@ export const useQuizActions = () => {
     dispatch(setScreen(SCREEN.GAME));
   };
 
-  const answerQuizQuestion = (cardIndex, questionId, answer) => {
+  const answerQuizQuestion = (
+    cardIndex: number,
+    questionId: string,
+    answer: boolean
+  ) => {
     dispatch(answerQuestion({ cardIndex, questionId, answer }));
   };
 
-  const toggleQuestionBonus = (cardIndex, questionId) => {
+  const toggleQuestionBonus = (
+    cardIndex: number,
+    questionId: string
+  ) => {
     dispatch(toggleBonus({ cardIndex, questionId }));
   };
 

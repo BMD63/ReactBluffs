@@ -14,7 +14,7 @@ import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel
 type QuizScreenProps = {
   screen: Screen;
 
-  currentCard: BooleanQuestion[];
+  currentCard: BooleanQuestion[]|undefined;
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
   totalCards: number;
