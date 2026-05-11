@@ -1,5 +1,5 @@
 export { SCREEN } from './model/config/screen';
-
+export type { Difficulty } from './model/config/difficultyConfig';
 export {
   setScreen,
   resetUI,

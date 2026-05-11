@@ -1,13 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
 import {
   SCREEN,
   setScreen,
   setDifficulty,
 } from '@/entities/quiz-session';
+import type { Difficulty } from '@/entities/quiz-session';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
 import { Button } from '@/shared/ui/button';
 import './settings.css'
+import { typedEntries } from '@/shared/lib/object/typedEntries';
 
 import {
   useAppDispatch,
@@ -19,6 +20,8 @@ const Settings = () => {
   const difficulty = useAppSelector(selectDifficulty);
   const currentDifficulty = difficultyConfig[difficulty];
 
+  const difficultyEntries = typedEntries(difficultyConfig);
+
   return (
     <div className="settings">
       <h2 className="settings-title">Выбор сложности</h2>
@@ -28,7 +31,7 @@ const Settings = () => {
 
       <div className="difficulty-list">
         
-        {Object.entries(difficultyConfig).map(([key, value]) => (
+        {difficultyEntries.map(([key, value]) => (
           <div
             key={key}
             className={`difficulty-card ${difficulty === key ? 'active' : ''}`}
