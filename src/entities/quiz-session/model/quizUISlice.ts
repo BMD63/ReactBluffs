@@ -1,5 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
+import {
+  GAME_MODE,
+  type GameMode,
+} from '@/entities/game-mode';
 import { 
   SCREEN, 
   type Screen } from './config/screen';
@@ -11,11 +14,13 @@ import {
 type QuizUIState = {
   currentScreen: Screen;
   difficulty: Difficulty;
+  gameMode: GameMode;
 };
 
 const initialState: QuizUIState = {
   difficulty: DIFFICULTY.MEDIUM,
   currentScreen: SCREEN.MENU,
+  gameMode: GAME_MODE.BLUFF,
 };
 
 const quizUISlice = createSlice({
@@ -37,6 +42,12 @@ const quizUISlice = createSlice({
     resetUI(state) {
       state.currentScreen = SCREEN.MENU;
     },
+    setGameMode(
+      state,
+      action: PayloadAction<GameMode>
+    ) {
+      state.gameMode = action.payload;
+    },
   },
 });
 
@@ -44,6 +55,7 @@ export const {
   setDifficulty,
   setScreen,
   resetUI,
+  setGameMode
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

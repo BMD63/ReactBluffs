@@ -24,6 +24,9 @@ export const selectDifficulty = (state: RootState) =>
 export const selectScreen = (state: RootState) =>
   state.quizUI.currentScreen;
 
+export const selectGameMode = (state: RootState) => 
+  state.quizUI.gameMode;
+
 export const selectCurrentCardData = createSelector(
   [selectCards, selectCurrentCardIndex, selectAnswersByCard],
   (cards = [], currentCardIndex = 0, answersByCard = []) => {

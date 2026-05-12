@@ -10,11 +10,14 @@ export const initGame =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(resetGame());
 
+    
     const state = getState();
-    const difficulty = state.quizUI.difficulty;
+    const { difficulty, gameMode } = state.quizUI;
     const config = difficultyConfig[difficulty];
 
-    const questions = await questionApi.getQuestions();
+    const questions = await questionApi.getQuestions({
+      gameMode,
+    });
     const cards = generateCards(questions, config);
 
     dispatch(setCards(cards));
