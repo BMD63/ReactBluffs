@@ -1,5 +1,4 @@
 export const SCREEN = {
-  MENU: 'menu',
   SETTINGS: 'settings',
   GAME: 'game',
   RULES: 'rules',
@@ -7,6 +6,7 @@ export const SCREEN = {
   FINAL: 'final',
   START: 'start',
   MODE_SELECTION: 'modeSelection',
+  BLUFF_MENU: 'bluffMenu',
 } as const;
 
 export type Screen =

@@ -40,7 +40,7 @@ const quizUISlice = createSlice({
       state.currentScreen = action.payload;
     },
     resetUI(state) {
-      state.currentScreen = SCREEN.MENU;
+      state.currentScreen = SCREEN.BLUFF_MENU;
     },
     setGameMode(
       state,

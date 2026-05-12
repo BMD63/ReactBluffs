@@ -58,7 +58,7 @@ const QuizPage = () => {
   mode: GameMode
 ) => {
   dispatch(setGameMode(mode));
-  dispatch(setScreen(SCREEN.MENU));
+  dispatch(setScreen(SCREEN.BLUFF_MENU));
 };
 
   return (

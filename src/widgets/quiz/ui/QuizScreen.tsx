@@ -78,7 +78,7 @@ const QuizScreen = ({
         />
       );  
 
-    case SCREEN.MENU:
+    case SCREEN.BLUFF_MENU:
       return <Menu />;
 
     case SCREEN.SETTINGS:

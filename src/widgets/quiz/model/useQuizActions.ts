@@ -58,7 +58,7 @@ export const useQuizActions = () => {
   };
 
   const closeRules = () => {
-    dispatch(setScreen(SCREEN.MENU));
+    dispatch(setScreen(SCREEN.BLUFF_MENU));
   };
 
   return {

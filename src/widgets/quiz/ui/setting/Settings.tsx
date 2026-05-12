@@ -61,7 +61,7 @@ const Settings = () => {
       <Button
         variant="primary"
         className="back-btn"
-        onClick={() => dispatch(setScreen(SCREEN.MENU))}
+        onClick={() => dispatch(setScreen(SCREEN.BLUFF_MENU))}
       >
         ← Назад
       </Button>
