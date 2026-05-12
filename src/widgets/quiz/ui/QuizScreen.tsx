@@ -6,6 +6,7 @@ import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import { PlayQuiz } from '@/features/play-quiz';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
+import StartScreen from '@/widgets/quiz/ui/start/StartScreen';
 
 import type { Screen } from '@/entities/quiz-session/model/config/screen';
 import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
@@ -18,7 +19,7 @@ type QuizScreenProps = {
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
   totalCards: number;
-
+  onStart: () => void;
   currentCardScore: number;
   totalScore: number;
 
@@ -55,8 +56,16 @@ const QuizScreen = ({
   onRulesClose,
   onNextCard,
   onGoToMenu,
+  onStart,
 }: QuizScreenProps) => {
   switch (screen) {
+    case SCREEN.START:
+      return (
+        <StartScreen
+          onStart={onStart}
+        />
+      );
+
     case SCREEN.MENU:
       return <Menu />;
 

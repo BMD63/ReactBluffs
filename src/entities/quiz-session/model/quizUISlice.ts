@@ -19,7 +19,7 @@ type QuizUIState = {
 
 const initialState: QuizUIState = {
   difficulty: DIFFICULTY.MEDIUM,
-  currentScreen: SCREEN.MENU,
+  currentScreen: SCREEN.START,
   gameMode: GAME_MODE.BLUFF,
 };
 

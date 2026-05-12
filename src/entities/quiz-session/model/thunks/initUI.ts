@@ -4,5 +4,5 @@ import { SCREEN } from '@/entities/quiz-session';
 import { setScreen } from '../quizUISlice';
 
 export const initUI = () => (dispatch: AppDispatch) => {
-  dispatch(setScreen(SCREEN.MENU));
+  dispatch(setScreen(SCREEN.START));
 };

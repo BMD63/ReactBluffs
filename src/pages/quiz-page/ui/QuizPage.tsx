@@ -6,6 +6,8 @@ import {
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 
 import {
+  SCREEN,
+  setScreen,
   initGame,
   initUI,
   selectScreen,
@@ -38,7 +40,7 @@ const QuizPage = () => {
   currentCardAnswers,
   currentCardIndex,
   totalCards,
-} = useAppSelector(selectCurrentCardData);
+  } = useAppSelector(selectCurrentCardData);
 
   const totalScore = useAppSelector(selectTotalScore);
   
@@ -46,6 +48,10 @@ const QuizPage = () => {
     dispatch(initGame());
     dispatch(initUI());
   }, [dispatch]);
+
+  const handleStart = () => {
+    dispatch(setScreen(SCREEN.MENU));
+  };
 
   return (
     <div className="app">
@@ -65,6 +71,7 @@ const QuizPage = () => {
           onRulesClose={closeRules}
           onNextCard={nextQuizCard}
           onGoToMenu={goToMenu}
+          onStart={handleStart}
         />
       </div>
     </div>
