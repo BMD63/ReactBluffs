@@ -6,6 +6,7 @@ export const SCREEN = {
   CARD_RESULT: 'cardResult',
   FINAL: 'final',
   START: 'start',
+  MODE_SELECTION: 'modeSelection',
 } as const;
 
 export type Screen =

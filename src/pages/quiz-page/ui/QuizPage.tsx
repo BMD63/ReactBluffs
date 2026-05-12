@@ -4,10 +4,12 @@ import {
   useAppSelector,
 } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
+import type { GameMode } from '@/entities/game-mode';
 
 import {
   SCREEN,
   setScreen,
+  setGameMode,
   initGame,
   initUI,
   selectScreen,
@@ -50,8 +52,14 @@ const QuizPage = () => {
   }, [dispatch]);
 
   const handleStart = () => {
-    dispatch(setScreen(SCREEN.MENU));
+    dispatch(setScreen(SCREEN.MODE_SELECTION));
   };
+  const handleSelectMode = (
+  mode: GameMode
+) => {
+  dispatch(setGameMode(mode));
+  dispatch(setScreen(SCREEN.MENU));
+};
 
   return (
     <div className="app">
@@ -72,6 +80,7 @@ const QuizPage = () => {
           onNextCard={nextQuizCard}
           onGoToMenu={goToMenu}
           onStart={handleStart}
+          onSelectMode={handleSelectMode}
         />
       </div>
     </div>

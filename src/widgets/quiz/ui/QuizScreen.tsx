@@ -1,16 +1,18 @@
 import { SCREEN } from '@/entities/quiz-session';
+import type { Screen } from '@/entities/quiz-session/model/config/screen';
+import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
+import type { GameMode } from '@/entities/game-mode';
 
 import Menu from '@/widgets/quiz/ui/menu/Menu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
-import { PlayQuiz } from '@/features/play-quiz';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 import StartScreen from '@/widgets/quiz/ui/start/StartScreen';
+import ModeSelectionScreen from '@/widgets/quiz/ui/mode-selection/ModeSelectionScreen';
 
-import type { Screen } from '@/entities/quiz-session/model/config/screen';
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
-import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
+import { PlayQuiz } from '@/features/play-quiz';
 
 type QuizScreenProps = {
   screen: Screen;
@@ -39,6 +41,8 @@ type QuizScreenProps = {
   onRulesClose: () => void;
   onNextCard: () => void;
   onGoToMenu: () => void;
+
+  onSelectMode: (mode: GameMode) => void;
 };
 
 const QuizScreen = ({
@@ -57,6 +61,7 @@ const QuizScreen = ({
   onNextCard,
   onGoToMenu,
   onStart,
+  onSelectMode,
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
@@ -65,6 +70,13 @@ const QuizScreen = ({
           onStart={onStart}
         />
       );
+
+    case SCREEN.MODE_SELECTION:
+      return (
+        <ModeSelectionScreen
+          onSelectMode={onSelectMode}
+        />
+      );  
 
     case SCREEN.MENU:
       return <Menu />;

@@ -1,7 +1,9 @@
 export { SCREEN } from './model/config/screen';
+export type { GameMode } from '../game-mode';
 export type { Difficulty } from './model/config/difficultyConfig';
 export {
   setScreen,
+  setGameMode,
   resetUI,
   setDifficulty,
   quizUIReducer,
