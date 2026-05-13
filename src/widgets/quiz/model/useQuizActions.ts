@@ -20,6 +20,7 @@ export const useQuizActions = () => {
   currentCardIndex,
   totalCards,
 } = useAppSelector(selectCurrentCardData);
+
   const goToMenu = () => {
     dispatch(resetUI());
   };

@@ -55,11 +55,15 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.MODE_SELECTION));
   };
   const handleSelectMode = (
-  mode: GameMode
-) => {
-  dispatch(setGameMode(mode));
-  dispatch(setScreen(SCREEN.BLUFF_MENU));
-};
+    mode: GameMode
+      ) => {
+        dispatch(setGameMode(mode));
+        dispatch(setScreen(SCREEN.BLUFF_MENU));
+      };
+
+  const handleBackToStart = () => {
+    dispatch(setScreen(SCREEN.START));
+  };    
 
   return (
     <div className="app">
@@ -81,6 +85,7 @@ const QuizPage = () => {
           onGoToMenu={goToMenu}
           onStart={handleStart}
           onSelectMode={handleSelectMode}
+          onBackToStart={handleBackToStart}
         />
       </div>
     </div>

@@ -18,6 +18,7 @@ type PlayQuizProps = {
   onBonus: (cardIndex: number, questionId: string) => void;
   onSubmit: () => void;
   onRestart: () => void;
+  onMenu: () => void;
 };
 
 const PlayQuiz = ({
@@ -29,6 +30,7 @@ const PlayQuiz = ({
   onBonus,
   onSubmit,
   onRestart,
+  onMenu,
 }: PlayQuizProps) => {
   const [transitionStage, setTransitionStage] =
     useState<'enter' | 'exit'>('enter');
@@ -44,7 +46,7 @@ const PlayQuiz = ({
   }, [currentCardIndex]);
 
   if (!currentCard?.length) return null;
-
+  
   return (
     <div
       className={`quiz-card-transition quiz-card-transition--${transitionStage}`}
@@ -59,6 +61,7 @@ const PlayQuiz = ({
         onSubmit={onSubmit}
         onRestart={onRestart}
         totalCards={totalCards}
+        onMenu={onMenu}
       />
     </div>
   );

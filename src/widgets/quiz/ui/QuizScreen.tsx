@@ -4,13 +4,13 @@ import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 import type { GameMode } from '@/entities/game-mode';
 
-import BluffMenu from '@/widgets/quiz/ui/bluff-menu/BluffMenu';
+import BluffMenu from '@/widgets/quiz/ui/menus/bluff-menu/BluffMenu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
-import StartScreen from '@/widgets/quiz/ui/start/StartScreen';
-import ModeSelectionScreen from '@/widgets/quiz/ui/mode-selection/ModeSelectionScreen';
+import StartScreen from '@/widgets/quiz/ui/screens/start/StartScreen';
+import ModeSelectionScreen from '@/widgets/quiz/ui/screens/mode-selection/ModeSelectionScreen';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -41,6 +41,7 @@ type QuizScreenProps = {
   onRulesClose: () => void;
   onNextCard: () => void;
   onGoToMenu: () => void;
+  onBackToStart: () => void;
 
   onSelectMode: (mode: GameMode) => void;
 };
@@ -62,6 +63,7 @@ const QuizScreen = ({
   onGoToMenu,
   onStart,
   onSelectMode,
+  onBackToStart,
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
@@ -75,6 +77,7 @@ const QuizScreen = ({
       return (
         <ModeSelectionScreen
           onSelectMode={onSelectMode}
+          onBack={onBackToStart}
         />
       );  
 
@@ -96,6 +99,7 @@ const QuizScreen = ({
           onBonus={onBonus}
           onSubmit={onSubmit}
           onRestart={onRestart}
+          onMenu={onGoToMenu}
         />
       );
 

@@ -22,7 +22,7 @@ const RulesModal = ({ isOpen, onClose }:RulesModalProps) => {
         <p>{`Можно выбрать не более 3-х бонусных баллов на карточку.`}</p>
         <p></p>
         <p>Если правильно ответить на все вопросы, то в конце покажут мультик</p>
-        <Button onClick={onClose}>Начать игру</Button>
+        <Button onClick={onClose}>Назад</Button>
       </div>
     </div>
   );

@@ -26,6 +26,7 @@ type QuizCardProps = {
 
   onSubmit: () => void;
   onRestart: () => void;
+  onMenu: () => void;
 };
 
 const Card = ({
@@ -37,6 +38,7 @@ const Card = ({
   onSubmit,
   totalCards,
   onRestart,
+  onMenu,
 }: QuizCardProps) => {
   const allQuestionsAnswered =
     Object.keys(userAnswers).length === cardData.length;
@@ -153,6 +155,13 @@ const Card = ({
             Начать сначала
           </Button>
         )}
+        <Button
+          variant="secondary"
+          className="restart-btn"
+          onClick={onMenu}
+        >
+          В меню
+        </Button>
       </div>
     </div>
   );

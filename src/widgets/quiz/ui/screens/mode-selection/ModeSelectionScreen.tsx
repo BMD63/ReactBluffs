@@ -8,10 +8,13 @@ type ModeSelectionScreenProps = {
   onSelectMode: (
     mode: GameMode
   ) => void;
+
+  onBack: () => void;
 };
 
 const ModeSelectionScreen = ({
   onSelectMode,
+  onBack,
 }: ModeSelectionScreenProps) => {
   return (
     <section className="mode-selection">
@@ -95,6 +98,14 @@ const ModeSelectionScreen = ({
           </Button>
         </article>
       </div>
+      <div className="mode-selection__actions">
+          <Button
+            variant="secondary"
+            onClick={onBack}
+          >
+            ← Назад
+          </Button>
+        </div>
     </section>
   );
 };

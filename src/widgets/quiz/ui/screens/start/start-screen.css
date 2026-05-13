@@ -67,3 +67,10 @@
     font-size: 15px;
   }
 }
+
+.mode-selection__actions {
+  margin-top: 28px;
+
+  display: flex;
+  justify-content: center;
+}
