@@ -4,7 +4,7 @@ import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 import type { GameMode } from '@/entities/game-mode';
 
-import Menu from '@/widgets/quiz/ui/menu/Menu';
+import BluffMenu from '@/widgets/quiz/ui/bluff-menu/BluffMenu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
 import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
@@ -79,7 +79,7 @@ const QuizScreen = ({
       );  
 
     case SCREEN.BLUFF_MENU:
-      return <Menu />;
+      return <BluffMenu />;
 
     case SCREEN.SETTINGS:
       return <Settings />;
