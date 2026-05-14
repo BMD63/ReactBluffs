@@ -13,7 +13,7 @@ type PlayQuizProps = {
   onAnswer: (
     cardIndex: number,
     questionId: string,
-    answer: boolean
+    answer: boolean | string
   ) => void;
   onBonus: (cardIndex: number, questionId: string) => void;
   onSubmit: () => void;

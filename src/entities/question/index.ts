@@ -46,3 +46,7 @@ export {
 export {
   calculateCardScore,
 } from './lib/scoring/calculateCardScore';
+
+export {
+  calculateMultipleChoiceCardScore,
+} from './lib/scoring/calculateMultipleChoiceCardScore';

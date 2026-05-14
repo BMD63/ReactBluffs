@@ -16,7 +16,7 @@ import { PlayQuiz } from '@/features/play-quiz';
 
 type QuizScreenProps = {
   screen: Screen;
-
+  gameMode: GameMode;
   currentCard: Question[]|undefined;
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
@@ -24,11 +24,11 @@ type QuizScreenProps = {
   onStart: () => void;
   currentCardScore: number;
   totalScore: number;
-
+  
   onAnswer: (
     cardIndex: number,
     questionId: string,
-    answer: boolean
+    answer: boolean | string
   ) => void;
 
   onBonus: (
@@ -54,6 +54,7 @@ const QuizScreen = ({
   totalCards,
   currentCardScore,
   totalScore,
+  gameMode,
   onAnswer,
   onBonus,
   onSubmit,
@@ -107,6 +108,7 @@ const QuizScreen = ({
       return (
         <RulesModal
           isOpen
+          gameMode={gameMode}
           onClose={onRulesClose}
         />
       );

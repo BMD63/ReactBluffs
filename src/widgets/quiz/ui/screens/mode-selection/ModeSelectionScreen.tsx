@@ -1,6 +1,10 @@
-import { GAME_MODE } from '@/entities/game-mode';
+import {
+  GAME_MODE,
+  gameModeConfig,
+  type GameMode,
+} from '@/entities/game-mode';
+
 import { Button } from '@/shared/ui/button';
-import type { GameMode } from '@/entities/game-mode';
 
 import './mode-selection-screen.css';
 
@@ -16,6 +20,11 @@ const ModeSelectionScreen = ({
   onSelectMode,
   onBack,
 }: ModeSelectionScreenProps) => {
+  const gameModes = [
+  GAME_MODE.BLUFF,
+  GAME_MODE.MULTIPLE_CHOICE,
+  GAME_MODE.OPEN_ANSWER,
+];
   return (
     <section className="mode-selection">
       <div className="mode-selection__header">
@@ -34,69 +43,34 @@ const ModeSelectionScreen = ({
       </div>
 
       <div className="mode-selection__grid">
-        <article className="mode-card mode-card--active">
-          <div className="mode-card__icon">
-            🎭
-          </div>
+        {gameModes.map((mode) => {
+          const config = gameModeConfig[mode];
 
-          <h2>Bluff Quiz</h2>
+          return (
+            <article
+              key={mode}
+              className={`mode-card ${
+                config.isAvailable ? 'mode-card--active' : ''
+              }`}
+            >
+              <div className="mode-card__icon">
+                {config.icon}
+              </div>
 
-          <p>
-            Отвечайте «да» или «нет» и
-            пытайтесь запутать соперников.
-          </p>
+              <h2>{config.title}</h2>
 
-          <Button
-            variant="primary"
-            onClick={() =>
-              onSelectMode(
-                GAME_MODE.BLUFF
-              )
-            }
-          >
-            Играть
-          </Button>
-        </article>
+              <p>{config.description}</p>
 
-        <article className="mode-card">
-          <div className="mode-card__icon">
-            🧠
-          </div>
-
-          <h2>Multiple Choice</h2>
-
-          <p>
-            Выберите один правильный
-            ответ из нескольких.
-          </p>
-
-          <Button
-            variant="secondary"
-            disabled
-          >
-            Скоро
-          </Button>
-        </article>
-
-        <article className="mode-card">
-          <div className="mode-card__icon">
-            🎧
-          </div>
-
-          <h2>Open Answer</h2>
-
-          <p>
-            Текстовые, визуальные и
-            аудио-вопросы.
-          </p>
-
-          <Button
-            variant="secondary"
-            disabled
-          >
-            Скоро
-          </Button>
-        </article>
+              <Button
+                variant={config.isAvailable ? 'primary' : 'secondary'}
+                disabled={!config.isAvailable}
+                onClick={() => onSelectMode(mode)}
+              >
+                {config.isAvailable ? 'Играть' : 'Скоро'}
+              </Button>
+            </article>
+          );
+        })}
       </div>
       <div className="mode-selection__actions">
           <Button

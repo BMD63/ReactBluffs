@@ -1,7 +1,11 @@
 import type { Question } from '@/entities/question/model/questionTypes';
+import {
+  type MultipleChoiceQuestion,
+} from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 import BooleanQuizCard from './BooleanQuizCard';
+import MultipleChoiceQuizCard from './MultipleChoiceQuizCard';
 
 type QuizCardProps = {
   cardData: Question[];
@@ -12,7 +16,7 @@ type QuizCardProps = {
   onAnswer: (
     cardIndex: number,
     questionId: string,
-    answer: boolean
+    answer: boolean | string
   ) => void;
 
   onBonus: (
@@ -37,7 +41,13 @@ const QuizCard = (props: QuizCardProps) => {
       return (
         <BooleanQuizCard {...props} />
       );
-
+    case 'multipleChoice':
+      return (
+        <MultipleChoiceQuizCard
+          {...props}
+          cardData={props.cardData as MultipleChoiceQuestion[]}
+        />
+      );
     default:
       return null;
   }

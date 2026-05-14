@@ -41,7 +41,7 @@ export const useQuizActions = () => {
   const answerQuizQuestion = (
     cardIndex: number,
     questionId: string,
-    answer: boolean
+    answer: boolean | string
   ) => {
     dispatch(answerQuestion({ cardIndex, questionId, answer }));
   };

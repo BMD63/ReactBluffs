@@ -1,28 +1,41 @@
+import {
+  gameModeConfig,
+  type GameMode,
+} from '@/entities/game-mode';
+
 import { Button } from '@/shared/ui/button';
-import './modals.css'
+
+import './modals.css';
 
 type RulesModalProps = {
   isOpen: boolean;
+  gameMode: GameMode;
   onClose: () => void;
 };
 
-const RulesModal = ({ isOpen, onClose }:RulesModalProps) => {
+const RulesModal = ({
+  isOpen,
+  gameMode,
+  onClose,
+}: RulesModalProps) => {
   if (!isOpen) return null;
+
+  const config = gameModeConfig[gameMode];
 
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h2>Правила игры</h2>
-        <p>{`Отвечайте на вопросы следующим образом: если согласны с утверждением, то "Да"
-          если не согласны с утверждением, то "Нет".`}</p> 
-          <p>
-          {`Если уверены в своем ответе, можете взять бонусный балл.
-          Бонусные баллы удваивают очки за вопрос при правильном ответе, 
-          при неправильном ответе не учитываются.`}</p>
-        <p>{`Можно выбрать не более 3-х бонусных баллов на карточку.`}</p>
-        <p></p>
-        <p>Если правильно ответить на все вопросы, то в конце покажут мультик</p>
-        <Button onClick={onClose}>Назад</Button>
+        <h2>Правила: {config.title}</h2>
+
+        <div className="answers-list">
+          {config.rules.map((rule) => (
+            <p key={rule}>{rule}</p>
+          ))}
+        </div>
+
+        <Button onClick={onClose}>
+          Назад
+        </Button>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import {
   selectCurrentCardScore,
   selectCurrentCardData,
   selectTotalScore,
+  selectGameMode
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -34,6 +35,7 @@ const QuizPage = () => {
     closeRules,
   } = useQuizActions();
 
+  const gameMode = useAppSelector(selectGameMode);
   const screen = useAppSelector(selectScreen);
   const currentCardScore = useAppSelector(selectCurrentCardScore);
 
@@ -76,6 +78,7 @@ const QuizPage = () => {
           totalCards={totalCards}
           currentCardScore={currentCardScore}
           totalScore={totalScore}
+          gameMode={gameMode}
           onAnswer={answerQuizQuestion}
           onBonus={toggleQuestionBonus}
           onSubmit={submitQuizCard}

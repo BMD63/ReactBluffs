@@ -1,4 +1,4 @@
-import { questionDtos } from '../model/questionDtos';
+import { questionDtos } from '../model/mock';
 
 import {
   mapQuestionDtosToQuestions,

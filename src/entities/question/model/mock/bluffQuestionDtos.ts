@@ -1,7 +1,7 @@
-import type { BooleanQuestion } from './questionTypes';
+import type { BooleanQuestion } from '../questionTypes';
 import { GAME_MODE } from '@/entities/game-mode';
 
-export const questionDtos: BooleanQuestion[] = [
+export const bluffQuestionDtos: BooleanQuestion[] = [
     { id: 'q1', type: "boolean", gameMode: GAME_MODE.BLUFF, text: `Самая большая жемчужина в мире весит 6 кг.`, correctAnswer: true },
     { id: 'q2', type: "boolean", gameMode: GAME_MODE.BLUFF, text: `В США до 1913 года разрешалось отправлять детей по почте.`, correctAnswer: true },
     { id: 'q3', type: "boolean", gameMode: GAME_MODE.BLUFF, text: `В топ-250 лучших фильмов, по мнению американской киноакадемии входят 12 советских/российских картин`, correctAnswer: false },

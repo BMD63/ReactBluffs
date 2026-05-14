@@ -24,6 +24,7 @@ export {
   selectCurrentCardData,
   selectIsFinished,
   selectTotalScore,
+  selectGameMode,
 } from './model/selectors';
 
 export { initGame } from './model/thunks/initGame';

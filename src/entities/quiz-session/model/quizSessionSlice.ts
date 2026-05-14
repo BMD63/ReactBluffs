@@ -8,7 +8,7 @@ import { calculateCardScore } from '@/entities/question';
 type AnswerQuestionPayload = {
   cardIndex: number;
   questionId: string;
-  answer: boolean;
+  answer: boolean | string;
 };
 
 
