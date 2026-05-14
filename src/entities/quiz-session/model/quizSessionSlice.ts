@@ -2,6 +2,9 @@ import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from './quizSessionModel';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+import { createSlice } from '@reduxjs/toolkit'
+import { calculateCardScore } from '@/entities/question';
+
 type AnswerQuestionPayload = {
   cardIndex: number;
   questionId: string;
@@ -22,9 +25,6 @@ type QuizSessionState = {
   answersByCard: CardAnswers[];
   currentCardScore: number;
 };
-
-import { createSlice } from '@reduxjs/toolkit'
-import { calculateCardScore } from './quizSessionModel'
 
 const initialState: QuizSessionState = {
   cards: [],

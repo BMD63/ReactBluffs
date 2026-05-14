@@ -38,3 +38,11 @@ export type {
   OpenQuestionAnswer,
   QuestionAnswer,
 } from './model/questionAnswerTypes';
+
+export {
+  calculateBooleanCardScore,
+} from './lib/scoring/calculateBooleanCardScore';
+
+export {
+  calculateCardScore,
+} from './lib/scoring/calculateCardScore';

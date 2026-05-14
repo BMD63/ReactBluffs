@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { calculateCardScore } from './quizSessionModel';
+import { calculateCardScore } from '@/entities/question';
 import type { RootState } from '@/app/providers/store/store';
 
 const selectQuizSession = (

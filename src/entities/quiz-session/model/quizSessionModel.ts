@@ -1,40 +1,14 @@
-import {
-  QUESTION_TYPE,
-  type Question,
-} from '@/entities/question/model/questionTypes';
 import type {
   QuestionAnswer,
 } from '@/entities/question/model/questionAnswerTypes';
 
+import {
+  calculateCardScore,
+} from '@/entities/question';
+
 export type CardAnswers =
   Record<string, QuestionAnswer>;
 
-export const calculateCardScore = (
-  card: Question[],
-  answers: CardAnswers
-): number => {
-  let score = 0;
-
-  card.forEach((question) => {
-    const userAnswer = answers?.[question.id];
-
-    if (!userAnswer) return;
-
-    if (question.type !== QUESTION_TYPE.BOOLEAN) {
-      return;
-    }
-
-    if (userAnswer.answer === question.correctAnswer) {
-      score += 1;
-
-      if ('bonus' in userAnswer && userAnswer.bonus) {
-        score += 1;
-      }
-    }
-  });
-
-  return score;
-};
 
 export const setAnswer = (
   answers: CardAnswers,
