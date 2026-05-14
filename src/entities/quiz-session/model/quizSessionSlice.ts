@@ -1,4 +1,4 @@
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from './quizSessionModel';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -9,7 +9,7 @@ type AnswerQuestionPayload = {
 };
 
 
-type SetCardsPayload = BooleanQuestion[][];
+type SetCardsPayload = Question[][];
 
 type ToggleBonusPayload = {
   cardIndex: number;
@@ -17,7 +17,7 @@ type ToggleBonusPayload = {
 };
 
 type QuizSessionState = {
-  cards: BooleanQuestion[][];
+  cards: Question[][];
   currentCardIndex: number;
   answersByCard: CardAnswers[];
   currentCardScore: number;
@@ -69,14 +69,22 @@ const quizSessionSlice = createSlice({
       const cardAnswers = state.answersByCard[cardIndex] || {};
 
       const bonusCount = Object.values(cardAnswers)
-        .filter((a) => a.bonus).length;
+        .filter((answer) => 'bonus' in answer && answer.bonus)
+        .length;
 
-      if (bonusCount >= 3 && !cardAnswers[questionId]?.bonus) return;
+      const questionAnswer = cardAnswers[questionId];
+
+      if (
+        bonusCount >= 3 &&
+        !(questionAnswer && 'bonus' in questionAnswer && questionAnswer.bonus)
+      ) {
+        return;
+      }
 
       const answer =
         state.answersByCard[cardIndex]?.[questionId];
 
-      if (!answer) {
+      if (!answer || !('bonus' in answer)) {
         return;
       }
 

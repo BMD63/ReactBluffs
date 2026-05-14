@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 import Card from '@/features/play-quiz/ui/quiz-card/QuizCard';
 
 type PlayQuizProps = {
-  currentCard: BooleanQuestion[];
+  currentCard: Question[];
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
   totalCards: number;

@@ -1,6 +1,6 @@
 import { SCREEN } from '@/entities/quiz-session';
 import type { Screen } from '@/entities/quiz-session/model/config/screen';
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 import type { GameMode } from '@/entities/game-mode';
 
@@ -17,7 +17,7 @@ import { PlayQuiz } from '@/features/play-quiz';
 type QuizScreenProps = {
   screen: Screen;
 
-  currentCard: BooleanQuestion[]|undefined;
+  currentCard: Question[]|undefined;
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
   totalCards: number;

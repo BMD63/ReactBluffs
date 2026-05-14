@@ -1,4 +1,4 @@
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 
 type DifficultyCardConfig = {
   questionsPerCard: number;
@@ -6,9 +6,9 @@ type DifficultyCardConfig = {
 };
 
 export const generateCards = (
-  questions: BooleanQuestion[],
+  questions: Question[],
   config: DifficultyCardConfig
-): BooleanQuestion[][] => {
+): Question[][] => {
   const { questionsPerCard, manualCardsCount } = config;
 
   const shuffledQuestions = [...questions].sort(
@@ -24,7 +24,7 @@ export const generateCards = (
     manualCardsCount
   );
 
-  const newCards: BooleanQuestion[][] = [];
+  const newCards: Question[][] = [];
 
   for (let i = 0; i < cardsCount; i++) {
     newCards.push(

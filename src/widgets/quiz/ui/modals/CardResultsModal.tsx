@@ -1,12 +1,12 @@
 import { Button } from '@/shared/ui/button';
 import './modals.css'
 
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 type CardResultsModalProps = {
   isOpen: boolean;
-  cardData?: BooleanQuestion[];
+  cardData?: Question[];
   cardIndex: number;
   score: number;
   isLastCard: boolean;
@@ -25,6 +25,9 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
         <p>Набрано баллов: {score}</p>
         <div className="answers-list">
           {cardData.map((question) => {
+            const userAnswer = userAnswers[question.id];
+            const hasBonus =
+              Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
             const answer = userAnswers?.[question.id];
             return (
               <div key={question.id} className="answer-item">
@@ -38,7 +41,7 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
                       <span className="result-icon error"> ✖</span>
                     )}
                 </p>
-                {(answer?.answer === question.correctAnswer) && answer?.bonus && <p>Бонус</p>}
+                {(answer?.answer === question.correctAnswer) && hasBonus && <p>Бонус</p>}
               </div>
             );
           })}

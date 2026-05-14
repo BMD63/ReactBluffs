@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 import { Button } from '@/shared/ui/button';
@@ -8,7 +8,7 @@ import { Button } from '@/shared/ui/button';
 import './quiz-card.css';
 
 type QuizCardProps = {
-  cardData: BooleanQuestion[];
+  cardData: Question[];
   cardIndex: number;
   userAnswers: CardAnswers;
   totalCards: number;
@@ -80,7 +80,12 @@ const Card = ({
         {stringTotalCards[totalCards - 1]}
       </h2>
 
-      {cardData.map((question) => (
+      {cardData.map((question) => {
+  const userAnswer = userAnswers[question.id];
+  const hasBonus =
+    Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
+
+  return (
         <div key={question.id} className="question">
           <p>{question.text}</p>
 
@@ -118,13 +123,10 @@ const Card = ({
                 type="checkbox"
                 disabled={
                   Object.values(userAnswers).filter(
-                    (answer) => answer.bonus
-                  ).length >= 3 &&
-                  !userAnswers[question.id]?.bonus
+                    (answer) => 'bonus' in answer && answer.bonus
+                  ).length >= 3 && !hasBonus
                 }
-                checked={
-                  userAnswers[question.id]?.bonus || false
-                }
+                checked={hasBonus}
                 onChange={() =>
                   onBonus(cardIndex, question.id)
                 }
@@ -134,7 +136,8 @@ const Card = ({
             </label>
           </div>
         </div>
-      ))}
+        );
+        })}
 
       <div className="card-actions">
         <Button

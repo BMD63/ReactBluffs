@@ -1,18 +1,16 @@
-import type { BooleanQuestion } from '@/entities/question/model/questionTypes';
+import {
+  QUESTION_TYPE,
+  type Question,
+} from '@/entities/question/model/questionTypes';
 import type {
-  BooleanQuestionAnswer,
+  QuestionAnswer,
 } from '@/entities/question/model/questionAnswerTypes';
 
-export type QuestionAnswer = {
-  answer: boolean;
-  bonus: boolean;
-};
-
 export type CardAnswers =
-  Record<string, BooleanQuestionAnswer>;
+  Record<string, QuestionAnswer>;
 
 export const calculateCardScore = (
-  card: BooleanQuestion[],
+  card: Question[],
   answers: CardAnswers
 ): number => {
   let score = 0;
@@ -20,13 +18,16 @@ export const calculateCardScore = (
   card.forEach((question) => {
     const userAnswer = answers?.[question.id];
 
-    if (
-      userAnswer &&
-      userAnswer.answer === question.correctAnswer
-    ) {
+    if (!userAnswer) return;
+
+    if (question.type !== QUESTION_TYPE.BOOLEAN) {
+      return;
+    }
+
+    if (userAnswer.answer === question.correctAnswer) {
       score += 1;
 
-      if (userAnswer.bonus) {
+      if ('bonus' in userAnswer && userAnswer.bonus) {
         score += 1;
       }
     }
@@ -54,18 +55,23 @@ export const toggleBonus = (
   questionId: string
 ): CardAnswers => {
   const currentBonusCount = Object.values(answers || {})
-    .filter((answer) => answer.bonus).length;
+    .filter((answer) => 'bonus' in answer && answer.bonus)
+    .length;
 
   if (
     currentBonusCount >= 3 &&
-    !answers[questionId]?.bonus
+    !(
+      answers[questionId] &&
+      'bonus' in answers[questionId] &&
+      answers[questionId].bonus
+    )
   ) {
     return answers;
   }
 
   const currentAnswer = answers[questionId];
 
-  if (!currentAnswer) {
+  if (!currentAnswer || !('bonus' in currentAnswer)) {
     return answers;
   }
 
