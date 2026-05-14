@@ -1,11 +1,7 @@
-import { useEffect } from 'react';
-
 import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
-import { Button } from '@/shared/ui/button';
-
-import './quiz-card.css';
+import BooleanQuizCard from './BooleanQuizCard';
 
 type QuizCardProps = {
   cardData: Question[];
@@ -29,145 +25,22 @@ type QuizCardProps = {
   onMenu: () => void;
 };
 
-const Card = ({
-  cardData,
-  cardIndex,
-  userAnswers,
-  onAnswer,
-  onBonus,
-  onSubmit,
-  totalCards,
-  onRestart,
-  onMenu,
-}: QuizCardProps) => {
-  const allQuestionsAnswered =
-    Object.keys(userAnswers).length === cardData.length;
+const QuizCard = (props: QuizCardProps) => {
+  const firstQuestion = props.cardData[0];
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [cardIndex]);
+  if (!firstQuestion) {
+    return null;
+  }
 
-  const stringCartIndexes = [
-    'ПЕРВЫЙ',
-    'ВТОРОЙ',
-    'ТРЕТИЙ',
-    'ЧЕТВЕРТЫЙ',
-    'ПЯТЫЙ',
-    'ШЕСТОЙ',
-    'СЕДМОЙ',
-    'ВОСЬМОЙ',
-    'ДЕВЯТЫЙ',
-    'ДЕСЯТЫЙ',
-  ];
+  switch (firstQuestion.gameMode) {
+    case 'bluff':
+      return (
+        <BooleanQuizCard {...props} />
+      );
 
-  const stringTotalCards = [
-    'ОДНОЙ',
-    'ДВУХ',
-    'ТРЕХ',
-    'ЧЕТЫРЕХ',
-    'ПЯТИ',
-    'ШЕСТИ',
-    'СЕМИ',
-    'ВОСЬМИ',
-    'ДЕВЯТИ',
-    'ДЕСЯТИ',
-  ];
-
-  return (
-    <div className="card">
-      <h2>
-        РАУНД {stringCartIndexes[cardIndex]} ИЗ{' '}
-        {stringTotalCards[totalCards - 1]}
-      </h2>
-
-      {cardData.map((question) => {
-  const userAnswer = userAnswers[question.id];
-  const hasBonus =
-    Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
-
-  return (
-        <div key={question.id} className="question">
-          <p>{question.text}</p>
-
-          <div className="controls">
-            <Button
-              variant="answer"
-              className={`answer-btn ${
-                userAnswers[question.id]?.answer === true
-                  ? 'selected'
-                  : ''
-              }`}
-              onClick={() =>
-                onAnswer(cardIndex, question.id, true)
-              }
-            >
-              Да
-            </Button>
-
-            <Button
-              variant="answer"
-              className={`answer-btn ${
-                userAnswers[question.id]?.answer === false
-                  ? 'selected'
-                  : ''
-              }`}
-              onClick={() =>
-                onAnswer(cardIndex, question.id, false)
-              }
-            >
-              Нет
-            </Button>
-
-            <label className="bonus-label">
-              <input
-                type="checkbox"
-                disabled={
-                  Object.values(userAnswers).filter(
-                    (answer) => 'bonus' in answer && answer.bonus
-                  ).length >= 3 && !hasBonus
-                }
-                checked={hasBonus}
-                onChange={() =>
-                  onBonus(cardIndex, question.id)
-                }
-              />
-
-              Бонусный балл
-            </label>
-          </div>
-        </div>
-        );
-        })}
-
-      <div className="card-actions">
-        <Button
-          variant="submit"
-          className="submit-btn"
-          disabled={!allQuestionsAnswered}
-          onClick={onSubmit}
-        >
-          Ответить
-        </Button>
-
-        {cardIndex > 0 && (
-          <Button
-            variant="secondary"
-            className="restart-btn"
-            onClick={onRestart}
-          >
-            Начать сначала
-          </Button>
-        )}
-        <Button
-          variant="secondary"
-          className="restart-btn"
-          onClick={onMenu}
-        >
-          В меню
-        </Button>
-      </div>
-    </div>
-  );
+    default:
+      return null;
+  }
 };
 
-export default Card;
+export default QuizCard;
