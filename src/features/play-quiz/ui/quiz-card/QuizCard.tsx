@@ -2,6 +2,11 @@ import type { Question } from '@/entities/question/model/questionTypes';
 import {
   type MultipleChoiceQuestion,
 } from '@/entities/question/model/questionTypes';
+import type {
+  OpenTextQuestion,
+} from '@/entities/question/model/questionTypes';
+
+import OpenAnswerQuizCard from './OpenAnswerQuizCard';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 import BooleanQuizCard from './BooleanQuizCard';
@@ -46,6 +51,13 @@ const QuizCard = (props: QuizCardProps) => {
         <MultipleChoiceQuizCard
           {...props}
           cardData={props.cardData as MultipleChoiceQuestion[]}
+        />
+      );
+    case 'openAnswer':
+      return (
+        <OpenAnswerQuizCard
+          {...props}
+          cardData={props.cardData as OpenTextQuestion[]}
         />
       );
     default:

@@ -3,6 +3,7 @@ import {
   type BooleanQuestion,
   type Question,
   type MultipleChoiceQuestion,
+  type OpenTextQuestion,
 } from '../../model/questionTypes';
 
 import type {
@@ -17,6 +18,9 @@ import {
 import {
   calculateMultipleChoiceCardScore,
 } from './calculateMultipleChoiceCardScore';
+import {
+  calculateOpenAnswerCardScore,
+} from './calculateOpenAnswerCardScore';
 
 type CardAnswers = Record<string, QuestionAnswer>;
 
@@ -56,6 +60,12 @@ const isMultipleChoiceAnswersRecord = (
   return Object.values(answers).every(isMultipleChoiceAnswer);
 };
 
+const isOpenTextQuestion = (
+  question: Question
+): question is OpenTextQuestion => {
+  return question.type === QUESTION_TYPE.OPEN_TEXT;
+};
+
 export const calculateCardScore = (
   card: Question[],
   answers: CardAnswers
@@ -63,13 +73,17 @@ export const calculateCardScore = (
   const isBooleanCard = card.every(isBooleanQuestion);
   if (isBooleanCard && isBooleanAnswersRecord(answers)) {
     return calculateBooleanCardScore(card, answers);
-    }
-    const isMultipleChoiceCard = card.every(isMultipleChoiceQuestion);
-if (
-    isMultipleChoiceCard &&
-    isMultipleChoiceAnswersRecord(answers)
-    ) {
-    return calculateMultipleChoiceCardScore(card, answers);
-    }
+  }
+  const isMultipleChoiceCard = card.every(isMultipleChoiceQuestion);
+  if (
+      isMultipleChoiceCard &&
+      isMultipleChoiceAnswersRecord(answers)
+      ) {
+      return calculateMultipleChoiceCardScore(card, answers);
+  }
+  const isOpenAnswerCard = card.every(isOpenTextQuestion);
+  if (isOpenAnswerCard) {
+    return calculateOpenAnswerCardScore(card, answers);
+  }
   return 0;
 };

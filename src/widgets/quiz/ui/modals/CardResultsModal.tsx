@@ -3,6 +3,7 @@ import './modals.css'
 import { QUESTION_TYPE } from '@/entities/question';
 import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
+import { normalizeAnswer } from '@/entities/question';
 
 type CardResultsModalProps = {
   isOpen: boolean;
@@ -29,28 +30,51 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
             const hasBonus =
               Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
             const answer = userAnswers?.[question.id];
-            const hasCorrectAnswer =
-              question.type === QUESTION_TYPE.BOOLEAN ||
-              question.type === QUESTION_TYPE.MULTIPLE_CHOICE;
-
-            const isCorrect =
-              hasCorrectAnswer &&
-              answer?.answer === question.correctAnswer;
-
-            const correctAnswerLabel =
-              question.type === QUESTION_TYPE.BOOLEAN
-                ? question.correctAnswer
-                  ? 'Да'
-                  : 'Нет'
-                : question.type === QUESTION_TYPE.MULTIPLE_CHOICE
-                  ? question.correctAnswer
-                  : '—';
             const userAnswerLabel =
               typeof answer?.answer === 'boolean'
                 ? answer.answer
                   ? 'Да'
                   : 'Нет'
                 : answer?.answer ?? '—';
+            const isCorrect =
+              question.type === QUESTION_TYPE.BOOLEAN
+                ? answer?.answer ===
+                  question.correctAnswer
+
+                : question.type ===
+                    QUESTION_TYPE.MULTIPLE_CHOICE
+                  ? answer?.answer ===
+                    question.correctAnswer
+
+                  : question.type ===
+                      QUESTION_TYPE.OPEN_TEXT
+                    ? question.correctAnswers
+                        .map(normalizeAnswer)
+                        .includes(
+                          normalizeAnswer(
+                            String(
+                              answer?.answer ?? ''
+                            )
+                          )
+                        )
+
+                    : false;
+
+            const correctAnswerLabel =
+              question.type === QUESTION_TYPE.BOOLEAN
+                ? question.correctAnswer
+                  ? 'Да'
+                  : 'Нет'
+
+                : question.type ===
+                    QUESTION_TYPE.MULTIPLE_CHOICE
+                  ? question.correctAnswer
+
+                  : question.type ===
+                      QUESTION_TYPE.OPEN_TEXT
+                    ? question.correctAnswers[0]
+
+                    : '—';
             return (
               <div key={question.id} className="answer-item">
                 <p>{question.text}</p>

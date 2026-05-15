@@ -50,3 +50,11 @@ export {
 export {
   calculateMultipleChoiceCardScore,
 } from './lib/scoring/calculateMultipleChoiceCardScore';
+
+export {
+  calculateOpenAnswerCardScore,
+} from './lib/scoring/calculateOpenAnswerCardScore';
+
+export {
+  normalizeAnswer,
+} from './lib/normalizeAnswer';

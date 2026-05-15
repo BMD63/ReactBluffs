@@ -97,7 +97,7 @@ export const gameModeConfig: Record<
     description:
       'Текстовые, визуальные и аудио-вопросы.',
     icon: '🎧',
-    isAvailable: false,
+    isAvailable: true,
     hasDifficulty: true,
     hasBonus: false,
     rules: [
