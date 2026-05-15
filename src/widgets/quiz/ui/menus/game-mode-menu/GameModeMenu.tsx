@@ -21,10 +21,9 @@ import {
   useAppSelector,
 } from '@/shared/lib/hooks/redux';
 
-import './bluff-menu.css';
+import './game-mode-menu.css';
 
-
-const BluffMenu = () => {
+const GameModeMenu = () => {
   const dispatch = useAppDispatch();
   const difficulty = useAppSelector(selectDifficulty);
   const gameMode = useAppSelector(selectGameMode);
@@ -40,7 +39,7 @@ const BluffMenu = () => {
   };
 
   return (
-    <nav className="bluff-menu">
+    <nav className="game-mode-menu">
       <h1 className="menu-title">QUIZ</h1>
 
       <div className="menu-actions">
@@ -72,4 +71,4 @@ const BluffMenu = () => {
   );
 };
 
-export default BluffMenu;
+export default GameModeMenu;
