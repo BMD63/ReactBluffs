@@ -1,8 +1,8 @@
 import type { AppDispatch, RootState } from '@/app/providers/store/store';
-
+import {
+  gameModeConfig,
+} from '@/entities/game-mode';
 import { questionApi } from '@/entities/question/api/questionApi';
-
-import { difficultyConfig } from '../config/difficultyConfig';
 import { generateCards } from '../generateCards';
 import { resetGame, setCards } from '../quizSessionSlice';
 
@@ -13,7 +13,7 @@ export const initGame =
     
     const state = getState();
     const { difficulty, gameMode } = state.quizUI;
-    const config = difficultyConfig[difficulty];
+    const config = gameModeConfig[gameMode].difficulty[difficulty];
 
     const questions = await questionApi.getQuestions({
       gameMode,

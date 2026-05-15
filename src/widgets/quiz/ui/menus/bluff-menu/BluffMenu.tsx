@@ -1,27 +1,43 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { SCREEN, setScreen } from '@/entities/quiz-session';
+import {
+  gameModeConfig,
+} from '@/entities/game-mode';
+
+import {
+  SCREEN,
+  setScreen,
+} from '@/entities/quiz-session';
+
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
-import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
+import {
+  selectDifficulty,
+  selectGameMode,
+} from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
+
 import { Button } from '@/shared/ui/button';
-import './bluff-menu.css';
 
 import {
   useAppDispatch,
   useAppSelector,
 } from '@/shared/lib/hooks/redux';
 
+import './bluff-menu.css';
+
 
 const BluffMenu = () => {
   const dispatch = useAppDispatch();
   const difficulty = useAppSelector(selectDifficulty);
-  
+  const gameMode = useAppSelector(selectGameMode);
+  const gameModeDifficulty = gameModeConfig[gameMode].difficulty;
   const handleStart = () => {
     dispatch(initGame());
     dispatch(setScreen(SCREEN.GAME));
   };
 
-  const currentDifficulty = difficultyConfig[difficulty];
+  const currentDifficulty = {
+    ...difficultyConfig[difficulty],
+    ...gameModeDifficulty[difficulty],
+  };
 
   return (
     <nav className="bluff-menu">

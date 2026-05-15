@@ -3,7 +3,13 @@ import {
   setScreen,
   setDifficulty,
 } from '@/entities/quiz-session';
-import type { Difficulty } from '@/entities/quiz-session';
+import {
+  gameModeConfig,
+} from '@/entities/game-mode';
+
+import {
+  selectGameMode,
+} from '@/entities/quiz-session/model/selectors';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
 import { Button } from '@/shared/ui/button';
@@ -18,9 +24,21 @@ import {
 const Settings = () => {
   const dispatch = useAppDispatch();
   const difficulty = useAppSelector(selectDifficulty);
-  const currentDifficulty = difficultyConfig[difficulty];
-
-  const difficultyEntries = typedEntries(difficultyConfig);
+  const gameMode = useAppSelector(selectGameMode);
+  const gameModeDifficulty = gameModeConfig[gameMode].difficulty;
+  const currentDifficulty = {
+    ...difficultyConfig[difficulty],
+    ...gameModeDifficulty[difficulty],
+  };
+  const difficultyEntries = typedEntries(difficultyConfig).map(
+    ([key, value]) => [
+      key,
+      {
+        ...value,
+        ...gameModeDifficulty[key],
+      },
+    ] as const
+  );
 
   return (
     <div className="settings">

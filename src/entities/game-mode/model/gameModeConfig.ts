@@ -2,6 +2,17 @@ import {
   GAME_MODE,
   type GameMode,
 } from './gameModes';
+import type { Difficulty } from '@/entities/quiz-session';
+
+type DifficultySettings = {
+  questionsPerCard: number;
+  manualCardsCount: number;
+};
+
+type DifficultyConfig = Record<
+  Difficulty,
+  DifficultySettings
+>;
 
 type GameModeConfig = {
   title: string;
@@ -11,6 +22,7 @@ type GameModeConfig = {
   hasDifficulty: boolean;
   hasBonus: boolean;
   rules: string[];
+  difficulty: DifficultyConfig;
 };
 
 export const gameModeConfig: Record<
@@ -31,6 +43,22 @@ export const gameModeConfig: Record<
       'Можно выбрать до 3 бонусных ответов за раунд.',
       'Если бонусный ответ оказался правильным, он даёт дополнительный балл.',
     ],
+    difficulty: {
+      easy: {
+        questionsPerCard: 3,
+        manualCardsCount: 2,
+      },
+
+      medium: {
+        questionsPerCard: 5,
+        manualCardsCount: 4,
+      },
+
+      hard: {
+        questionsPerCard: 7,
+        manualCardsCount: 7,
+      },
+    },
   },
 
   [GAME_MODE.MULTIPLE_CHOICE]: {
@@ -46,6 +74,22 @@ export const gameModeConfig: Record<
       'За каждый правильный ответ начисляется 1 балл.',
       'Бонусные баллы в этом режиме не используются.',
     ],
+    difficulty: {
+      easy: {
+        questionsPerCard: 7,
+        manualCardsCount: 1,
+      },
+
+      medium: {
+        questionsPerCard: 7,
+        manualCardsCount: 2,
+      },
+
+      hard: {
+        questionsPerCard: 8,
+        manualCardsCount: 3,
+      },
+    },
   },
 
   [GAME_MODE.OPEN_ANSWER]: {
@@ -60,5 +104,21 @@ export const gameModeConfig: Record<
       'В этом режиме нужно будет вводить ответ самостоятельно.',
       'Позже появятся текстовые, визуальные и аудио-вопросы.',
     ],
+    difficulty: {
+      easy: {
+        questionsPerCard: 3,
+        manualCardsCount: 1,
+      },
+
+      medium: {
+        questionsPerCard: 5,
+        manualCardsCount: 2,
+      },
+
+      hard: {
+        questionsPerCard: 7,
+        manualCardsCount: 3,
+      },
+    },
   },
 };
