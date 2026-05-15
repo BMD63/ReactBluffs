@@ -181,3 +181,11 @@ box-shadow: var(--shadow-glow-strong);
     animation: none;
   }
 }
+
+.btn--back {
+  opacity: 0.82;
+}
+
+.btn--back:hover:not(:disabled) {
+  opacity: 1;
+}

@@ -66,6 +66,13 @@ const GameModeMenu = () => {
         >
           Правила
         </Button>
+        <Button
+          variant="menu"
+          className="btn--back"
+          onClick={() => dispatch(setScreen(SCREEN.MODE_SELECTION))}
+        >
+          ← Назад
+        </Button>
       </div>
     </nav>
   );
