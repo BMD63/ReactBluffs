@@ -1,9 +1,14 @@
 import { Button } from '@/shared/ui/button';
 import './modals.css'
-import { QUESTION_TYPE } from '@/entities/question';
 import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
-import { normalizeAnswer } from '@/entities/question';
+import {
+  QUESTION_TYPE,
+} from '@/entities/question';
+
+import BooleanQuestionResult from './results/BooleanQuestionResult';
+import MultipleChoiceQuestionResult from './results/MultipleChoiceQuestionResult';
+import OpenAnswerQuestionResult from './results/OpenAnswerQuestionResult';
 
 type CardResultsModalProps = {
   isOpen: boolean;
@@ -26,70 +31,37 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
         <p>Набрано баллов: {score}</p>
         <div className="answers-list">
           {cardData.map((question) => {
-            const userAnswer = userAnswers[question.id];
-            const hasBonus =
-              Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
-            const answer = userAnswers?.[question.id];
-            const userAnswerLabel =
-              typeof answer?.answer === 'boolean'
-                ? answer.answer
-                  ? 'Да'
-                  : 'Нет'
-                : answer?.answer ?? '—';
-            const isCorrect =
-              question.type === QUESTION_TYPE.BOOLEAN
-                ? answer?.answer ===
-                  question.correctAnswer
+            switch (question.type) {
+              case QUESTION_TYPE.BOOLEAN:
+                return (
+                  <BooleanQuestionResult
+                    key={question.id}
+                    question={question}
+                    userAnswers={userAnswers}
+                  />
+                );
 
-                : question.type ===
-                    QUESTION_TYPE.MULTIPLE_CHOICE
-                  ? answer?.answer ===
-                    question.correctAnswer
+              case QUESTION_TYPE.MULTIPLE_CHOICE:
+                return (
+                  <MultipleChoiceQuestionResult
+                    key={question.id}
+                    question={question}
+                    userAnswers={userAnswers}
+                  />
+                );
 
-                  : question.type ===
-                      QUESTION_TYPE.OPEN_TEXT
-                    ? question.correctAnswers
-                        .map(normalizeAnswer)
-                        .includes(
-                          normalizeAnswer(
-                            String(
-                              answer?.answer ?? ''
-                            )
-                          )
-                        )
+              case QUESTION_TYPE.OPEN_TEXT:
+                return (
+                  <OpenAnswerQuestionResult
+                    key={question.id}
+                    question={question}
+                    userAnswers={userAnswers}
+                  />
+                );
 
-                    : false;
-
-            const correctAnswerLabel =
-              question.type === QUESTION_TYPE.BOOLEAN
-                ? question.correctAnswer
-                  ? 'Да'
-                  : 'Нет'
-
-                : question.type ===
-                    QUESTION_TYPE.MULTIPLE_CHOICE
-                  ? question.correctAnswer
-
-                  : question.type ===
-                      QUESTION_TYPE.OPEN_TEXT
-                    ? question.correctAnswers[0]
-
-                    : '—';
-            return (
-              <div key={question.id} className="answer-item">
-                <p>{question.text}</p>
-                <p>Правильный ответ: {correctAnswerLabel}</p>
-                <p>
-                  Ваш ответ: {userAnswerLabel}
-                  {isCorrect ? (
-                      <span className="result-icon success"> ✔</span>
-                    ) : (
-                      <span className="result-icon error"> ✖</span>
-                    )}
-                </p>
-                {isCorrect && hasBonus && <p>Бонус</p>}
-              </div>
-            );
+              default:
+                return null;
+            }
           })}
         </div>
         <div className="modal-actions card-actions">
