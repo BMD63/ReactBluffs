@@ -52,13 +52,17 @@ const quizSessionSlice = createSlice({
           const { cardIndex, questionId, answer } = action.payload;
           if (!state.answersByCard[cardIndex]) {
             state.answersByCard[cardIndex] = {};
-          }
-
-          state.answersByCard[cardIndex][questionId] = {
-            answer,
-            bonus: false,
-          };
-        },
+            }
+            state.answersByCard[cardIndex][questionId] =
+              typeof answer === 'boolean'
+                ? {
+                    answer,
+                    bonus: false,
+                  }
+                : {
+                    answer,
+                  };
+                  },
 
     toggleBonus(
       state,

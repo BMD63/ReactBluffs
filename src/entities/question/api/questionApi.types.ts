@@ -30,7 +30,7 @@ export type OpenTextQuestionDto =
   BaseQuestionDto & {
     type: 'openText';
     gameMode: 'openAnswer';
-    correctAnswer: string;
+    correctAnswers: string[];
   };
 
 export type ImageQuestionDto =
@@ -38,7 +38,7 @@ export type ImageQuestionDto =
     type: 'image';
     gameMode: 'openAnswer';
     imageUrl: string;
-    correctAnswer: string;
+    correctAnswers: string[];
   };
 
 export type AudioQuestionDto =
@@ -46,7 +46,7 @@ export type AudioQuestionDto =
     type: 'audio';
     gameMode: 'openAnswer';
     audioUrl: string;
-    correctAnswer: string;
+    correctAnswers: string[];
   };
 
 export type QuestionDto =

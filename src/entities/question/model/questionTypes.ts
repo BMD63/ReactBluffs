@@ -34,21 +34,21 @@ export type MultipleChoiceQuestion = BaseQuestion & {
 export type OpenTextQuestion = BaseQuestion & {
   type: typeof QUESTION_TYPE.OPEN_TEXT;
   gameMode: 'openAnswer';
-  correctAnswer: string;
+  correctAnswers: string[];
 };
 
 export type ImageQuestion = BaseQuestion & {
   type: typeof QUESTION_TYPE.IMAGE;
   gameMode: 'openAnswer';
   imageUrl: string;
-  correctAnswer: string;
+  correctAnswers: string[];
 };
 
 export type AudioQuestion = BaseQuestion & {
   type: typeof QUESTION_TYPE.AUDIO;
   gameMode: 'openAnswer';
   audioUrl: string;
-  correctAnswer: string;
+  correctAnswers: string[];
 };
 
 export type Question =

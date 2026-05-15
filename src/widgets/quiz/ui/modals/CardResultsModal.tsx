@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui/button';
 import './modals.css'
-
+import { QUESTION_TYPE } from '@/entities/question';
 import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
@@ -29,19 +29,41 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
             const hasBonus =
               Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
             const answer = userAnswers?.[question.id];
+            const hasCorrectAnswer =
+              question.type === QUESTION_TYPE.BOOLEAN ||
+              question.type === QUESTION_TYPE.MULTIPLE_CHOICE;
+
+            const isCorrect =
+              hasCorrectAnswer &&
+              answer?.answer === question.correctAnswer;
+
+            const correctAnswerLabel =
+              question.type === QUESTION_TYPE.BOOLEAN
+                ? question.correctAnswer
+                  ? 'Да'
+                  : 'Нет'
+                : question.type === QUESTION_TYPE.MULTIPLE_CHOICE
+                  ? question.correctAnswer
+                  : '—';
+            const userAnswerLabel =
+              typeof answer?.answer === 'boolean'
+                ? answer.answer
+                  ? 'Да'
+                  : 'Нет'
+                : answer?.answer ?? '—';
             return (
               <div key={question.id} className="answer-item">
                 <p>{question.text}</p>
-                <p>Правильный ответ: {question.correctAnswer ? 'Да' : 'Нет'}</p>
+                <p>Правильный ответ: {correctAnswerLabel}</p>
                 <p>
-                  Ваш ответ: {answer?.answer ? 'Да' : 'Нет'}
-                  {(answer?.answer === question.correctAnswer) ? (
+                  Ваш ответ: {userAnswerLabel}
+                  {isCorrect ? (
                       <span className="result-icon success"> ✔</span>
                     ) : (
                       <span className="result-icon error"> ✖</span>
                     )}
                 </p>
-                {(answer?.answer === question.correctAnswer) && hasBonus && <p>Бонус</p>}
+                {isCorrect && hasBonus && <p>Бонус</p>}
               </div>
             );
           })}

@@ -11,9 +11,24 @@ export const generateCards = (
 ): Question[][] => {
   const { questionsPerCard, manualCardsCount } = config;
 
-  const shuffledQuestions = [...questions].sort(
-    () => Math.random() - 0.5
-  );
+  const shuffledQuestions = [...questions];
+
+    for (
+      let i = shuffledQuestions.length - 1;
+      i > 0;
+      i--
+    ) {
+      const j = Math.floor(
+        Math.random() * (i + 1)
+      );
+
+      const temp = shuffledQuestions[i];
+
+      shuffledQuestions[i] =
+        shuffledQuestions[j]!;
+
+      shuffledQuestions[j] = temp!;
+    }
 
   const maxPossibleCards = Math.floor(
     questions.length / questionsPerCard
