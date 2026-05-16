@@ -1,5 +1,5 @@
 import { Button } from '@/shared/ui/button';
-
+import startImage from '@/shared/assets/images/startImage.png';
 import './start-screen.css';
 
 type StartScreenProps = {
@@ -10,17 +10,14 @@ const features = [
   {
     icon: '🎭',
     title: '3 режима',
-    text: 'Выбирайте свой формат игры',
   },
   {
     icon: '🧠',
     title: 'Факты и блеф',
-    text: 'Проверяйте знания и интуицию',
   },
   {
     icon: '🏆',
     title: 'Очки',
-    text: 'Собирайте результат по раундам',
   },
 ];
 
@@ -34,7 +31,7 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
       <div className="start-screen__hero">
         <div className="start-screen__content">
           <h2 className="start-screen__headline">
-            Где знания встречаются с интуицией
+            Где знания встречаются с <span>интуицией</span>
           </h2>
 
           <p className="start-screen__description">
@@ -50,7 +47,6 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
 
                 <div>
                   <strong>{feature.title}</strong>
-                  <span>{feature.text}</span>
                 </div>
               </div>
             ))}
@@ -58,10 +54,12 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
         </div>
 
         <div className="start-screen__visual" aria-hidden="true">
-          <div className="start-screen__orb">
-            <div className="start-screen__cube">
-              <span>?</span>
-            </div>
+          <div className="start-screen__visual-image-wrapper">
+            <img
+              src={startImage}
+              alt=""
+              className="start-screen__visual-image"
+            />
           </div>
 
           <div className="start-screen__floating-card start-screen__floating-card--left">
