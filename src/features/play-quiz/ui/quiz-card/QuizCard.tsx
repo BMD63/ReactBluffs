@@ -1,10 +1,6 @@
 import type { Question } from '@/entities/question/model/questionTypes';
-import {
-  type MultipleChoiceQuestion,
-} from '@/entities/question/model/questionTypes';
-import type {
-  OpenTextQuestion,
-} from '@/entities/question/model/questionTypes';
+import { type MultipleChoiceQuestion } from '@/entities/question/model/questionTypes';
+import type { OpenTextQuestion } from '@/entities/question/model/questionTypes';
 
 import OpenAnswerQuizCard from './OpenAnswerQuizCard';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
@@ -24,10 +20,7 @@ type QuizCardProps = {
     answer: boolean | string
   ) => void;
 
-  onBonus: (
-    cardIndex: number,
-    questionId: string
-  ) => void;
+  onBonus: (cardIndex: number, questionId: string) => void;
 
   onSubmit: () => void;
   onRestart: () => void;
@@ -43,9 +36,7 @@ const QuizCard = (props: QuizCardProps) => {
 
   switch (firstQuestion.gameMode) {
     case 'bluff':
-      return (
-        <BooleanQuizCard {...props} />
-      );
+      return <BooleanQuizCard {...props} />;
     case 'multipleChoice':
       return (
         <MultipleChoiceQuizCard

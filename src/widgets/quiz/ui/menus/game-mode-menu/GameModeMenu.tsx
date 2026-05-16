@@ -1,11 +1,6 @@
-import {
-  gameModeConfig,
-} from '@/entities/game-mode';
+import { gameModeConfig } from '@/entities/game-mode';
 
-import {
-  SCREEN,
-  setScreen,
-} from '@/entities/quiz-session';
+import { SCREEN, setScreen } from '@/entities/quiz-session';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import {
@@ -16,10 +11,7 @@ import { difficultyConfig } from '@/entities/quiz-session/model/config/difficult
 
 import { Button } from '@/shared/ui/button';
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared/lib/hooks/redux';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 
 import './game-mode-menu.css';
 
@@ -54,9 +46,7 @@ const GameModeMenu = () => {
           <span>{currentDifficulty.icon}</span>
           <div className="menu-card-content">
             Сложность
-            <div className="menu-subtext">
-              {currentDifficulty.title}
-            </div>
+            <div className="menu-subtext">{currentDifficulty.title}</div>
           </div>
         </Button>
 

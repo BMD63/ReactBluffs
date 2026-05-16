@@ -1,7 +1,4 @@
-import {
-  gameModeConfig,
-  type GameMode,
-} from '@/entities/game-mode';
+import { gameModeConfig, type GameMode } from '@/entities/game-mode';
 
 import { Button } from '@/shared/ui/button';
 
@@ -13,11 +10,7 @@ type RulesModalProps = {
   onClose: () => void;
 };
 
-const RulesModal = ({
-  isOpen,
-  gameMode,
-  onClose,
-}: RulesModalProps) => {
+const RulesModal = ({ isOpen, gameMode, onClose }: RulesModalProps) => {
   if (!isOpen) return null;
 
   const config = gameModeConfig[gameMode];
@@ -33,9 +26,7 @@ const RulesModal = ({
           ))}
         </div>
 
-        <Button onClick={onClose}>
-          Назад
-        </Button>
+        <Button onClick={onClose}>Назад</Button>
       </div>
     </div>
   );

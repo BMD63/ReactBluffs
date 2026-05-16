@@ -2,7 +2,7 @@ import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from './quizSessionModel';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 import { calculateCardScore } from '@/entities/question';
 
 type AnswerQuestionPayload = {
@@ -10,7 +10,6 @@ type AnswerQuestionPayload = {
   questionId: string;
   answer: boolean | string;
 };
-
 
 type SetCardsPayload = Question[][];
 
@@ -37,44 +36,35 @@ const quizSessionSlice = createSlice({
   name: 'quizSession',
   initialState,
   reducers: {
-    setCards(
-      state,
-      action: PayloadAction<SetCardsPayload>
-    ) {
-      state.cards = action.payload
-      state.answersByCard = action.payload.map(() => ({}))
+    setCards(state, action: PayloadAction<SetCardsPayload>) {
+      state.cards = action.payload;
+      state.answersByCard = action.payload.map(() => ({}));
     },
 
-    answerQuestion(
-      state,
-      action: PayloadAction<AnswerQuestionPayload>
-      ) {
-          const { cardIndex, questionId, answer } = action.payload;
-          if (!state.answersByCard[cardIndex]) {
-            state.answersByCard[cardIndex] = {};
+    answerQuestion(state, action: PayloadAction<AnswerQuestionPayload>) {
+      const { cardIndex, questionId, answer } = action.payload;
+      if (!state.answersByCard[cardIndex]) {
+        state.answersByCard[cardIndex] = {};
+      }
+      state.answersByCard[cardIndex][questionId] =
+        typeof answer === 'boolean'
+          ? {
+              answer,
+              bonus: false,
             }
-            state.answersByCard[cardIndex][questionId] =
-              typeof answer === 'boolean'
-                ? {
-                    answer,
-                    bonus: false,
-                  }
-                : {
-                    answer,
-                  };
-                  },
+          : {
+              answer,
+            };
+    },
 
-    toggleBonus(
-      state,
-      action: PayloadAction<ToggleBonusPayload>
-    ) {
+    toggleBonus(state, action: PayloadAction<ToggleBonusPayload>) {
       const { cardIndex, questionId } = action.payload;
 
       const cardAnswers = state.answersByCard[cardIndex] || {};
 
-      const bonusCount = Object.values(cardAnswers)
-        .filter((answer) => 'bonus' in answer && answer.bonus)
-        .length;
+      const bonusCount = Object.values(cardAnswers).filter(
+        (answer) => 'bonus' in answer && answer.bonus
+      ).length;
 
       const questionAnswer = cardAnswers[questionId];
 
@@ -85,8 +75,7 @@ const quizSessionSlice = createSlice({
         return;
       }
 
-      const answer =
-        state.answersByCard[cardIndex]?.[questionId];
+      const answer = state.answersByCard[cardIndex]?.[questionId];
 
       if (!answer || !('bonus' in answer)) {
         return;
@@ -97,29 +86,27 @@ const quizSessionSlice = createSlice({
 
     submitCard(state) {
       const card = state.cards[state.currentCardIndex];
-        const answers =
-          state.answersByCard[state.currentCardIndex];
+      const answers = state.answersByCard[state.currentCardIndex];
 
-        if (!card || !answers) {
-          return;
-        }
+      if (!card || !answers) {
+        return;
+      }
 
-state.currentCardScore =
-  calculateCardScore(card, answers);
+      state.currentCardScore = calculateCardScore(card, answers);
     },
 
     nextCard(state) {
-      state.currentCardIndex += 1
+      state.currentCardIndex += 1;
     },
 
     resetGame: (state) => {
-      state.cards = []
-      state.currentCardIndex = 0
-      state.answersByCard = []
-      state.currentCardScore = 0
-    }
+      state.cards = [];
+      state.currentCardIndex = 0;
+      state.answersByCard = [];
+      state.currentCardScore = 0;
+    },
   },
-})
+});
 
 export const {
   setCards,
@@ -127,7 +114,7 @@ export const {
   toggleBonus,
   submitCard,
   nextCard,
-  resetGame
-} = quizSessionSlice.actions
+  resetGame,
+} = quizSessionSlice.actions;
 
-export const quizSessionReducer = quizSessionSlice.reducer
+export const quizSessionReducer = quizSessionSlice.reducer;

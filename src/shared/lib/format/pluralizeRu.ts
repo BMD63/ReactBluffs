@@ -1,9 +1,6 @@
 type PluralForms = readonly [string, string, string];
 
-export const pluralizeRu = (
-  count: number,
-  forms: PluralForms
-): string => {
+export const pluralizeRu = (count: number, forms: PluralForms): string => {
   const abs = Math.abs(count);
   const lastTwo = abs % 100;
   const last = abs % 10;

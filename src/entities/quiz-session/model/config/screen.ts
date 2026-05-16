@@ -9,5 +9,4 @@ export const SCREEN = {
   BLUFF_MENU: 'bluffMenu',
 } as const;
 
-export type Screen =
-  typeof SCREEN[keyof typeof SCREEN];
+export type Screen = (typeof SCREEN)[keyof typeof SCREEN];

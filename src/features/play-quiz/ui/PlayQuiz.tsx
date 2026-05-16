@@ -32,8 +32,9 @@ const PlayQuiz = ({
   onRestart,
   onMenu,
 }: PlayQuizProps) => {
-  const [transitionStage, setTransitionStage] =
-    useState<'enter' | 'exit'>('enter');
+  const [transitionStage, setTransitionStage] = useState<'enter' | 'exit'>(
+    'enter'
+  );
 
   useEffect(() => {
     setTransitionStage('exit');
@@ -46,7 +47,7 @@ const PlayQuiz = ({
   }, [currentCardIndex]);
 
   if (!currentCard?.length) return null;
-  
+
   return (
     <div
       className={`quiz-card-transition quiz-card-transition--${transitionStage}`}

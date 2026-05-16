@@ -1,11 +1,7 @@
 import { useEffect } from 'react';
 
-import type {
-  OpenTextQuestion,
-} from '@/entities/question/model/questionTypes';
-import type {
-  CardAnswers,
-} from '@/entities/quiz-session/model/quizSessionModel';
+import type { OpenTextQuestion } from '@/entities/question/model/questionTypes';
+import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 import { Button } from '@/shared/ui/button';
 
@@ -17,11 +13,7 @@ type OpenAnswerQuizCardProps = {
   userAnswers: CardAnswers;
   totalCards: number;
 
-  onAnswer: (
-    cardIndex: number,
-    questionId: string,
-    answer: string
-  ) => void;
+  onAnswer: (cardIndex: number, questionId: string, answer: string) => void;
 
   onSubmit: () => void;
   onRestart: () => void;
@@ -38,15 +30,11 @@ const OpenAnswerQuizCard = ({
   onRestart,
   onMenu,
 }: OpenAnswerQuizCardProps) => {
-  const allQuestionsAnswered =
-    cardData.every((question) => {
-      const answer = userAnswers[question.id]?.answer;
+  const allQuestionsAnswered = cardData.every((question) => {
+    const answer = userAnswers[question.id]?.answer;
 
-      return (
-        typeof answer === 'string' &&
-        answer.trim().length > 0
-      );
-    });
+    return typeof answer === 'string' && answer.trim().length > 0;
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,8 +48,7 @@ const OpenAnswerQuizCard = ({
 
       {cardData.map((question) => {
         const answer = userAnswers[question.id]?.answer;
-        const value =
-          typeof answer === 'string' ? answer : '';
+        const value = typeof answer === 'string' ? answer : '';
 
         return (
           <div key={question.id} className="question">
@@ -72,11 +59,7 @@ const OpenAnswerQuizCard = ({
               value={value}
               placeholder="Введите ответ"
               onChange={(event) =>
-                onAnswer(
-                  cardIndex,
-                  question.id,
-                  event.target.value
-                )
+                onAnswer(cardIndex, question.id, event.target.value)
               }
             />
           </div>
@@ -103,11 +86,7 @@ const OpenAnswerQuizCard = ({
           </Button>
         )}
 
-        <Button
-          variant="secondary"
-          className="restart-btn"
-          onClick={onMenu}
-        >
+        <Button variant="secondary" className="restart-btn" onClick={onMenu}>
           В меню
         </Button>
       </div>

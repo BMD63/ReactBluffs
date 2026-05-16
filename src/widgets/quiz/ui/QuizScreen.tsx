@@ -17,24 +17,21 @@ import { PlayQuiz } from '@/features/play-quiz';
 type QuizScreenProps = {
   screen: Screen;
   gameMode: GameMode;
-  currentCard: Question[]|undefined;
+  currentCard: Question[] | undefined;
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
   totalCards: number;
   onStart: () => void;
   currentCardScore: number;
   totalScore: number;
-  
+
   onAnswer: (
     cardIndex: number,
     questionId: string,
     answer: boolean | string
   ) => void;
 
-  onBonus: (
-    cardIndex: number,
-    questionId: string
-  ) => void;
+  onBonus: (cardIndex: number, questionId: string) => void;
 
   onSubmit: () => void;
   onRestart: () => void;
@@ -68,11 +65,7 @@ const QuizScreen = ({
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
-      return (
-        <StartScreen
-          onStart={onStart}
-        />
-      );
+      return <StartScreen onStart={onStart} />;
 
     case SCREEN.MODE_SELECTION:
       return (
@@ -80,7 +73,7 @@ const QuizScreen = ({
           onSelectMode={onSelectMode}
           onBack={onBackToStart}
         />
-      );  
+      );
 
     case SCREEN.BLUFF_MENU:
       return <GameModeMenu />;
@@ -105,13 +98,7 @@ const QuizScreen = ({
       );
 
     case SCREEN.RULES:
-      return (
-        <RulesModal
-          isOpen
-          gameMode={gameMode}
-          onClose={onRulesClose}
-        />
-      );
+      return <RulesModal isOpen gameMode={gameMode} onClose={onRulesClose} />;
 
     case SCREEN.CARD_RESULT:
       if (!currentCard) return null;

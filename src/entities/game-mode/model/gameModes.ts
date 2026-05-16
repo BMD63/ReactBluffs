@@ -4,5 +4,4 @@ export const GAME_MODE = {
   OPEN_ANSWER: 'openAnswer',
 } as const;
 
-export type GameMode =
-  typeof GAME_MODE[keyof typeof GAME_MODE];
+export type GameMode = (typeof GAME_MODE)[keyof typeof GAME_MODE];

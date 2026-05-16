@@ -1,10 +1,8 @@
 import { Button } from '@/shared/ui/button';
-import './modals.css'
+import './modals.css';
 import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
-import {
-  QUESTION_TYPE,
-} from '@/entities/question';
+import { QUESTION_TYPE } from '@/entities/question';
 
 import BooleanQuestionResult from './results/BooleanQuestionResult';
 import MultipleChoiceQuestionResult from './results/MultipleChoiceQuestionResult';
@@ -22,7 +20,17 @@ type CardResultsModalProps = {
   onMenu: () => void;
 };
 
-const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCard, userAnswers, onRestart, onMenu,}:CardResultsModalProps) => {
+const CardResultsModal = ({
+  isOpen,
+  cardData,
+  cardIndex,
+  score,
+  onNext,
+  isLastCard,
+  userAnswers,
+  onRestart,
+  onMenu,
+}: CardResultsModalProps) => {
   if (!isOpen || !cardData) return null;
   return (
     <div className="modal-overlay">
@@ -65,29 +73,21 @@ const CardResultsModal = ({ isOpen, cardData, cardIndex, score, onNext, isLastCa
           })}
         </div>
         <div className="modal-actions card-actions">
-          <Button 
-            variant="primary"
-            className= "modalBotton" 
-            onClick={onNext}
-          >
+          <Button variant="primary" className="modalBotton" onClick={onNext}>
             {isLastCard ? 'К результатам' : 'Следующий'}
           </Button>
-          <Button 
+          <Button
             variant="secondary"
             className="restart-btn"
             onClick={onRestart}
           >
             Заново
           </Button>
-          <Button 
-            variant="secondary"
-            onClick={onMenu}
-          > 
-            В меню 
+          <Button variant="secondary" onClick={onMenu}>
+            В меню
           </Button>
         </div>
-        
-        
+
         {/* <Button onClick={alert(JSON.stringify(cardData))}>Check</Button> */}
       </div>
     </div>

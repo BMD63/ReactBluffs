@@ -18,9 +18,7 @@ export type {
   UpdateQuestionDto,
 } from './api/questionApi.types';
 
-export {
-  QUESTION_TYPE,
-} from './model/questionTypes';
+export { QUESTION_TYPE } from './model/questionTypes';
 
 export type {
   AudioQuestion,
@@ -39,22 +37,12 @@ export type {
   QuestionAnswer,
 } from './model/questionAnswerTypes';
 
-export {
-  calculateBooleanCardScore,
-} from './lib/scoring/calculateBooleanCardScore';
+export { calculateBooleanCardScore } from './lib/scoring/calculateBooleanCardScore';
 
-export {
-  calculateCardScore,
-} from './lib/scoring/calculateCardScore';
+export { calculateCardScore } from './lib/scoring/calculateCardScore';
 
-export {
-  calculateMultipleChoiceCardScore,
-} from './lib/scoring/calculateMultipleChoiceCardScore';
+export { calculateMultipleChoiceCardScore } from './lib/scoring/calculateMultipleChoiceCardScore';
 
-export {
-  calculateOpenAnswerCardScore,
-} from './lib/scoring/calculateOpenAnswerCardScore';
+export { calculateOpenAnswerCardScore } from './lib/scoring/calculateOpenAnswerCardScore';
 
-export {
-  normalizeAnswer,
-} from './lib/normalizeAnswer';
+export { normalizeAnswer } from './lib/normalizeAnswer';

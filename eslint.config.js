@@ -1,8 +1,8 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import js from '@eslint/js';
+import globals from 'globals';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
   { ignores: ['dist'] },
@@ -17,14 +17,14 @@ export default [
         sourceType: 'module',
       },
     },
-    settings: { 
+    settings: {
       react: { version: '18.3' },
       'import/resolver': {
-      alias: {
-        map: [['@', './src']],
-        extensions: ['.js', '.jsx'],
+        alias: {
+          map: [['@', './src']],
+          extensions: ['.js', '.jsx'],
+        },
       },
-    },
     },
     plugins: {
       react,
@@ -44,4 +44,4 @@ export default [
       ],
     },
   },
-]
+];

@@ -1,11 +1,6 @@
-import {
-  QUESTION_TYPE,
-  type BooleanQuestion,
-} from '../../model/questionTypes';
+import { QUESTION_TYPE, type BooleanQuestion } from '../../model/questionTypes';
 
-import type {
-  BooleanQuestionAnswer,
-} from '../../model/questionAnswerTypes';
+import type { BooleanQuestionAnswer } from '../../model/questionAnswerTypes';
 
 export const calculateBooleanCardScore = (
   card: BooleanQuestion[],
@@ -24,9 +19,7 @@ export const calculateBooleanCardScore = (
       return;
     }
 
-    if (
-      userAnswer.answer === question.correctAnswer
-    ) {
+    if (userAnswer.answer === question.correctAnswer) {
       score += 1;
 
       if (userAnswer.bonus) {

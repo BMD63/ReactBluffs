@@ -2,30 +2,24 @@ import { createSelector } from '@reduxjs/toolkit';
 import { calculateCardScore } from '@/entities/question';
 import type { RootState } from '@/app/providers/store/store';
 
-const selectQuizSession = (
-  state: RootState
-) => state.quizSession;
+const selectQuizSession = (state: RootState) => state.quizSession;
 
 export const selectCurrentCardScore = (state: RootState) =>
   selectQuizSession(state).currentCardScore;
 
-export const selectCards = (state: RootState) =>
-  selectQuizSession(state).cards;
+export const selectCards = (state: RootState) => selectQuizSession(state).cards;
 
-export const selectCurrentCardIndex = (state: RootState) =>  
+export const selectCurrentCardIndex = (state: RootState) =>
   selectQuizSession(state).currentCardIndex;
 
 export const selectAnswersByCard = (state: RootState) =>
   selectQuizSession(state).answersByCard;
 
-export const selectDifficulty = (state: RootState) =>
-  state.quizUI.difficulty;
+export const selectDifficulty = (state: RootState) => state.quizUI.difficulty;
 
-export const selectScreen = (state: RootState) =>
-  state.quizUI.currentScreen;
+export const selectScreen = (state: RootState) => state.quizUI.currentScreen;
 
-export const selectGameMode = (state: RootState) => 
-  state.quizUI.gameMode;
+export const selectGameMode = (state: RootState) => state.quizUI.gameMode;
 
 export const selectCurrentCardData = createSelector(
   [selectCards, selectCurrentCardIndex, selectAnswersByCard],
@@ -54,9 +48,6 @@ export const selectTotalScore = (state: RootState) => {
   if (!cards.length) return 0;
 
   return cards.reduce((total, card, index) => {
-    return total + calculateCardScore(
-      card,
-      answersByCard?.[index] || {}
-    );
+    return total + calculateCardScore(card, answersByCard?.[index] || {});
   }, 0);
 };

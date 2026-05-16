@@ -3,9 +3,7 @@ import {
   type MultipleChoiceQuestion,
 } from '../../model/questionTypes';
 
-import type {
-  MultipleChoiceQuestionAnswer,
-} from '../../model/questionAnswerTypes';
+import type { MultipleChoiceQuestionAnswer } from '../../model/questionAnswerTypes';
 
 export const calculateMultipleChoiceCardScore = (
   card: MultipleChoiceQuestion[],

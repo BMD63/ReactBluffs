@@ -4,8 +4,7 @@ export const DIFFICULTY = {
   HARD: 'hard',
 } as const;
 
-export type Difficulty =
-  typeof DIFFICULTY[keyof typeof DIFFICULTY];
+export type Difficulty = (typeof DIFFICULTY)[keyof typeof DIFFICULTY];
 
 type DifficultyConfig = {
   title: string;

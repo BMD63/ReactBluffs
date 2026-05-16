@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared/lib/hooks/redux';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import type { GameMode } from '@/entities/game-mode';
 
@@ -16,13 +13,12 @@ import {
   selectCurrentCardScore,
   selectCurrentCardData,
   selectTotalScore,
-  selectGameMode
+  selectGameMode,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
 
 const QuizPage = () => {
-
   const dispatch = useAppDispatch();
 
   const {
@@ -39,15 +35,11 @@ const QuizPage = () => {
   const screen = useAppSelector(selectScreen);
   const currentCardScore = useAppSelector(selectCurrentCardScore);
 
-  const {
-  currentCard,
-  currentCardAnswers,
-  currentCardIndex,
-  totalCards,
-  } = useAppSelector(selectCurrentCardData);
+  const { currentCard, currentCardAnswers, currentCardIndex, totalCards } =
+    useAppSelector(selectCurrentCardData);
 
   const totalScore = useAppSelector(selectTotalScore);
-  
+
   useEffect(() => {
     dispatch(initGame());
     dispatch(initUI());
@@ -56,16 +48,14 @@ const QuizPage = () => {
   const handleStart = () => {
     dispatch(setScreen(SCREEN.MODE_SELECTION));
   };
-  const handleSelectMode = (
-    mode: GameMode
-      ) => {
-        dispatch(setGameMode(mode));
-        dispatch(setScreen(SCREEN.BLUFF_MENU));
-      };
+  const handleSelectMode = (mode: GameMode) => {
+    dispatch(setGameMode(mode));
+    dispatch(setScreen(SCREEN.BLUFF_MENU));
+  };
 
   const handleBackToStart = () => {
     dispatch(setScreen(SCREEN.START));
-  };    
+  };
 
   return (
     <div className="app">
@@ -92,7 +82,7 @@ const QuizPage = () => {
         />
       </div>
     </div>
- );
+  );
 };
 
 export default QuizPage;

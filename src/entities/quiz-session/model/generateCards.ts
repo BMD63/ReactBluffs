@@ -13,40 +13,25 @@ export const generateCards = (
 
   const shuffledQuestions = [...questions];
 
-    for (
-      let i = shuffledQuestions.length - 1;
-      i > 0;
-      i--
-    ) {
-      const j = Math.floor(
-        Math.random() * (i + 1)
-      );
+  for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
 
-      const temp = shuffledQuestions[i];
+    const temp = shuffledQuestions[i];
 
-      shuffledQuestions[i] =
-        shuffledQuestions[j]!;
+    shuffledQuestions[i] = shuffledQuestions[j]!;
 
-      shuffledQuestions[j] = temp!;
-    }
+    shuffledQuestions[j] = temp!;
+  }
 
-  const maxPossibleCards = Math.floor(
-    questions.length / questionsPerCard
-  );
+  const maxPossibleCards = Math.floor(questions.length / questionsPerCard);
 
-  const cardsCount = Math.min(
-    maxPossibleCards,
-    manualCardsCount
-  );
+  const cardsCount = Math.min(maxPossibleCards, manualCardsCount);
 
   const newCards: Question[][] = [];
 
   for (let i = 0; i < cardsCount; i++) {
     newCards.push(
-      shuffledQuestions.slice(
-        i * questionsPerCard,
-        (i + 1) * questionsPerCard
-      )
+      shuffledQuestions.slice(i * questionsPerCard, (i + 1) * questionsPerCard)
     );
   }
 

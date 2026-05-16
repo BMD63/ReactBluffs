@@ -12,21 +12,13 @@ import type {
   MultipleChoiceQuestionAnswer,
 } from '../../model/questionAnswerTypes';
 
-import {
-  calculateBooleanCardScore,
-} from './calculateBooleanCardScore';
-import {
-  calculateMultipleChoiceCardScore,
-} from './calculateMultipleChoiceCardScore';
-import {
-  calculateOpenAnswerCardScore,
-} from './calculateOpenAnswerCardScore';
+import { calculateBooleanCardScore } from './calculateBooleanCardScore';
+import { calculateMultipleChoiceCardScore } from './calculateMultipleChoiceCardScore';
+import { calculateOpenAnswerCardScore } from './calculateOpenAnswerCardScore';
 
 type CardAnswers = Record<string, QuestionAnswer>;
 
-const isBooleanQuestion = (
-  question: Question
-): question is BooleanQuestion => {
+const isBooleanQuestion = (question: Question): question is BooleanQuestion => {
   return question.type === QUESTION_TYPE.BOOLEAN;
 };
 
@@ -75,11 +67,8 @@ export const calculateCardScore = (
     return calculateBooleanCardScore(card, answers);
   }
   const isMultipleChoiceCard = card.every(isMultipleChoiceQuestion);
-  if (
-      isMultipleChoiceCard &&
-      isMultipleChoiceAnswersRecord(answers)
-      ) {
-      return calculateMultipleChoiceCardScore(card, answers);
+  if (isMultipleChoiceCard && isMultipleChoiceAnswersRecord(answers)) {
+    return calculateMultipleChoiceCardScore(card, answers);
   }
   const isOpenAnswerCard = card.every(isOpenTextQuestion);
   if (isOpenAnswerCard) {

@@ -10,8 +10,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "check": "npm run test:run && npx tsc --noEmit && npm run build"
-
+    "check": "npm run format:check && npm run lint && npm run test:run && npx tsc --noEmit && npm run build",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
@@ -19,7 +20,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0"
-    
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
@@ -27,10 +27,12 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.17.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "prettier": "^3.8.3",
     "typescript": "^6.0.3",
     "vite": "^6.0.5",
     "vitest": "^4.1.6"

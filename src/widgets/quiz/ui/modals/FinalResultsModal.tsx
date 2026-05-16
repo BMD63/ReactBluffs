@@ -1,6 +1,6 @@
 import { Button } from '@/shared/ui/button';
 import { pluralizeRu } from '@/shared/lib/format/pluralizeRu';
-import './modals.css'
+import './modals.css';
 
 type FinalResultsModalProps = {
   isOpen: boolean;
@@ -30,9 +30,14 @@ const FinalResultsModal = ({
             {pluralizeRu(totalScore, ['балл', 'балла', 'баллов'])}
           </span>
         </div>
-        <nav className = "final-nav modal-actions">
-          <Button variant="primary" onClick={onRestart}>Начать заново</Button>
-          <Button variant="secondary" onClick={onMenu}> В меню </Button>
+        <nav className="final-nav modal-actions">
+          <Button variant="primary" onClick={onRestart}>
+            Начать заново
+          </Button>
+          <Button variant="secondary" onClick={onMenu}>
+            {' '}
+            В меню{' '}
+          </Button>
         </nav>
       </div>
     </div>

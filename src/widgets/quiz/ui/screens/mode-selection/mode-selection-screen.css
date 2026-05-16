@@ -4,12 +4,11 @@
 
   color: var(--color-text);
 
-  background:
-    linear-gradient(
-      135deg,
-      var(--color-surface-strong),
-      var(--color-surface)
-    );
+  background: linear-gradient(
+    135deg,
+    var(--color-surface-strong),
+    var(--color-surface)
+  );
 
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
@@ -73,8 +72,7 @@
 
   background: rgba(255, 255, 255, 0.07);
 
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   transition:
     transform 0.2s ease,
@@ -120,8 +118,7 @@
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.22);
 
-  box-shadow:
-    0 0 16px rgba(56, 189, 248, 0.16);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.16);
 }
 
 .mode-card--active {

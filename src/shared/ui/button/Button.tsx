@@ -1,16 +1,10 @@
 import './button.css';
 
-type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'answer'
-  | 'submit'
-  | 'menu';
+type ButtonVariant = 'primary' | 'secondary' | 'answer' | 'submit' | 'menu';
 
-type ButtonProps =
-  React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: ButtonVariant;
-  };
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: ButtonVariant;
+};
 
 const Button = ({
   variant = 'primary',
@@ -20,10 +14,7 @@ const Button = ({
   const variantClassName = `btn--${variant}`;
 
   return (
-    <button
-      className={`btn ${variantClassName} ${className}`}
-      {...props}
-    />
+    <button className={`btn ${variantClassName} ${className}`} {...props} />
   );
 };
 

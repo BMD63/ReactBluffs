@@ -13,11 +13,7 @@ type MultipleChoiceQuizCardProps = {
   userAnswers: CardAnswers;
   totalCards: number;
 
-  onAnswer: (
-    cardIndex: number,
-    questionId: string,
-    answer: string
-  ) => void;
+  onAnswer: (cardIndex: number, questionId: string, answer: string) => void;
 
   onSubmit: () => void;
   onRestart: () => void;
@@ -84,13 +80,9 @@ const MultipleChoiceQuizCard = ({
                 key={option}
                 variant="answer"
                 className={`answer-btn ${
-                  userAnswers[question.id]?.answer === option
-                    ? 'selected'
-                    : ''
+                  userAnswers[question.id]?.answer === option ? 'selected' : ''
                 }`}
-                onClick={() =>
-                  onAnswer(cardIndex, question.id, option)
-                }
+                onClick={() => onAnswer(cardIndex, question.id, option)}
               >
                 {option}
               </Button>
@@ -119,11 +111,7 @@ const MultipleChoiceQuizCard = ({
           </Button>
         )}
 
-        <Button
-          variant="secondary"
-          className="restart-btn"
-          onClick={onMenu}
-        >
+        <Button variant="secondary" className="restart-btn" onClick={onMenu}>
           В меню
         </Button>
       </div>

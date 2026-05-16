@@ -1,8 +1,6 @@
 import { GAME_MODE } from '@/entities/game-mode';
 
-import type {
-  OpenTextQuestionDto,
-} from '../../api/questionApi.types';
+import type { OpenTextQuestionDto } from '../../api/questionApi.types';
 
 export const openAnswerQuestionDtos: OpenTextQuestionDto[] = [
   {
@@ -138,12 +136,7 @@ export const openAnswerQuestionDtos: OpenTextQuestionDto[] = [
     type: 'openText',
     gameMode: GAME_MODE.OPEN_ANSWER,
     text: 'Как называется денежная единица Великобритании?',
-    correctAnswers: [
-      'фунт',
-      'фунт стерлингов',
-      'sterling',
-      'pound',
-    ],
+    correctAnswers: ['фунт', 'фунт стерлингов', 'sterling', 'pound'],
   },
   {
     id: 'oa19',
@@ -176,22 +169,14 @@ export const openAnswerQuestionDtos: OpenTextQuestionDto[] = [
     type: 'openText',
     gameMode: GAME_MODE.OPEN_ANSWER,
     text: 'Кто был первым человеком в космосе?',
-    correctAnswers: [
-      'гагарин',
-      'юрий гагарин',
-      'yuri gagarin',
-    ],
+    correctAnswers: ['гагарин', 'юрий гагарин', 'yuri gagarin'],
   },
   {
     id: 'oa23',
     type: 'openText',
     gameMode: GAME_MODE.OPEN_ANSWER,
     text: 'Как называется самая известная башня Парижа?',
-    correctAnswers: [
-      'эйфелева башня',
-      'эйфель',
-      'eiffel tower',
-    ],
+    correctAnswers: ['эйфелева башня', 'эйфель', 'eiffel tower'],
   },
   {
     id: 'oa24',

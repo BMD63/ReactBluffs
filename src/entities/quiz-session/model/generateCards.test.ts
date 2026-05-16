@@ -2,10 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { generateCards } from './generateCards';
 
-import {
-  QUESTION_TYPE,
-  type BooleanQuestion,
-} from '@/entities/question';
+import { QUESTION_TYPE, type BooleanQuestion } from '@/entities/question';
 
 import { GAME_MODE } from '@/entities/game-mode';
 
@@ -45,13 +42,10 @@ const questions: BooleanQuestion[] = [
 
 describe('generateCards', () => {
   it('splits questions into cards', () => {
-    const cards = generateCards(
-      questions,
-      {
-            questionsPerCard: 2,
-            manualCardsCount: 2,
-        }
-    );
+    const cards = generateCards(questions, {
+      questionsPerCard: 2,
+      manualCardsCount: 2,
+    });
 
     expect(cards).toHaveLength(2);
 
@@ -59,31 +53,23 @@ describe('generateCards', () => {
     expect(cards[1]).toHaveLength(2);
   });
   it('does not create more cards than possible', () => {
-    const cards = generateCards(
-        questions,
-        {
-        questionsPerCard: 3,
-        manualCardsCount: 10,
-        }
-    );
+    const cards = generateCards(questions, {
+      questionsPerCard: 3,
+      manualCardsCount: 10,
+    });
 
     expect(cards).toHaveLength(1);
+  });
+  it('does not mutate original questions array', () => {
+    const originalQuestionIds = questions.map((question) => question.id);
+
+    generateCards(questions, {
+      questionsPerCard: 2,
+      manualCardsCount: 2,
     });
-    it('does not mutate original questions array', () => {
-        const originalQuestionIds = questions.map(
-            (question) => question.id
-        );
 
-        generateCards(
-            questions,
-            {
-            questionsPerCard: 2,
-            manualCardsCount: 2,
-            }
-        );
-
-        expect(
-            questions.map((question) => question.id)
-        ).toEqual(originalQuestionIds);
-        });
+    expect(questions.map((question) => question.id)).toEqual(
+      originalQuestionIds
+    );
+  });
 });

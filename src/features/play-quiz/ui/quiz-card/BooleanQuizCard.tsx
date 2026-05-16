@@ -13,16 +13,9 @@ type QuizCardProps = {
   userAnswers: CardAnswers;
   totalCards: number;
 
-  onAnswer: (
-    cardIndex: number,
-    questionId: string,
-    answer: boolean
-  ) => void;
+  onAnswer: (cardIndex: number, questionId: string, answer: boolean) => void;
 
-  onBonus: (
-    cardIndex: number,
-    questionId: string
-  ) => void;
+  onBonus: (cardIndex: number, questionId: string) => void;
 
   onSubmit: () => void;
   onRestart: () => void;
@@ -81,63 +74,53 @@ const BooleanQuizCard = ({
       </h2>
 
       {cardData.map((question) => {
-  const userAnswer = userAnswers[question.id];
-  const hasBonus =
-    Boolean(userAnswer && 'bonus' in userAnswer && userAnswer.bonus);
-
-  return (
-        <div key={question.id} className="question">
-          <p>{question.text}</p>
-
-          <div className="controls">
-            <Button
-              variant="answer"
-              className={`answer-btn ${
-                userAnswers[question.id]?.answer === true
-                  ? 'selected'
-                  : ''
-              }`}
-              onClick={() =>
-                onAnswer(cardIndex, question.id, true)
-              }
-            >
-              Да
-            </Button>
-
-            <Button
-              variant="answer"
-              className={`answer-btn ${
-                userAnswers[question.id]?.answer === false
-                  ? 'selected'
-                  : ''
-              }`}
-              onClick={() =>
-                onAnswer(cardIndex, question.id, false)
-              }
-            >
-              Нет
-            </Button>
-
-            <label className="bonus-label">
-              <input
-                type="checkbox"
-                disabled={
-                  Object.values(userAnswers).filter(
-                    (answer) => 'bonus' in answer && answer.bonus
-                  ).length >= 3 && !hasBonus
-                }
-                checked={hasBonus}
-                onChange={() =>
-                  onBonus(cardIndex, question.id)
-                }
-              />
-
-              Бонусный балл
-            </label>
-          </div>
-        </div>
+        const userAnswer = userAnswers[question.id];
+        const hasBonus = Boolean(
+          userAnswer && 'bonus' in userAnswer && userAnswer.bonus
         );
-        })}
+
+        return (
+          <div key={question.id} className="question">
+            <p>{question.text}</p>
+
+            <div className="controls">
+              <Button
+                variant="answer"
+                className={`answer-btn ${
+                  userAnswers[question.id]?.answer === true ? 'selected' : ''
+                }`}
+                onClick={() => onAnswer(cardIndex, question.id, true)}
+              >
+                Да
+              </Button>
+
+              <Button
+                variant="answer"
+                className={`answer-btn ${
+                  userAnswers[question.id]?.answer === false ? 'selected' : ''
+                }`}
+                onClick={() => onAnswer(cardIndex, question.id, false)}
+              >
+                Нет
+              </Button>
+
+              <label className="bonus-label">
+                <input
+                  type="checkbox"
+                  disabled={
+                    Object.values(userAnswers).filter(
+                      (answer) => 'bonus' in answer && answer.bonus
+                    ).length >= 3 && !hasBonus
+                  }
+                  checked={hasBonus}
+                  onChange={() => onBonus(cardIndex, question.id)}
+                />
+                Бонусный балл
+              </label>
+            </div>
+          </div>
+        );
+      })}
 
       <div className="card-actions">
         <Button
@@ -158,11 +141,7 @@ const BooleanQuizCard = ({
             Начать сначала
           </Button>
         )}
-        <Button
-          variant="secondary"
-          className="restart-btn"
-          onClick={onMenu}
-        >
+        <Button variant="secondary" className="restart-btn" onClick={onMenu}>
           В меню
         </Button>
       </div>

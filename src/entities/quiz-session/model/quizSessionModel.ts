@@ -1,14 +1,8 @@
-import type {
-  QuestionAnswer,
-} from '@/entities/question/model/questionAnswerTypes';
+import type { QuestionAnswer } from '@/entities/question/model/questionAnswerTypes';
 
-import {
-  calculateCardScore,
-} from '@/entities/question';
+import { calculateCardScore } from '@/entities/question';
 
-export type CardAnswers =
-  Record<string, QuestionAnswer>;
-
+export type CardAnswers = Record<string, QuestionAnswer>;
 
 export const setAnswer = (
   answers: CardAnswers,
@@ -28,9 +22,9 @@ export const toggleBonus = (
   answers: CardAnswers,
   questionId: string
 ): CardAnswers => {
-  const currentBonusCount = Object.values(answers || {})
-    .filter((answer) => 'bonus' in answer && answer.bonus)
-    .length;
+  const currentBonusCount = Object.values(answers || {}).filter(
+    (answer) => 'bonus' in answer && answer.bonus
+  ).length;
 
   if (
     currentBonusCount >= 3 &&

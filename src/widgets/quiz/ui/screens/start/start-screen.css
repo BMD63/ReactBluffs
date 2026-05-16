@@ -4,12 +4,11 @@
 
   color: var(--color-text);
 
-  background:
-    linear-gradient(
-      135deg,
-      var(--color-surface-strong),
-      var(--color-surface)
-    );
+  background: linear-gradient(
+    135deg,
+    var(--color-surface-strong),
+    var(--color-surface)
+  );
 
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);

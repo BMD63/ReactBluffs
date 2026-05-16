@@ -8,8 +8,7 @@ export const QUESTION_TYPE = {
   AUDIO: 'audio',
 } as const;
 
-export type QuestionType =
-  typeof QUESTION_TYPE[keyof typeof QUESTION_TYPE];
+export type QuestionType = (typeof QUESTION_TYPE)[keyof typeof QUESTION_TYPE];
 
 type BaseQuestion = {
   id: string;

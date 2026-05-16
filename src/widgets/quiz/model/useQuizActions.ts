@@ -1,7 +1,4 @@
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared/lib/hooks/redux';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import {
   SCREEN,
   setScreen,
@@ -16,22 +13,21 @@ import {
 
 export const useQuizActions = () => {
   const dispatch = useAppDispatch();
-  const {
-  currentCardIndex,
-  totalCards,
-} = useAppSelector(selectCurrentCardData);
+  const { currentCardIndex, totalCards } = useAppSelector(
+    selectCurrentCardData
+  );
 
   const goToMenu = () => {
     dispatch(resetUI());
   };
 
   const nextQuizCard = () => {
-  dispatch(nextCard());
+    dispatch(nextCard());
 
-  const isLastCard = currentCardIndex >= totalCards - 1;
+    const isLastCard = currentCardIndex >= totalCards - 1;
 
-  dispatch(setScreen(isLastCard ? SCREEN.FINAL : SCREEN.GAME));
-};
+    dispatch(setScreen(isLastCard ? SCREEN.FINAL : SCREEN.GAME));
+  };
 
   const restartQuiz = () => {
     dispatch(initGame());
@@ -46,10 +42,7 @@ export const useQuizActions = () => {
     dispatch(answerQuestion({ cardIndex, questionId, answer }));
   };
 
-  const toggleQuestionBonus = (
-    cardIndex: number,
-    questionId: string
-  ) => {
+  const toggleQuestionBonus = (cardIndex: number, questionId: string) => {
     dispatch(toggleBonus({ cardIndex, questionId }));
   };
 

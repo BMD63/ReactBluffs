@@ -2,9 +2,7 @@
 
 import { GAME_MODE } from '@/entities/game-mode';
 
-import type {
-  MultipleChoiceQuestionDto,
-} from '../../api/questionApi.types';
+import type { MultipleChoiceQuestionDto } from '../../api/questionApi.types';
 
 export const multipleChoiceQuestionDtos: MultipleChoiceQuestionDto[] = [
   {
@@ -20,7 +18,11 @@ export const multipleChoiceQuestionDtos: MultipleChoiceQuestionDto[] = [
     type: 'multipleChoice',
     gameMode: GAME_MODE.MULTIPLE_CHOICE,
     text: 'Кто написал роман «Сто лет одиночества»?',
-    options: ['Хорхе Луис Борхес', 'Габриэль Гарсиа Маркес', 'Марио Варгас Льоса'],
+    options: [
+      'Хорхе Луис Борхес',
+      'Габриэль Гарсиа Маркес',
+      'Марио Варгас Льоса',
+    ],
     correctAnswer: 'Габриэль Гарсиа Маркес',
   },
   {
@@ -36,7 +38,11 @@ export const multipleChoiceQuestionDtos: MultipleChoiceQuestionDto[] = [
     type: 'multipleChoice',
     gameMode: GAME_MODE.MULTIPLE_CHOICE,
     text: 'Как называется эффект, при котором время замедляется при движении на высокой скорости?',
-    options: ['Квантовая суперпозиция', 'Гравитационное линзирование', 'Релятивистское замедление времени'],
+    options: [
+      'Квантовая суперпозиция',
+      'Гравитационное линзирование',
+      'Релятивистское замедление времени',
+    ],
     correctAnswer: 'Релятивистское замедление времени',
   },
   {

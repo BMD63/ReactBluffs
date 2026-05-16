@@ -1,25 +1,14 @@
-import {
-  SCREEN,
-  setScreen,
-  setDifficulty,
-} from '@/entities/quiz-session';
-import {
-  gameModeConfig,
-} from '@/entities/game-mode';
+import { SCREEN, setScreen, setDifficulty } from '@/entities/quiz-session';
+import { gameModeConfig } from '@/entities/game-mode';
 
-import {
-  selectGameMode,
-} from '@/entities/quiz-session/model/selectors';
+import { selectGameMode } from '@/entities/quiz-session/model/selectors';
 import { selectDifficulty } from '@/entities/quiz-session/model/selectors';
 import { difficultyConfig } from '@/entities/quiz-session/model/config/difficultyConfig';
 import { Button } from '@/shared/ui/button';
-import './settings.css'
+import './settings.css';
 import { typedEntries } from '@/shared/lib/object/typedEntries';
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/shared/lib/hooks/redux';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 
 const Settings = () => {
   const dispatch = useAppDispatch();
@@ -31,24 +20,25 @@ const Settings = () => {
     ...gameModeDifficulty[difficulty],
   };
   const difficultyEntries = typedEntries(difficultyConfig).map(
-    ([key, value]) => [
-      key,
-      {
-        ...value,
-        ...gameModeDifficulty[key],
-      },
-    ] as const
+    ([key, value]) =>
+      [
+        key,
+        {
+          ...value,
+          ...gameModeDifficulty[key],
+        },
+      ] as const
   );
 
   return (
     <div className="settings">
       <h2 className="settings-title">Выбор сложности</h2>
       <div className="menu-subtext">
-        {currentDifficulty.title} • {currentDifficulty.questionsPerCard}×{currentDifficulty.manualCardsCount}
+        {currentDifficulty.title} • {currentDifficulty.questionsPerCard}×
+        {currentDifficulty.manualCardsCount}
       </div>
 
       <div className="difficulty-list">
-        
         {difficultyEntries.map(([key, value]) => (
           <div
             key={key}
@@ -61,12 +51,11 @@ const Settings = () => {
               <h3>{value.title}</h3>
             </div>
 
-            <p className="difficulty-description">
-              {value.description}
-            </p>
+            <p className="difficulty-description">{value.description}</p>
 
             <div className="difficulty-meta">
-              {value.questionsPerCard} вопросов × {value.manualCardsCount} раундов
+              {value.questionsPerCard} вопросов × {value.manualCardsCount}{' '}
+              раундов
             </div>
 
             {difficulty === key && (

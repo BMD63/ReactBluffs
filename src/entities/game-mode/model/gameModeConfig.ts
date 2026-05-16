@@ -1,7 +1,4 @@
-import {
-  GAME_MODE,
-  type GameMode,
-} from './gameModes';
+import { GAME_MODE, type GameMode } from './gameModes';
 import type { Difficulty } from '@/entities/quiz-session';
 
 type DifficultySettings = {
@@ -9,10 +6,7 @@ type DifficultySettings = {
   manualCardsCount: number;
 };
 
-type DifficultyConfig = Record<
-  Difficulty,
-  DifficultySettings
->;
+type DifficultyConfig = Record<Difficulty, DifficultySettings>;
 
 type GameModeConfig = {
   title: string;
@@ -25,14 +19,10 @@ type GameModeConfig = {
   difficulty: DifficultyConfig;
 };
 
-export const gameModeConfig: Record<
-  GameMode,
-  GameModeConfig
-> = {
+export const gameModeConfig: Record<GameMode, GameModeConfig> = {
   [GAME_MODE.BLUFF]: {
     title: 'Bluff Quiz',
-    description:
-      'Отвечайте «да» или «нет» и пытайтесь запутать соперников.',
+    description: 'Отвечайте «да» или «нет» и пытайтесь запутать соперников.',
     icon: '🎭',
     isAvailable: true,
     hasDifficulty: true,
@@ -63,8 +53,7 @@ export const gameModeConfig: Record<
 
   [GAME_MODE.MULTIPLE_CHOICE]: {
     title: 'Multiple Choice',
-    description:
-      'Выберите один правильный ответ из нескольких.',
+    description: 'Выберите один правильный ответ из нескольких.',
     icon: '🧠',
     isAvailable: true,
     hasDifficulty: true,
@@ -94,8 +83,7 @@ export const gameModeConfig: Record<
 
   [GAME_MODE.OPEN_ANSWER]: {
     title: 'Open Answer',
-    description:
-      'Текстовые, визуальные и аудио-вопросы.',
+    description: 'Текстовые, визуальные и аудио-вопросы.',
     icon: '🎧',
     isAvailable: true,
     hasDifficulty: true,

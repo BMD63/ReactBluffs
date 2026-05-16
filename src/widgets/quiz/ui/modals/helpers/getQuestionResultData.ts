@@ -4,9 +4,7 @@ import {
   type Question,
 } from '@/entities/question';
 
-import type {
-  CardAnswers,
-} from '@/entities/quiz-session/model/quizSessionModel';
+import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
 export const getQuestionResultData = (
   question: Question,
@@ -19,30 +17,17 @@ export const getQuestionResultData = (
       ? answer.answer
         ? 'Да'
         : 'Нет'
-      : answer?.answer ?? '—';
+      : (answer?.answer ?? '—');
 
   const isCorrect =
     question.type === QUESTION_TYPE.BOOLEAN
-      ? answer?.answer ===
-        question.correctAnswer
-
-      : question.type ===
-          QUESTION_TYPE.MULTIPLE_CHOICE
-        ? answer?.answer ===
-          question.correctAnswer
-
-        : question.type ===
-            QUESTION_TYPE.OPEN_TEXT
+      ? answer?.answer === question.correctAnswer
+      : question.type === QUESTION_TYPE.MULTIPLE_CHOICE
+        ? answer?.answer === question.correctAnswer
+        : question.type === QUESTION_TYPE.OPEN_TEXT
           ? question.correctAnswers
               .map(normalizeAnswer)
-              .includes(
-                normalizeAnswer(
-                  String(
-                    answer?.answer ?? ''
-                  )
-                )
-              )
-
+              .includes(normalizeAnswer(String(answer?.answer ?? '')))
           : false;
 
   const correctAnswerLabel =
@@ -50,23 +35,13 @@ export const getQuestionResultData = (
       ? question.correctAnswer
         ? 'Да'
         : 'Нет'
-
-      : question.type ===
-          QUESTION_TYPE.MULTIPLE_CHOICE
+      : question.type === QUESTION_TYPE.MULTIPLE_CHOICE
         ? question.correctAnswer
-
-        : question.type ===
-            QUESTION_TYPE.OPEN_TEXT
+        : question.type === QUESTION_TYPE.OPEN_TEXT
           ? question.correctAnswers[0]
-
           : '—';
 
-  const hasBonus =
-    Boolean(
-      answer &&
-        'bonus' in answer &&
-        answer.bonus
-    );
+  const hasBonus = Boolean(answer && 'bonus' in answer && answer.bonus);
 
   return {
     answer,

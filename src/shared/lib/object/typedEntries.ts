@@ -1,9 +1,5 @@
-export type Entries<T> = Array<
-  { [K in keyof T]: [K, T[K]] }[keyof T]
->;
+export type Entries<T> = Array<{ [K in keyof T]: [K, T[K]] }[keyof T]>;
 
-export function typedEntries<T extends object>(
-  obj: T
-): Entries<T> {
+export function typedEntries<T extends object>(obj: T): Entries<T> {
   return Object.entries(obj) as Entries<T>;
 }
