@@ -125,6 +125,17 @@
   border-color: rgba(56, 189, 248, 0.35);
 }
 
+.mode-selection__actions {
+  margin-top: 28px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.mode-selection__actions .btn {
+  width: min(100%, 220px);
+}
+
 @media (max-width: 760px) {
   .mode-selection {
     padding: 36px 20px;
@@ -136,5 +147,14 @@
 
   .mode-card {
     min-height: 240px;
+  }
+
+  .mode-selection__actions {
+    margin-top: 20px;
+  }
+
+  .mode-selection__actions .btn {
+    width: 100%;
+    max-width: none;
   }
 }
