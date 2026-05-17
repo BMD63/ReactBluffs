@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import type { OpenTextQuestion } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
-
+import { formatRoundTitle } from '@/entities/quiz-session';
 import { Button } from '@/shared/ui/button';
 
 import './quiz-card.css';
@@ -42,9 +42,7 @@ const OpenAnswerQuizCard = ({
 
   return (
     <div className="card">
-      <h2>
-        РАУНД {cardIndex + 1} ИЗ {totalCards}
-      </h2>
+      <h2>{formatRoundTitle(cardIndex, totalCards)}</h2>
 
       {cardData.map((question) => {
         const answer = userAnswers[question.id]?.answer;

@@ -29,3 +29,4 @@ export {
 
 export { initGame } from './model/thunks/initGame';
 export { initUI } from './model/thunks/initUI';
+export { formatRoundTitle } from './lib/formatRoundTitle';

@@ -1,6 +1,6 @@
 import { gameModeConfig } from '@/entities/game-mode';
 
-import { SCREEN, setScreen } from '@/entities/quiz-session';
+import { SCREEN, setScreen, setDifficulty } from '@/entities/quiz-session';
 
 import { initGame } from '@/entities/quiz-session/model/thunks/initGame';
 import {
@@ -59,7 +59,10 @@ const GameModeMenu = () => {
         <Button
           variant="menu"
           className="btn--back"
-          onClick={() => dispatch(setScreen(SCREEN.MODE_SELECTION))}
+          onClick={() => {
+            dispatch(setDifficulty('medium'));
+            dispatch(setScreen(SCREEN.MODE_SELECTION));
+          }}
         >
           ← Назад
         </Button>
