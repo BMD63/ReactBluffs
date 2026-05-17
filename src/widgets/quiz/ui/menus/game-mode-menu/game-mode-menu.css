@@ -1,7 +1,11 @@
 .game-mode-menu {
+  position: relative;
+  overflow: hidden;
+
   width: 100%;
   max-width: min(860px, calc(100vw - 24px));
   min-width: 0;
+
   margin: 0 auto;
   padding: 48px;
 
@@ -12,40 +16,84 @@
 
   color: var(--color-text);
 
-  background: linear-gradient(
-    135deg,
-    var(--color-surface-strong),
-    var(--color-surface)
-  );
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(56, 189, 248, 0.12),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(168, 85, 247, 0.12),
+      transparent 36%
+    ),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.74));
 
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
 
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
+  border-radius: 32px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
 
   box-shadow:
-    var(--shadow-card),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 30px 80px rgba(0, 0, 0, 0.42),
+    0 0 80px rgba(56, 189, 248, 0.08);
+}
+
+.game-mode-menu::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent),
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 34%);
+
+  opacity: 0.5;
 }
 
 .menu-title {
+  position: relative;
+  z-index: 1;
+
   margin: 0;
 
-  font-size: clamp(48px, 8vw, 84px);
-  line-height: 0.95;
-  color: var(--color-text);
-  letter-spacing: 2px;
+  font-size: clamp(56px, 8vw, 92px);
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+
+  background: linear-gradient(
+    135deg,
+    #7dd3fc 0%,
+    #38bdf8 28%,
+    #818cf8 62%,
+    #e879f9 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
 
   text-shadow:
-    0 0 10px rgba(56, 189, 248, 0.6),
-    0 0 20px rgba(56, 189, 248, 0.3);
+    0 0 16px rgba(56, 189, 248, 0.48),
+    0 0 44px rgba(168, 85, 247, 0.22);
 }
 
 .menu-actions {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 14px;
   width: 100%;
 }
@@ -53,17 +101,59 @@
 .menu-actions .btn {
   width: 100%;
   max-width: 320px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.04)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 24px rgba(56, 189, 248, 0.08);
+
+  backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.menu-actions .btn:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(56, 189, 248, 0.4);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+
+  box-shadow:
+    0 0 24px rgba(56, 189, 248, 0.16),
+    0 0 40px rgba(168, 85, 247, 0.08);
 }
 
 .menu-card-content {
   min-width: 0;
+
   display: flex;
   flex-direction: column;
 }
 
 .menu-subtext {
+  margin-top: 2px;
+
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: rgba(248, 250, 252, 0.62);
+
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -71,6 +161,7 @@
 @media (max-width: 720px) {
   .game-mode-menu {
     max-width: calc(100vw - 24px);
+
     padding: 28px 16px;
 
     grid-template-columns: 1fr;
@@ -84,9 +175,21 @@
   }
 }
 
+@media (max-width: 430px) {
+  .game-mode-menu {
+    padding: 28px 18px;
+    gap: 28px;
+  }
+
+  .menu-title {
+    margin-bottom: 4px;
+  }
+}
+
 @media (max-width: 340px) {
   .game-mode-menu {
     padding: 24px 12px;
+
     max-width: calc(100vw - 16px);
   }
 
@@ -101,16 +204,5 @@
   .menu-actions .btn {
     padding-left: 12px;
     padding-right: 12px;
-  }
-}
-
-@media (max-width: 430px) {
-  .game-mode-menu {
-    padding: 28px 18px;
-    gap: 28px;
-  }
-
-  .menu-title {
-    margin-bottom: 4px;
   }
 }
