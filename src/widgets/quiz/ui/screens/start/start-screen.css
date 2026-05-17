@@ -1,7 +1,7 @@
 .start-screen {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-betweencenter;
 
   width: min(100%, 980px);
   min-height: min(720px, calc(100vh - 48px));
@@ -305,7 +305,7 @@
 
 @media (max-width: 760px) {
   .start-screen {
-    min-height: calc(100vh - 48px);
+    height: calc(100vh - 48px);
     padding: 10px 14px 16px;
     gap: 8px;
   }

@@ -24,11 +24,7 @@ const ModeSelectionScreen = ({
       <div className="mode-selection__header">
         <p className="mode-selection__eyebrow">ReactBluffs</p>
 
-        <h1 className="mode-selection__title">Выберите режим игры</h1>
-
-        <p className="mode-selection__description">
-          Каждый режим предлагает свой стиль вопросов и правила.
-        </p>
+        <h1 className="mode-selection__title">Выберите игру</h1>
       </div>
 
       <div className="mode-selection__grid">
