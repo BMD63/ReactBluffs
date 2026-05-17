@@ -60,32 +60,37 @@ This project focuses not only on gameplay, but also on frontend architecture and
 ```bash
 npm run dev
 ```
-Start local development server.
 
+Start local development server.
 
 ```bash
 npm run build
 ```
+
 Create production build.
 
 ```bash
 npm run test:run
 ```
+
 Run unit tests once.
 
 ```bash
 npm run lint
 ```
+
 Run ESLint.
 
 ```bash
 npm run format
 ```
+
 Format project with Prettier.
 
 ```bash
 npm run check
 ```
+
 Run formatting check, lint, tests, typecheck and production build.
 
 ## Development Status
@@ -104,7 +109,6 @@ fuzzy matching for open answers;
 ad/intermission screen;
 backend and content management;
 installable PWA version.
-
 
 ## License
 
