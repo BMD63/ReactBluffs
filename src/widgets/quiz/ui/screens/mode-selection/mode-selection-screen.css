@@ -318,8 +318,8 @@
     column-gap: 14px;
     row-gap: 10px;
 
-    min-height: 168px;
-    padding: 16px 14px;
+    min-height: 136px;
+    padding: 12px 14px;
 
     text-align: left;
   }
@@ -327,12 +327,12 @@
   .mode-card__icon {
     grid-area: icon;
 
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
 
     border-radius: 18px;
 
-    font-size: 50px;
+    font-size: 38px;
 
     box-shadow:
       0 0 28px rgba(56, 189, 248, 0.22),
