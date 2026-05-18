@@ -281,14 +281,15 @@
 
 @media (max-width: 760px) {
   .mode-selection {
-    padding: 28px 16px 20px;
-    height: calc(100vh - 48px);
+    padding: 18px 16px 16px;
+    height: calc(100dvh - 48px);
+    justify-content: flex-start;
     border-radius: 28px;
   }
 
   .mode-selection__header {
-    margin: 0 auto 36px;
-    transform: translateY(-8px);
+    margin: 0 auto 18px;
+    transform: none;
   }
 
   .mode-selection__eyebrow {
