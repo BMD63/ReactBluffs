@@ -332,6 +332,12 @@
     grid-template-columns: 1fr 1fr;
   }
 
+  .controls .btn--answer:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 0.5rem);
+  }
+
   .bonus-label {
     grid-column: 1 / -1;
     margin-left: 0;
