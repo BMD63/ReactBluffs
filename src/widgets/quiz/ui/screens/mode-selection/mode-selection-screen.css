@@ -303,7 +303,7 @@
 
   .mode-selection__grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
   }
 
   .mode-card {
@@ -365,7 +365,7 @@
   }
 
   .mode-selection__actions {
-    margin-top: 18px;
+    margin-top: 10px;
   }
 
   .mode-selection__actions .btn {
