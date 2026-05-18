@@ -317,7 +317,7 @@
   }
 
   .start-screen__title {
-    font-size: clamp(44px, 15vw, 64px);
+    font-size: clamp(40px, 13vw, 56px);
     line-height: 0.9;
     margin-top: -4px;
   }
@@ -373,7 +373,7 @@
   }
 
   .start-screen__visual-image-wrapper {
-    width: min(96vw, 360px);
+    width: min(72vw, 280px);
   }
 
   .start-screen__cta {
