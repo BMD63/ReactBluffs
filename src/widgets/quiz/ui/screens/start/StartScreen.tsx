@@ -1,5 +1,5 @@
 import { Button } from '@/shared/ui/button';
-import startImage from '@/shared/assets/images/startImage.png';
+import startImage from '@/shared/assets/images/startImage.webp';
 import './start-screen.css';
 
 type StartScreenProps = {
