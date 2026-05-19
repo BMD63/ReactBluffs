@@ -58,54 +58,54 @@ const QuizPage = () => {
   };
 
   return (
-  <div className="app">
-    <div
-      style={{
-        position: 'fixed',
-        left: 8,
-        bottom: 8,
-        zIndex: 9999,
-        padding: '6px 8px',
-        borderRadius: 8,
-        background: 'rgba(0,0,0,0.75)',
-        color: 'white',
-        fontSize: 12,
-        lineHeight: 1.3,
-      }}
-    >
-      {`inner: ${window.innerWidth}×${window.innerHeight}`}
-      <br />
-      {`visual: ${Math.round(window.visualViewport?.width ?? 0)}×${Math.round(
-        window.visualViewport?.height ?? 0
-      )}`}
-      <br />
-      {`dpr: ${window.devicePixelRatio}`}
-    </div>
+    <div className="app">
+      <div
+        style={{
+          position: 'fixed',
+          left: 8,
+          bottom: 8,
+          zIndex: 9999,
+          padding: '6px 8px',
+          borderRadius: 8,
+          background: 'rgba(0,0,0,0.75)',
+          color: 'white',
+          fontSize: 12,
+          lineHeight: 1.3,
+        }}
+      >
+        {`inner: ${window.innerWidth}×${window.innerHeight}`}
+        <br />
+        {`visual: ${Math.round(window.visualViewport?.width ?? 0)}×${Math.round(
+          window.visualViewport?.height ?? 0
+        )}`}
+        <br />
+        {`dpr: ${window.devicePixelRatio}`}
+      </div>
 
-    <div className="screen-transition" key={screen}>
-      <QuizScreen
-        screen={screen}
-        currentCard={currentCard}
-        currentCardAnswers={currentCardAnswers}
-        currentCardIndex={currentCardIndex}
-        totalCards={totalCards}
-        currentCardScore={currentCardScore}
-        totalScore={totalScore}
-        gameMode={gameMode}
-        onAnswer={answerQuizQuestion}
-        onBonus={toggleQuestionBonus}
-        onSubmit={submitQuizCard}
-        onRestart={restartQuiz}
-        onRulesClose={closeRules}
-        onNextCard={nextQuizCard}
-        onGoToMenu={goToMenu}
-        onStart={handleStart}
-        onSelectMode={handleSelectMode}
-        onBackToStart={handleBackToStart}
-      />
+      <div className="screen-transition" key={screen}>
+        <QuizScreen
+          screen={screen}
+          currentCard={currentCard}
+          currentCardAnswers={currentCardAnswers}
+          currentCardIndex={currentCardIndex}
+          totalCards={totalCards}
+          currentCardScore={currentCardScore}
+          totalScore={totalScore}
+          gameMode={gameMode}
+          onAnswer={answerQuizQuestion}
+          onBonus={toggleQuestionBonus}
+          onSubmit={submitQuizCard}
+          onRestart={restartQuiz}
+          onRulesClose={closeRules}
+          onNextCard={nextQuizCard}
+          onGoToMenu={goToMenu}
+          onStart={handleStart}
+          onSelectMode={handleSelectMode}
+          onBackToStart={handleBackToStart}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
   // return (
   //   <div className="app">
   //     <div className="screen-transition" key={screen}>
