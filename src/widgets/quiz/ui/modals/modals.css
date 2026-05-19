@@ -28,7 +28,7 @@
   width: min(92vw, 640px);
   max-width: 640px;
 
-  padding: 28px 24px;
+  padding: 20px 24px;
   border-radius: 16px;
 
   color: var(--color-text);
@@ -88,14 +88,13 @@
 }
 
 .answers-list {
-  max-height: 60vh;
+  max-height: 46vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 .answer-item {
-  margin-top: 1rem;
+  padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 

@@ -283,6 +283,7 @@
   .mode-selection {
     padding: 18px 16px 16px;
     height: calc(100vh - 48px);
+    max-height: calc(100vh - 48px);
     justify-content: flex-start;
     border-radius: 28px;
   }
