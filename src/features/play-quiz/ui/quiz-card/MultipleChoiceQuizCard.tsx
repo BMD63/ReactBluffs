@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import type { MultipleChoiceQuestion } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
-
+import { formatRoundTitle } from '@/entities/quiz-session';
 import { Button } from '@/shared/ui/button';
 
 import './quiz-card.css';
@@ -37,38 +37,9 @@ const MultipleChoiceQuizCard = ({
     window.scrollTo(0, 0);
   }, [cardIndex]);
 
-  const stringCartIndexes = [
-    'ПЕРВЫЙ',
-    'ВТОРОЙ',
-    'ТРЕТИЙ',
-    'ЧЕТВЕРТЫЙ',
-    'ПЯТЫЙ',
-    'ШЕСТОЙ',
-    'СЕДМОЙ',
-    'ВОСЬМОЙ',
-    'ДЕВЯТЫЙ',
-    'ДЕСЯТЫЙ',
-  ];
-
-  const stringTotalCards = [
-    'ОДНОЙ',
-    'ДВУХ',
-    'ТРЕХ',
-    'ЧЕТЫРЕХ',
-    'ПЯТИ',
-    'ШЕСТИ',
-    'СЕМИ',
-    'ВОСЬМИ',
-    'ДЕВЯТИ',
-    'ДЕСЯТИ',
-  ];
-
   return (
     <div className="card">
-      <h2>
-        РАУНД {stringCartIndexes[cardIndex]} ИЗ{' '}
-        {stringTotalCards[totalCards - 1]}
-      </h2>
+      <h2>{formatRoundTitle(cardIndex, totalCards)}</h2>
 
       {cardData.map((question) => (
         <div key={question.id} className="question">

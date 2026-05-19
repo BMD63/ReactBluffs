@@ -24,12 +24,17 @@
 .modal {
   position: relative;
   overflow: hidden;
-
+  height: calc(100vh - 48px);
+  max-height: calc(100vh - 48px);
   width: min(92vw, 640px);
   max-width: 640px;
 
   padding: 20px 24px;
   border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   color: var(--color-text);
 
@@ -94,6 +99,11 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.rules-list {
+  max-height: none;
+}
+
 .answer-item {
   padding: 14px 14px;
   border: 1px solid rgba(56, 189, 248, 0.16);
@@ -129,7 +139,7 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 16px;
   width: 100%;
 }
 

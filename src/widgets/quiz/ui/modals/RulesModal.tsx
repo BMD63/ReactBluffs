@@ -20,13 +20,20 @@ const RulesModal = ({ isOpen, gameMode, onClose }: RulesModalProps) => {
       <div className="modal">
         <h2>Правила: {config.title}</h2>
 
-        <div className="answers-list">
-          {config.rules.map((rule) => (
-            <p key={rule}>{rule}</p>
+        <div className="answers-list rules-list">
+          {config.rules.map((rule, index) => (
+            <div key={rule} className="answer-item">
+              <p>
+                <strong>{index + 1}.</strong> {rule}
+              </p>
+            </div>
           ))}
         </div>
-
-        <Button onClick={onClose}>Назад</Button>
+        <div className="modal-actions">
+          <Button variant="primary" onClick={onClose}>
+            Назад
+          </Button>
+        </div>
       </div>
     </div>
   );
