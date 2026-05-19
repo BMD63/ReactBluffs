@@ -46,3 +46,5 @@ export { calculateMultipleChoiceCardScore } from './lib/scoring/calculateMultipl
 export { calculateOpenAnswerCardScore } from './lib/scoring/calculateOpenAnswerCardScore';
 
 export { normalizeAnswer } from './lib/normalizeAnswer';
+
+export { isAnswerAccepted } from './lib/isAnswerAccepted';

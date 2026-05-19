@@ -1,6 +1,6 @@
 import {
   QUESTION_TYPE,
-  normalizeAnswer,
+  isAnswerAccepted,
   type Question,
 } from '@/entities/question';
 
@@ -25,9 +25,10 @@ export const getQuestionResultData = (
       : question.type === QUESTION_TYPE.MULTIPLE_CHOICE
         ? answer?.answer === question.correctAnswer
         : question.type === QUESTION_TYPE.OPEN_TEXT
-          ? question.correctAnswers
-              .map(normalizeAnswer)
-              .includes(normalizeAnswer(String(answer?.answer ?? '')))
+          ? isAnswerAccepted({
+              userAnswer: String(answer?.answer ?? ''),
+              correctAnswers: question.correctAnswers,
+            })
           : false;
 
   const correctAnswerLabel =

@@ -2,7 +2,7 @@ import type { OpenTextQuestion } from '../../model/questionTypes';
 
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
 
-import { normalizeAnswer } from '../normalizeAnswer';
+import { isAnswerAccepted } from '../isAnswerAccepted';
 
 export const calculateOpenAnswerCardScore = (
   card: OpenTextQuestion[],
@@ -17,12 +17,12 @@ export const calculateOpenAnswerCardScore = (
       return;
     }
 
-    const normalizedUserAnswer = normalizeAnswer(userAnswer.answer);
-
-    const normalizedCorrectAnswers =
-      question.correctAnswers.map(normalizeAnswer);
-
-    if (normalizedCorrectAnswers.includes(normalizedUserAnswer)) {
+    if (
+      isAnswerAccepted({
+        userAnswer: userAnswer.answer,
+        correctAnswers: question.correctAnswers,
+      })
+    ) {
       score += 1;
     }
   });
