@@ -243,6 +243,23 @@
   text-transform: uppercase;
 }
 
+.modal--final {
+  height: auto;
+  min-height: auto;
+  max-height: calc(100vh - 48px);
+  justify-content: center;
+}
+
+.modal--final .final-result-card {
+  margin: 0 auto 28px;
+}
+
+.modal--final .modal-actions {
+  margin-top: 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 @media (max-width: 560px) {
   .modal-actions {
     flex-direction: column;

@@ -7,6 +7,8 @@ type BaseQuestionDto = {
   type: QuestionType;
   gameMode: GameMode;
   text: string;
+  category?: string;
+  media?: QuestionMediaDto;
 };
 
 export type BooleanQuestionDto = BaseQuestionDto & {
@@ -25,7 +27,8 @@ export type MultipleChoiceQuestionDto = BaseQuestionDto & {
 export type OpenTextQuestionDto = BaseQuestionDto & {
   type: 'openText';
   gameMode: 'openAnswer';
-  correctAnswers: string[];
+  answer: string;
+  aliases?: string[];
 };
 
 export type ImageQuestionDto = BaseQuestionDto & {
@@ -48,6 +51,12 @@ export type QuestionDto =
   | OpenTextQuestionDto
   | ImageQuestionDto
   | AudioQuestionDto;
+
+export type QuestionMediaDto = {
+  type: 'image' | 'audio';
+  url: string;
+  alt?: string;
+};
 
 export type GetQuestionsParams = {
   gameMode: GameMode;

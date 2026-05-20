@@ -18,7 +18,7 @@ const FinalResultsModal = ({
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <div className="modal modal--final">
         <div className="final-result-card">
           <h2 className="final-result-title">Итоговый результат</h2>
 
