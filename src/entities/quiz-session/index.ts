@@ -25,6 +25,8 @@ export {
   selectIsFinished,
   selectTotalScore,
   selectGameMode,
+  selectIsLoading,
+  selectError,
 } from './model/selectors';
 
 export { initGame } from './model/thunks/initGame';

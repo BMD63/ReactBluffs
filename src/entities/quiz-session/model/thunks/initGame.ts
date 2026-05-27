@@ -3,19 +3,29 @@ import { gameModeConfig } from '@/entities/game-mode';
 import { questionApi } from '@/entities/question/api/questionApi';
 import { generateCards } from '../generateCards';
 import { resetGame, setCards } from '../quizSessionSlice';
+import { setError, setLoading } from '../quizUISlice';
 
 export const initGame =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(resetGame());
+    dispatch(setLoading(true));
+    dispatch(setError(null));
 
-    const state = getState();
-    const { difficulty, gameMode } = state.quizUI;
-    const config = gameModeConfig[gameMode].difficulty[difficulty];
+    try {
+      const state = getState();
+      const { difficulty, gameMode } = state.quizUI;
+      const config = gameModeConfig[gameMode].difficulty[difficulty];
 
-    const questions = await questionApi.getQuestions({
-      gameMode,
-    });
-    const cards = generateCards(questions, config);
+      const questions = await questionApi.getQuestions({
+        gameMode,
+      });
 
-    dispatch(setCards(cards));
+      const cards = generateCards(questions, config);
+
+      dispatch(setCards(cards));
+    } catch {
+      dispatch(setError('Не удалось загрузить вопросы'));
+    } finally {
+      dispatch(setLoading(false));
+    }
   };

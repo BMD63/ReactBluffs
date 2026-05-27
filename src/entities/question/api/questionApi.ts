@@ -1,3 +1,3 @@
-import { mockQuestionApi } from './mockQuestionApi';
+import { httpQuestionApi } from './httpQuestionApi';
 
-export const questionApi = mockQuestionApi;
+export const questionApi = httpQuestionApi;

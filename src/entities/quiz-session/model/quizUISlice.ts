@@ -7,12 +7,16 @@ type QuizUIState = {
   currentScreen: Screen;
   difficulty: Difficulty;
   gameMode: GameMode;
+  isLoading: boolean;
+  error: string | null;
 };
 
 const initialState: QuizUIState = {
   difficulty: DIFFICULTY.MEDIUM,
   currentScreen: SCREEN.START,
   gameMode: GAME_MODE.BLUFF,
+  isLoading: false,
+  error: null,
 };
 
 const quizUISlice = createSlice({
@@ -31,10 +35,22 @@ const quizUISlice = createSlice({
     setGameMode(state, action: PayloadAction<GameMode>) {
       state.gameMode = action.payload;
     },
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.isLoading = action.payload;
+    },
+    setError(state, action: PayloadAction<string | null>) {
+      state.error = action.payload;
+    },
   },
 });
 
-export const { setDifficulty, setScreen, resetUI, setGameMode } =
-  quizUISlice.actions;
+export const {
+  setDifficulty,
+  setScreen,
+  resetUI,
+  setGameMode,
+  setLoading,
+  setError,
+} = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

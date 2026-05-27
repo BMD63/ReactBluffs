@@ -21,6 +21,10 @@ export const selectScreen = (state: RootState) => state.quizUI.currentScreen;
 
 export const selectGameMode = (state: RootState) => state.quizUI.gameMode;
 
+export const selectIsLoading = (state: RootState) => state.quizUI.isLoading;
+
+export const selectError = (state: RootState) => state.quizUI.error;
+
 export const selectCurrentCardData = createSelector(
   [selectCards, selectCurrentCardIndex, selectAnswersByCard],
   (cards = [], currentCardIndex = 0, answersByCard = []) => {

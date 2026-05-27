@@ -14,6 +14,8 @@ import {
   selectCurrentCardData,
   selectTotalScore,
   selectGameMode,
+  selectIsLoading,
+  selectError,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -33,6 +35,8 @@ const QuizPage = () => {
 
   const gameMode = useAppSelector(selectGameMode);
   const screen = useAppSelector(selectScreen);
+  const isLoading = useAppSelector(selectIsLoading);
+  const error = useAppSelector(selectError);
   const currentCardScore = useAppSelector(selectCurrentCardScore);
 
   const { currentCard, currentCardAnswers, currentCardIndex, totalCards } =
@@ -41,7 +45,6 @@ const QuizPage = () => {
   const totalScore = useAppSelector(selectTotalScore);
 
   useEffect(() => {
-    dispatch(initGame());
     dispatch(initUI());
   }, [dispatch]);
 
@@ -56,6 +59,41 @@ const QuizPage = () => {
   const handleBackToStart = () => {
     dispatch(setScreen(SCREEN.START));
   };
+
+  if (isLoading) {
+    return (
+      <div className="app">
+        <div className="screen-transition">
+          <div className="modal">
+            <h2>Загружаем вопросы...</h2>
+            <p>Готовим раунд</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="app">
+        <div className="screen-transition">
+          <div className="modal">
+            <h2>Ошибка</h2>
+
+            <p>{error}</p>
+
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => dispatch(initGame())}
+            >
+              Попробовать снова
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app">

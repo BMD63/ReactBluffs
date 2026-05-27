@@ -60,6 +60,7 @@ export type QuestionMediaDto = {
 
 export type GetQuestionsParams = {
   gameMode: GameMode;
+  category?: string;
 };
 
 export type GetQuestionsResponse = Question[];

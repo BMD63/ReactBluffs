@@ -1,0 +1,435 @@
+import { useEffect, useState } from 'react';
+import AdminToolbar from './AdminToolbar';
+import QuestionList from './QuestionList';
+import QuestionCreateForm from './QuestionCreateForm';
+import { useAdminQuestions } from '../model/useAdminQuestions';
+import type {
+  AdminQuestion,
+  AdminQuestionType,
+  FieldErrors,
+} from './admin.types';
+type QuestionFormValues = {
+  questionText: string;
+  answer: string;
+  aliases: string;
+  booleanAnswer: string;
+  option1: string;
+  option2: string;
+  option3: string;
+  multipleChoiceAnswer: string;
+};
+import './AdminPage.css';
+
+const ADMIN_TOKEN_STORAGE_KEY = 'quiz-admin-token';
+
+const AdminPage = () => {
+  const [formValues, setFormValues] = useState<QuestionFormValues>({
+    questionText: '',
+    answer: '',
+    aliases: '',
+    booleanAnswer: 'true',
+    option1: '',
+    option2: '',
+    option3: '',
+    multipleChoiceAnswer: '',
+  });
+
+  const [password, setPassword] = useState('');
+
+  const [questionType, setQuestionType] = useState<AdminQuestionType | null>(
+    null
+  );
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const [status, setStatus] = useState<string | null>(null);
+  const [isSavingQuestion, setIsSavingQuestion] = useState(false);
+  const [isCloseConfirmOpen, setIsCloseConfirmOpen] = useState(false);
+
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(
+    null
+  );
+  const [editingQuestionId, setEditingQuestionId] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!status) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setStatus(null);
+    }, 5000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [status]);
+
+  const adminToken = sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY);
+  const isUnlocked = Boolean(adminToken);
+  const { questions, setQuestions, deleteQuestion, saveQuestion } =
+    useAdminQuestions({
+      isUnlocked,
+      adminToken,
+      onStatusChange: setStatus,
+    });
+
+  const [initialFormValues, setInitialFormValues] =
+    useState<QuestionFormValues | null>(null);
+
+  const hasUnsavedChanges =
+    initialFormValues !== null &&
+    JSON.stringify(formValues) !== JSON.stringify(initialFormValues);
+
+  const updateFormValue = (field: keyof QuestionFormValues, value: string) => {
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [field]: value,
+    }));
+  };
+  const resetForm = () => {
+    setFormValues({
+      questionText: '',
+      answer: '',
+      aliases: '',
+      booleanAnswer: 'true',
+      option1: '',
+      option2: '',
+      option3: '',
+      multipleChoiceAnswer: '',
+    });
+  };
+
+  const handleUnlock = () => {
+    if (!password.trim()) {
+      return;
+    }
+
+    sessionStorage.setItem(ADMIN_TOKEN_STORAGE_KEY, password.trim());
+
+    window.location.reload();
+  };
+
+  const buildQuestionPayload = () => {
+    if (questionType === 'openText') {
+      return {
+        id: editingQuestionId ?? crypto.randomUUID(),
+        type: 'openText',
+        gameMode: 'openAnswer',
+        text: formValues.questionText,
+        answer: formValues.answer,
+        aliases: formValues.aliases
+          .split('\n')
+          .map((alias) => alias.trim())
+          .filter(Boolean),
+        category: 'general',
+      };
+    }
+
+    if (questionType === 'boolean') {
+      return {
+        id: editingQuestionId ?? crypto.randomUUID(),
+        type: 'boolean',
+        gameMode: 'bluff',
+        text: formValues.questionText,
+        correctAnswer: formValues.booleanAnswer === 'true',
+        category: 'general',
+      };
+    }
+
+    return {
+      id: editingQuestionId ?? crypto.randomUUID(),
+      type: 'multipleChoice',
+      gameMode: 'multipleChoice',
+      text: formValues.questionText,
+      options: [formValues.option1, formValues.option2, formValues.option3],
+      correctAnswer: formValues.multipleChoiceAnswer,
+      category: 'general',
+    };
+  };
+
+  const handleCreateQuestion = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    setFieldErrors({});
+
+    if (!adminToken) {
+      return;
+    }
+
+    setStatus('Creating question...');
+    setIsSavingQuestion(true);
+
+    try {
+      const result = await saveQuestion({
+        questionPayload: buildQuestionPayload(),
+        isEditing: Boolean(editingQuestionId),
+      });
+
+      if (!result.ok) {
+        const errors = Object.fromEntries(
+          (result.details ?? [])
+            .filter((issue: { path?: string[] }) => issue.path?.[0])
+            .map((issue: { path: string[]; message: string }) => [
+              issue.path[0],
+              issue.message,
+            ])
+        );
+
+        setFieldErrors(errors);
+        setStatus(result.error);
+
+        return;
+      }
+
+      setFormValues({
+        questionText: '',
+        answer: '',
+        aliases: '',
+        booleanAnswer: 'true',
+        option1: '',
+        option2: '',
+        option3: '',
+        multipleChoiceAnswer: '',
+      });
+
+      setEditingQuestionId(null);
+      setIsCreateFormOpen(false);
+      setIsCloseConfirmOpen(false);
+
+      setStatus(editingQuestionId ? 'Question updated!' : 'Question created!');
+    } finally {
+      setIsSavingQuestion(false);
+    }
+  };
+
+  const handleResetForm = () => {
+    setFieldErrors({});
+    setStatus(null);
+
+    setFormValues(
+      initialFormValues ?? {
+        questionText: '',
+        answer: '',
+        aliases: '',
+        booleanAnswer: 'true',
+        option1: '',
+        option2: '',
+        option3: '',
+        multipleChoiceAnswer: '',
+      }
+    );
+  };
+
+  const handleToolbarToggle = () => {
+    if (!isCreateFormOpen) {
+      const emptyValues = {
+        questionText: '',
+        answer: '',
+        aliases: '',
+        booleanAnswer: 'true',
+        option1: '',
+        option2: '',
+        option3: '',
+        multipleChoiceAnswer: '',
+      };
+
+      setEditingQuestionId(null);
+      setFieldErrors({});
+      setStatus(null);
+      setFormValues(emptyValues);
+      setInitialFormValues(emptyValues);
+      setIsCreateFormOpen(true);
+
+      return;
+    }
+
+    if (!hasUnsavedChanges) {
+      closeQuestionForm();
+
+      return;
+    }
+
+    setIsCloseConfirmOpen(true);
+  };
+
+  // ***   JSX   ***
+
+  if (!isUnlocked) {
+    return (
+      <div className="app">
+        <div className="modal">
+          <h1>Admin Access</h1>
+          <input
+            type="password"
+            placeholder="Enter admin password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+
+          <button type="button" onClick={handleUnlock}>
+            Unlock
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+
+  const filteredQuestions = questions.filter((question) => {
+    const matchesType = question.type === questionType;
+
+    if (!normalizedSearchQuery) {
+      return matchesType;
+    }
+
+    return (
+      matchesType && question.text.toLowerCase().includes(normalizedSearchQuery)
+    );
+  });
+
+  const fillFormForEditing = (question: AdminQuestion) => {
+    setFormValues(createFormValuesFromQuestion(question));
+  };
+
+  const closeQuestionForm = () => {
+    setEditingQuestionId(null);
+    setIsCreateFormOpen(false);
+    setFieldErrors({});
+    setStatus(null);
+    resetForm();
+    setIsCloseConfirmOpen(false);
+  };
+
+  const createFormValuesFromQuestion = (
+    question: AdminQuestion
+  ): QuestionFormValues => ({
+    questionText: question.text,
+    answer: question.answer ?? '',
+    aliases: question.aliases?.join('\n') ?? '',
+    booleanAnswer: question.correctAnswer === true ? 'true' : 'false',
+    option1: question.options?.[0] ?? '',
+    option2: question.options?.[1] ?? '',
+    option3: question.options?.[2] ?? '',
+    multipleChoiceAnswer:
+      typeof question.correctAnswer === 'string' ? question.correctAnswer : '',
+  });
+
+  const handleEditQuestion = (questionId: string) => {
+    const questionToEdit = questions.find(
+      (question) => question.id === questionId
+    );
+
+    if (!questionToEdit) {
+      return;
+    }
+
+    setEditingQuestionId(questionId);
+    setQuestionType(questionToEdit.type);
+    setIsCreateFormOpen(true);
+    fillFormForEditing(questionToEdit);
+    setInitialFormValues(createFormValuesFromQuestion(questionToEdit));
+  };
+
+  return (
+    <div className="app">
+      <div className="modal">
+        <h1>Admin</h1>
+        {status && <p className="admin-status">{status}</p>}
+        <AdminToolbar
+          questionType={questionType}
+          isCreateFormOpen={isCreateFormOpen}
+          onQuestionTypeChange={(type) => {
+            setQuestionType(type);
+            setSearchQuery('');
+            setIsCreateFormOpen(false);
+          }}
+          onAddQuestion={handleToolbarToggle}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+        {questionType && (
+          <>
+            {isCreateFormOpen && (
+              <QuestionCreateForm
+                questionType={questionType}
+                questionText={formValues.questionText}
+                answer={formValues.answer}
+                aliases={formValues.aliases}
+                booleanAnswer={formValues.booleanAnswer}
+                option1={formValues.option1}
+                option2={formValues.option2}
+                option3={formValues.option3}
+                multipleChoiceAnswer={formValues.multipleChoiceAnswer}
+                fieldErrors={fieldErrors}
+                isEditing={Boolean(editingQuestionId)}
+                isSaving={isSavingQuestion}
+                onQuestionTextChange={(value) =>
+                  updateFormValue('questionText', value)
+                }
+                onAnswerChange={(value) => updateFormValue('answer', value)}
+                onAliasesChange={(value) => updateFormValue('aliases', value)}
+                onBooleanAnswerChange={(value) =>
+                  updateFormValue('booleanAnswer', value)
+                }
+                onOption1Change={(value) => updateFormValue('option1', value)}
+                onOption2Change={(value) => updateFormValue('option2', value)}
+                onOption3Change={(value) => updateFormValue('option3', value)}
+                onMultipleChoiceAnswerChange={(value) =>
+                  updateFormValue('multipleChoiceAnswer', value)
+                }
+                onSubmit={handleCreateQuestion}
+                onReset={handleResetForm}
+              />
+            )}
+
+            {isCloseConfirmOpen && (
+              <div className="admin-confirm">
+                <p>Discard changes?</p>
+
+                <div className="admin-confirm-actions">
+                  <button type="submit" form="admin-question-form">
+                    Save and close
+                  </button>
+
+                  <button type="button" onClick={closeQuestionForm}>
+                    Close without saving
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsCloseConfirmOpen(false)}
+                  >
+                    Back to editor
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <hr />
+
+            <QuestionList
+              questions={filteredQuestions}
+              expandedQuestionId={expandedQuestionId}
+              onToggleDetails={(questionId) =>
+                setExpandedQuestionId(
+                  expandedQuestionId === questionId ? null : questionId
+                )
+              }
+              onDelete={deleteQuestion}
+              onEdit={handleEditQuestion}
+            />
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AdminPage;
