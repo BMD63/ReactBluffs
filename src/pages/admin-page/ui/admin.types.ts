@@ -12,3 +12,14 @@ export type AdminQuestion = {
   aliases?: string[];
   options?: string[];
 };
+
+export type QuestionFormValues = {
+  questionText: string;
+  answer: string;
+  aliases: string;
+  booleanAnswer: string;
+  option1: string;
+  option2: string;
+  option3: string;
+  multipleChoiceAnswer: string;
+};

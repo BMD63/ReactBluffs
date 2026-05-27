@@ -2,38 +2,16 @@ import { useEffect, useState } from 'react';
 import AdminToolbar from './AdminToolbar';
 import QuestionList from './QuestionList';
 import QuestionCreateForm from './QuestionCreateForm';
+import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model/useAdminQuestions';
-import type {
-  AdminQuestion,
-  AdminQuestionType,
-  FieldErrors,
-} from './admin.types';
-type QuestionFormValues = {
-  questionText: string;
-  answer: string;
-  aliases: string;
-  booleanAnswer: string;
-  option1: string;
-  option2: string;
-  option3: string;
-  multipleChoiceAnswer: string;
-};
+import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
+import type { AdminQuestionType, FieldErrors } from './admin.types';
+
 import './AdminPage.css';
 
 const ADMIN_TOKEN_STORAGE_KEY = 'quiz-admin-token';
 
 const AdminPage = () => {
-  const [formValues, setFormValues] = useState<QuestionFormValues>({
-    questionText: '',
-    answer: '',
-    aliases: '',
-    booleanAnswer: 'true',
-    option1: '',
-    option2: '',
-    option3: '',
-    multipleChoiceAnswer: '',
-  });
-
   const [password, setPassword] = useState('');
 
   const [questionType, setQuestionType] = useState<AdminQuestionType | null>(
@@ -53,6 +31,16 @@ const AdminPage = () => {
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(
     null
   );
+
+  const {
+    formValues,
+    hasUnsavedChanges,
+    updateFormValue,
+    resetForm,
+    loadFormValues,
+    resetToInitialFormValues,
+    openEmptyForm,
+  } = useQuestionEditor();
 
   useEffect(() => {
     if (!status) {
@@ -76,32 +64,6 @@ const AdminPage = () => {
       adminToken,
       onStatusChange: setStatus,
     });
-
-  const [initialFormValues, setInitialFormValues] =
-    useState<QuestionFormValues | null>(null);
-
-  const hasUnsavedChanges =
-    initialFormValues !== null &&
-    JSON.stringify(formValues) !== JSON.stringify(initialFormValues);
-
-  const updateFormValue = (field: keyof QuestionFormValues, value: string) => {
-    setFormValues((currentValues) => ({
-      ...currentValues,
-      [field]: value,
-    }));
-  };
-  const resetForm = () => {
-    setFormValues({
-      questionText: '',
-      answer: '',
-      aliases: '',
-      booleanAnswer: 'true',
-      option1: '',
-      option2: '',
-      option3: '',
-      multipleChoiceAnswer: '',
-    });
-  };
 
   const handleUnlock = () => {
     if (!password.trim()) {
@@ -187,16 +149,7 @@ const AdminPage = () => {
         return;
       }
 
-      setFormValues({
-        questionText: '',
-        answer: '',
-        aliases: '',
-        booleanAnswer: 'true',
-        option1: '',
-        option2: '',
-        option3: '',
-        multipleChoiceAnswer: '',
-      });
+      resetForm();
 
       setEditingQuestionId(null);
       setIsCreateFormOpen(false);
@@ -212,38 +165,15 @@ const AdminPage = () => {
     setFieldErrors({});
     setStatus(null);
 
-    setFormValues(
-      initialFormValues ?? {
-        questionText: '',
-        answer: '',
-        aliases: '',
-        booleanAnswer: 'true',
-        option1: '',
-        option2: '',
-        option3: '',
-        multipleChoiceAnswer: '',
-      }
-    );
+    resetToInitialFormValues();
   };
 
   const handleToolbarToggle = () => {
     if (!isCreateFormOpen) {
-      const emptyValues = {
-        questionText: '',
-        answer: '',
-        aliases: '',
-        booleanAnswer: 'true',
-        option1: '',
-        option2: '',
-        option3: '',
-        multipleChoiceAnswer: '',
-      };
-
       setEditingQuestionId(null);
       setFieldErrors({});
       setStatus(null);
-      setFormValues(emptyValues);
-      setInitialFormValues(emptyValues);
+      openEmptyForm();
       setIsCreateFormOpen(true);
 
       return;
@@ -294,10 +224,6 @@ const AdminPage = () => {
     );
   });
 
-  const fillFormForEditing = (question: AdminQuestion) => {
-    setFormValues(createFormValuesFromQuestion(question));
-  };
-
   const closeQuestionForm = () => {
     setEditingQuestionId(null);
     setIsCreateFormOpen(false);
@@ -306,20 +232,6 @@ const AdminPage = () => {
     resetForm();
     setIsCloseConfirmOpen(false);
   };
-
-  const createFormValuesFromQuestion = (
-    question: AdminQuestion
-  ): QuestionFormValues => ({
-    questionText: question.text,
-    answer: question.answer ?? '',
-    aliases: question.aliases?.join('\n') ?? '',
-    booleanAnswer: question.correctAnswer === true ? 'true' : 'false',
-    option1: question.options?.[0] ?? '',
-    option2: question.options?.[1] ?? '',
-    option3: question.options?.[2] ?? '',
-    multipleChoiceAnswer:
-      typeof question.correctAnswer === 'string' ? question.correctAnswer : '',
-  });
 
   const handleEditQuestion = (questionId: string) => {
     const questionToEdit = questions.find(
@@ -333,8 +245,7 @@ const AdminPage = () => {
     setEditingQuestionId(questionId);
     setQuestionType(questionToEdit.type);
     setIsCreateFormOpen(true);
-    fillFormForEditing(questionToEdit);
-    setInitialFormValues(createFormValuesFromQuestion(questionToEdit));
+    loadFormValues(createFormValuesFromQuestion(questionToEdit));
   };
 
   return (
