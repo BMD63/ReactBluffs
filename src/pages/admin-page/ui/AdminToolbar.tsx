@@ -19,9 +19,11 @@ const AdminToolbar = ({
 }: AdminToolbarProps) => {
   return (
     <div className="admin-toolbar">
-      <label>
-        Question type
+      <div className="admin-toolbar-item">
+        <label htmlFor="admin-question-type">Question type</label>
+
         <select
+          id="admin-question-type"
           value={questionType ?? ''}
           onChange={(event) =>
             onQuestionTypeChange(
@@ -36,12 +38,15 @@ const AdminToolbar = ({
           <option value="multipleChoice">Multiple choice</option>
           <option value="boolean">Bluff / True-False</option>
         </select>
-      </label>
+      </div>
+
       {questionType && (
-        <label className="admin-search">
-          Search
+        <div className="admin-toolbar-item">
+          <label htmlFor="admin-search">Search</label>
+
           <div className="admin-search-input-wrapper">
             <input
+              id="admin-search"
               type="text"
               placeholder="Search questions..."
               value={searchQuery}
@@ -58,13 +63,21 @@ const AdminToolbar = ({
               </button>
             )}
           </div>
-        </label>
+        </div>
       )}
 
       {questionType && (
-        <button type="button" onClick={onAddQuestion}>
-          {isCreateFormOpen ? 'Close editor' : 'Add question'}
-        </button>
+        <div className="admin-toolbar-item">
+          <span className="admin-toolbar-placeholder">Actions</span>
+
+          <button
+            type="button"
+            className="admin-toolbar-action"
+            onClick={onAddQuestion}
+          >
+            {isCreateFormOpen ? 'Close editor' : 'Add question'}
+          </button>
+        </div>
       )}
     </div>
   );
