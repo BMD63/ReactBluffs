@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AdminToolbar from './AdminToolbar';
 import QuestionList from './QuestionList';
-import QuestionCreateForm from './QuestionCreateForm';
+import QuestionEditorModal from './QuestionEditorModal';
 import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model/useAdminQuestions';
 import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
@@ -179,13 +179,13 @@ const AdminPage = () => {
       return;
     }
 
-    if (!hasUnsavedChanges) {
-      closeQuestionForm();
+    if (hasUnsavedChanges) {
+      setIsCloseConfirmOpen(true);
 
       return;
     }
 
-    setIsCloseConfirmOpen(true);
+    closeQuestionForm();
   };
 
   // ***   JSX   ***
@@ -252,7 +252,6 @@ const AdminPage = () => {
     <div className="app">
       <div className="modal">
         <h1>Admin</h1>
-        {status && <p className="admin-status">{status}</p>}
         <AdminToolbar
           questionType={questionType}
           isCreateFormOpen={isCreateFormOpen}
@@ -268,11 +267,12 @@ const AdminPage = () => {
         {questionType && (
           <>
             {isCreateFormOpen && (
-              <QuestionCreateForm
+              <QuestionEditorModal
                 questionType={questionType}
                 questionText={formValues.questionText}
                 answer={formValues.answer}
                 aliases={formValues.aliases}
+                status={status}
                 booleanAnswer={formValues.booleanAnswer}
                 option1={formValues.option1}
                 option2={formValues.option2}
@@ -281,6 +281,9 @@ const AdminPage = () => {
                 fieldErrors={fieldErrors}
                 isEditing={Boolean(editingQuestionId)}
                 isSaving={isSavingQuestion}
+                isCloseConfirmOpen={isCloseConfirmOpen}
+                onCloseWithoutSaving={closeQuestionForm}
+                onBackToEditor={() => setIsCloseConfirmOpen(false)}
                 onQuestionTextChange={(value) =>
                   updateFormValue('questionText', value)
                 }
@@ -297,30 +300,8 @@ const AdminPage = () => {
                 }
                 onSubmit={handleCreateQuestion}
                 onReset={handleResetForm}
+                onClose={handleToolbarToggle}
               />
-            )}
-
-            {isCloseConfirmOpen && (
-              <div className="admin-confirm">
-                <p>Discard changes?</p>
-
-                <div className="admin-confirm-actions">
-                  <button type="submit" form="admin-question-form">
-                    Save and close
-                  </button>
-
-                  <button type="button" onClick={closeQuestionForm}>
-                    Close without saving
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsCloseConfirmOpen(false)}
-                  >
-                    Back to editor
-                  </button>
-                </div>
-              </div>
             )}
 
             <hr />
