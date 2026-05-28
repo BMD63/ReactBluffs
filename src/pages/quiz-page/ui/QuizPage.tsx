@@ -65,8 +65,8 @@ const QuizPage = () => {
       <div className="app">
         <div className="screen-transition">
           <div className="modal">
-            <h2>Загружаем вопросы...</h2>
-            <p>Готовим раунд...</p>
+            <h2>Загружаем вопросы</h2>
+            <p>Готовим раунд</p>
           </div>
         </div>
       </div>
