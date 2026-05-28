@@ -61,12 +61,11 @@ const AdminPage = () => {
 
   const adminToken = sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY);
   const isUnlocked = Boolean(adminToken);
-  const { questions, setQuestions, deleteQuestion, saveQuestion } =
-    useAdminQuestions({
-      isUnlocked,
-      adminToken,
-      onStatusChange: setStatus,
-    });
+  const { questions, deleteQuestion, saveQuestion } = useAdminQuestions({
+    isUnlocked,
+    adminToken,
+    onStatusChange: setStatus,
+  });
 
   const handleUnlock = () => {
     if (!password.trim()) {
@@ -224,9 +223,21 @@ const AdminPage = () => {
       return matchesType;
     }
 
-    return (
-      matchesType && question.text.toLowerCase().includes(normalizedSearchQuery)
-    );
+    // return (
+    //   matchesType && question.text.toLowerCase().includes(normalizedSearchQuery)
+    // );
+    const searchableText = [
+      question.text,
+      question.answer,
+      question.correctAnswer,
+      ...(question.aliases ?? []),
+      ...(question.options ?? []),
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+
+    return matchesType && searchableText.includes(normalizedSearchQuery);
   });
 
   const closeQuestionForm = () => {

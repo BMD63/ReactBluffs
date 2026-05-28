@@ -126,7 +126,6 @@ export const useAdminQuestions = ({
 
   return {
     questions,
-    setQuestions,
     deleteQuestion,
     saveQuestion,
   };
