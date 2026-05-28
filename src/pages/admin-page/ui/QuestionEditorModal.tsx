@@ -29,6 +29,7 @@ type QuestionEditorModalProps = {
   onCloseWithoutSaving: () => void;
   onBackToEditor: () => void;
   status: string | null;
+  onClear: () => void;
 };
 
 const QuestionEditorModal = (props: QuestionEditorModalProps) => {

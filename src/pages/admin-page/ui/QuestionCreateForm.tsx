@@ -23,6 +23,7 @@ type QuestionCreateFormProps = {
   onMultipleChoiceAnswerChange: (value: string) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   onReset: () => void;
+  onClear: () => void;
 };
 
 const QuestionCreateForm = ({
@@ -48,6 +49,7 @@ const QuestionCreateForm = ({
   onMultipleChoiceAnswerChange,
   onSubmit,
   onReset,
+  onClear,
 }: QuestionCreateFormProps) => {
   return (
     <form id="admin-question-form" className="admin-form" onSubmit={onSubmit}>
@@ -164,6 +166,9 @@ const QuestionCreateForm = ({
         </button>
         <button type="button" onClick={onReset}>
           Cancel
+        </button>
+        <button type="button" onClick={onClear}>
+          Clear form
         </button>
       </div>
     </form>

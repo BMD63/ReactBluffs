@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AdminToolbar from './AdminToolbar';
 import QuestionList from './QuestionList';
 import QuestionEditorModal from './QuestionEditorModal';
+import DeleteQuestionModal from './DeleteQuestionModal';
 import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model/useAdminQuestions';
 import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
@@ -19,7 +20,9 @@ const AdminPage = () => {
   );
   const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [questionIdToDelete, setQuestionIdToDelete] = useState<string | null>(
+    null
+  );
   const [status, setStatus] = useState<string | null>(null);
   const [isSavingQuestion, setIsSavingQuestion] = useState(false);
   const [isCloseConfirmOpen, setIsCloseConfirmOpen] = useState(false);
@@ -149,10 +152,12 @@ const AdminPage = () => {
         return;
       }
 
-      resetForm();
+      if (editingQuestionId) {
+        loadFormValues(formValues);
+      } else {
+        openEmptyForm();
+      }
 
-      setEditingQuestionId(null);
-      setIsCreateFormOpen(false);
       setIsCloseConfirmOpen(false);
 
       setStatus(editingQuestionId ? 'Question updated!' : 'Question created!');
@@ -301,6 +306,17 @@ const AdminPage = () => {
                 onSubmit={handleCreateQuestion}
                 onReset={handleResetForm}
                 onClose={handleToolbarToggle}
+                onClear={openEmptyForm}
+              />
+            )}
+
+            {questionIdToDelete && (
+              <DeleteQuestionModal
+                onConfirm={() => {
+                  deleteQuestion(questionIdToDelete);
+                  setQuestionIdToDelete(null);
+                }}
+                onCancel={() => setQuestionIdToDelete(null)}
               />
             )}
 
@@ -314,7 +330,7 @@ const AdminPage = () => {
                   expandedQuestionId === questionId ? null : questionId
                 )
               }
-              onDelete={deleteQuestion}
+              onDelete={setQuestionIdToDelete}
               onEdit={handleEditQuestion}
             />
           </>

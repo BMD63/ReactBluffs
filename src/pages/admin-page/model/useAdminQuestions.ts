@@ -39,12 +39,6 @@ export const useAdminQuestions = ({
       return;
     }
 
-    const shouldDelete = window.confirm('Delete this question?');
-
-    if (!shouldDelete) {
-      return;
-    }
-
     const questionToDelete = questions.find(
       (question) => question.id === questionId
     );
