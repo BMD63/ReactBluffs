@@ -7,8 +7,10 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const isGithubPages = process.env.GITHUB_ACTIONS === 'true';
+
 export default defineConfig({
-  base: '/ReactBluffs/',
+  base: isGithubPages ? '/ReactBluffs/' : '/',
 
   plugins: [react()],
 
