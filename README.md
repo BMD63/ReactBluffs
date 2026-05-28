@@ -6,6 +6,8 @@
 ![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2.11-764ABC?logo=redux&logoColor=fff)
 ![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=fff)
 ![CSS](https://img.shields.io/badge/CSS-Glassmorphism_/_Neon-38BDF8)
+![Zod](https://img.shields.io/badge/Zod-4.4-3E67B1?logo=zod&logoColor=fff)
+![License](https://img.shields.io/badge/License-MIT-red)
 
 **ReactBluffs** is a polished multi-mode quiz game built with React, TypeScript and Vite.
 
@@ -15,6 +17,9 @@ The app combines a cyberpunk-inspired neon interface with several quiz formats: 
 
 Live version:  
 https://BMD63.github.io/ReactBluffs/
+
+Production version:
+https://react-bluffs.vercel.app/
 
 ## Features
 
@@ -33,15 +38,28 @@ https://BMD63.github.io/ReactBluffs/
 
 ## Tech Stack
 
+### Frontend
+
 - React
 - TypeScript
 - Vite
 - Redux Toolkit
 - React Redux
+
+### Backend / Infrastructure
+
+- GitHub Pages
+- Vercel Serverless Functions
+- Supabase
+- REST API
+- Zod validation
+
+### Tooling
+
 - Vitest
+- Testing Library
 - ESLint
 - Prettier
-- GitHub Pages
 
 ## Project Highlights
 
