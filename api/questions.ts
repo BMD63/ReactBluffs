@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { checkAdmin } from './_lib/checkAdmin.js';
 import { mapQuestionRowToDto } from './_lib/mapQuestionRowToDto.js';
-import { createQuestionDtoSchema } from '../src/entities/question/api/questionApi.schema';
+import { createQuestionDtoSchema } from '../src/entities/question/api/questionApi.schema.js';
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
