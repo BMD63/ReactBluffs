@@ -1,38 +1,65 @@
 import { useEffect, useState } from 'react';
-import type { AdminQuestion } from '../ui/admin.types';
+import type { AdminQuestion, AdminQuestionType } from '../ui/admin.types';
 
 type UseAdminQuestionsParams = {
   isUnlocked: boolean;
   adminToken: string | null;
+  questionType: AdminQuestionType | null;
   onStatusChange: (status: string | null) => void;
+};
+
+const getGameModeByQuestionType = (questionType: AdminQuestionType) => {
+  if (questionType === 'openText') {
+    return 'openAnswer';
+  }
+
+  if (questionType === 'boolean') {
+    return 'bluff';
+  }
+
+  return 'multipleChoice';
 };
 
 export const useAdminQuestions = ({
   isUnlocked,
   adminToken,
+  questionType,
   onStatusChange,
 }: UseAdminQuestionsParams) => {
   const [questions, setQuestions] = useState<AdminQuestion[]>([]);
 
   useEffect(() => {
-    if (!isUnlocked) {
+    if (!isUnlocked || !questionType) {
+      setQuestions([]);
       return;
     }
 
     const loadQuestions = async () => {
-      const response = await fetch('/api/questions');
+      setQuestions([]);
+      setIsLoadingQuestions(true);
 
-      if (!response.ok) {
-        return;
+      try {
+        const gameMode = getGameModeByQuestionType(questionType);
+
+        const response = await fetch(`/api/questions?gameMode=${gameMode}`);
+
+        if (!response.ok) {
+          onStatusChange('Failed to load questions');
+          return;
+        }
+
+        const data = await response.json();
+
+        setQuestions(data);
+      } finally {
+        setIsLoadingQuestions(false);
       }
-
-      const data = await response.json();
-
-      setQuestions(data);
     };
 
     loadQuestions();
-  }, [isUnlocked]);
+  }, [isUnlocked, questionType, onStatusChange]);
+
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
   const deleteQuestion = async (questionId: string) => {
     if (!adminToken) {
@@ -128,5 +155,6 @@ export const useAdminQuestions = ({
     questions,
     deleteQuestion,
     saveQuestion,
+    isLoadingQuestions,
   };
 };

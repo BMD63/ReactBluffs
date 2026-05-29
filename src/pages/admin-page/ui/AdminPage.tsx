@@ -62,11 +62,13 @@ const AdminPage = () => {
 
   const adminToken = sessionStorage.getItem(ADMIN_TOKEN_STORAGE_KEY);
   const isUnlocked = Boolean(adminToken);
-  const { questions, deleteQuestion, saveQuestion } = useAdminQuestions({
-    isUnlocked,
-    adminToken,
-    onStatusChange: setStatus,
-  });
+  const { questions, deleteQuestion, saveQuestion, isLoadingQuestions } =
+    useAdminQuestions({
+      isUnlocked,
+      adminToken,
+      questionType,
+      onStatusChange: setStatus,
+    });
 
   const handleUnlock = () => {
     if (!password.trim()) {
@@ -345,6 +347,7 @@ const AdminPage = () => {
               }
               onDelete={setQuestionIdToDelete}
               onEdit={handleEditQuestion}
+              isLoading={isLoadingQuestions}
             />
           </>
         )}

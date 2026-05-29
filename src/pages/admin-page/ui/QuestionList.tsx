@@ -7,6 +7,7 @@ type QuestionListProps = {
   onToggleDetails: (questionId: string) => void;
   onDelete: (questionId: string) => void;
   onEdit: (questionId: string) => void;
+  isLoading: boolean;
 };
 
 const QuestionList = ({
@@ -15,12 +16,22 @@ const QuestionList = ({
   onToggleDetails,
   onDelete,
   onEdit,
+  isLoading,
 }: QuestionListProps) => {
   return (
     <>
-      <h2>Questions ({questions.length})</h2>
+      <h2>Questions {isLoading ? '(loading...)' : `(${questions.length})`}</h2>
 
-      {questions.length === 0 ? (
+      {isLoading ? (
+        <div className="questions-list">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="question-item question-item--skeleton">
+              <div className="question-skeleton-line question-skeleton-line--title" />
+              <div className="question-skeleton-line question-skeleton-line--short" />
+            </div>
+          ))}
+        </div>
+      ) : questions.length === 0 ? (
         <p>No questions for this type yet.</p>
       ) : (
         <div className="questions-list">
