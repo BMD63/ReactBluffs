@@ -49,7 +49,6 @@ const QuestionEditorModal = (props: QuestionEditorModalProps) => {
         </div>
 
         <QuestionCreateForm {...props} />
-        {props.status && <p className="admin-status">{props.status}</p>}
 
         {props.isCloseConfirmOpen && (
           <div className="admin-confirm">

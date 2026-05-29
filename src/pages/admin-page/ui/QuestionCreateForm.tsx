@@ -53,7 +53,6 @@ const QuestionCreateForm = ({
 }: QuestionCreateFormProps) => {
   return (
     <form id="admin-question-form" className="admin-form" onSubmit={onSubmit}>
-      <h2>{isEditing ? 'Edit question' : 'Create question'}</h2>
       <label>
         Question text
         <textarea

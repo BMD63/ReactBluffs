@@ -15,10 +15,12 @@ The app combines a cyberpunk-inspired neon interface with several quiz formats: 
 
 ## Demo
 
-Live version:  
+Live version:
+
 https://BMD63.github.io/ReactBluffs/
 
 Production version:
+
 https://react-bluffs.vercel.app/
 
 ## Features

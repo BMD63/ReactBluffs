@@ -3,6 +3,7 @@ import AdminToolbar from './AdminToolbar';
 import QuestionList from './QuestionList';
 import QuestionEditorModal from './QuestionEditorModal';
 import DeleteQuestionModal from './DeleteQuestionModal';
+import AdminToast from './AdminToast';
 import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model/useAdminQuestions';
 import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
@@ -267,6 +268,7 @@ const AdminPage = () => {
   return (
     <div className="app">
       <div className="modal">
+        <AdminToast message={status} />
         <h1>Admin</h1>
         <AdminToolbar
           questionType={questionType}
