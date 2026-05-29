@@ -27,7 +27,12 @@ const QuestionList = ({
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index} className="question-item question-item--skeleton">
               <div className="question-skeleton-line question-skeleton-line--title" />
-              <div className="question-skeleton-line question-skeleton-line--short" />
+
+              <div className="question-skeleton-actions">
+                <div className="question-skeleton-button" />
+                <div className="question-skeleton-button" />
+                <div className="question-skeleton-button" />
+              </div>
             </div>
           ))}
         </div>
