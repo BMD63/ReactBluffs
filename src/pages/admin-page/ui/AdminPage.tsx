@@ -7,7 +7,11 @@ import AdminToast from './AdminToast';
 import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model/useAdminQuestions';
 import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
-import type { AdminQuestionType, FieldErrors } from './admin.types';
+import type {
+  AdminQuestionType,
+  FieldErrors,
+  AdminQuestion,
+} from './admin.types';
 
 import './AdminPage.css';
 
@@ -149,7 +153,7 @@ const AdminPage = () => {
         );
 
         setFieldErrors(errors);
-        setStatus(result.error);
+        setStatus(result.error ?? 'Failed to save question');
 
         return;
       }

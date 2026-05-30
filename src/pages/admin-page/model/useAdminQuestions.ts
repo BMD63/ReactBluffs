@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
+
+import { questionApi } from '@/entities/question/api/questionApi';
+
 import type { AdminQuestion, AdminQuestionType } from '../ui/admin.types';
+import type { QuestionDto } from '@/entities/question/api/questionApi.types';
 
 type UseAdminQuestionsParams = {
   isUnlocked: boolean;
@@ -27,6 +31,7 @@ export const useAdminQuestions = ({
   onStatusChange,
 }: UseAdminQuestionsParams) => {
   const [questions, setQuestions] = useState<AdminQuestion[]>([]);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
   useEffect(() => {
     if (!isUnlocked || !questionType) {
@@ -41,16 +46,13 @@ export const useAdminQuestions = ({
       try {
         const gameMode = getGameModeByQuestionType(questionType);
 
-        const response = await fetch(`/api/questions?gameMode=${gameMode}`);
+        const data = await questionApi.getQuestionDtos({
+          gameMode,
+        });
 
-        if (!response.ok) {
-          onStatusChange('Failed to load questions');
-          return;
-        }
-
-        const data = await response.json();
-
-        setQuestions(data);
+        setQuestions(data as AdminQuestion[]);
+      } catch {
+        onStatusChange('Failed to load questions');
       } finally {
         setIsLoadingQuestions(false);
       }
@@ -58,8 +60,6 @@ export const useAdminQuestions = ({
 
     loadQuestions();
   }, [isUnlocked, questionType, onStatusChange]);
-
-  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
   const deleteQuestion = async (questionId: string) => {
     if (!adminToken) {
@@ -80,14 +80,11 @@ export const useAdminQuestions = ({
 
     onStatusChange('Question deleted');
 
-    const response = await fetch(`/api/questions?id=${questionId}`, {
-      method: 'DELETE',
-      headers: {
-        'x-admin-token': adminToken,
-      },
-    });
-
-    if (!response.ok) {
+    try {
+      await questionApi.deleteQuestion(questionId, {
+        adminToken,
+      });
+    } catch {
       setQuestions((currentQuestions) => [
         questionToDelete,
         ...currentQuestions,
@@ -112,43 +109,52 @@ export const useAdminQuestions = ({
       };
     }
 
-    const response = await fetch('/api/questions', {
-      method: isEditing ? 'PUT' : 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': adminToken,
-      },
-      body: JSON.stringify(questionPayload),
-    });
+    try {
+      const savedQuestion = (
+        isEditing
+          ? await questionApi.updateQuestion(
+              (questionPayload as { id: string }).id,
+              questionPayload as Parameters<
+                typeof questionApi.updateQuestion
+              >[1],
+              { adminToken }
+            )
+          : await questionApi.createQuestion(
+              questionPayload as Parameters<
+                typeof questionApi.createQuestion
+              >[0],
+              { adminToken }
+            )
+      ) as AdminQuestion;
 
-    if (!response.ok) {
-      const errorData = await response.json();
+      const savedAdminQuestion = savedQuestion as AdminQuestion;
+
+      setQuestions((currentQuestions) => {
+        if (isEditing) {
+          return currentQuestions.map((question) =>
+            question.id === savedAdminQuestion.id
+              ? savedAdminQuestion
+              : question
+          );
+        }
+
+        return [savedAdminQuestion, ...currentQuestions];
+      });
+
+      onStatusChange(isEditing ? 'Question updated!' : 'Question created!');
 
       return {
+        ok: true,
+        question: savedAdminQuestion,
+      };
+    } catch (error) {
+      return {
         ok: false,
-        error: errorData.error ?? 'Failed to save question',
-        details: errorData.details ?? null,
+        error:
+          error instanceof Error ? error.message : 'Failed to save question',
+        details: null,
       };
     }
-
-    const savedQuestion = await response.json();
-
-    setQuestions((currentQuestions) => {
-      if (isEditing) {
-        return currentQuestions.map((question) =>
-          question.id === savedQuestion.id ? savedQuestion : question
-        );
-      }
-
-      return [savedQuestion, ...currentQuestions];
-    });
-
-    onStatusChange(isEditing ? 'Question updated!' : 'Question created!');
-
-    return {
-      ok: true,
-      question: savedQuestion,
-    };
   };
 
   return {
