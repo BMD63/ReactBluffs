@@ -1,9 +1,12 @@
 import type { Question } from '@/entities/question/model/questionTypes';
-import type { CardAnswers } from './quizSessionModel';
+import {
+  CardAnswers,
+  applyQuestionAnswer,
+  calculateCardSessionScore,
+} from './quizSessionModel';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { createSlice } from '@reduxjs/toolkit';
-import { calculateCardScore } from '@/entities/question';
 
 type AnswerQuestionPayload = {
   cardIndex: number;
@@ -43,18 +46,12 @@ const quizSessionSlice = createSlice({
 
     answerQuestion(state, action: PayloadAction<AnswerQuestionPayload>) {
       const { cardIndex, questionId, answer } = action.payload;
-      if (!state.answersByCard[cardIndex]) {
-        state.answersByCard[cardIndex] = {};
-      }
-      state.answersByCard[cardIndex][questionId] =
-        typeof answer === 'boolean'
-          ? {
-              answer,
-              bonus: false,
-            }
-          : {
-              answer,
-            };
+
+      state.answersByCard[cardIndex] = applyQuestionAnswer(
+        state.answersByCard[cardIndex] ?? {},
+        questionId,
+        answer
+      );
     },
 
     toggleBonus(state, action: PayloadAction<ToggleBonusPayload>) {
@@ -92,7 +89,7 @@ const quizSessionSlice = createSlice({
         return;
       }
 
-      state.currentCardScore = calculateCardScore(card, answers);
+      state.currentCardScore = calculateCardSessionScore(card, answers);
     },
 
     nextCard(state) {

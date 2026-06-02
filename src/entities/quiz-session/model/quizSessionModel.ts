@@ -1,4 +1,5 @@
 import type { QuestionAnswer } from '@/entities/question/model/questionAnswerTypes';
+import type { Question } from '@/entities/question/model/questionTypes';
 
 import { calculateCardScore } from '@/entities/question';
 
@@ -49,5 +50,31 @@ export const toggleBonus = (
       ...currentAnswer,
       bonus: !currentAnswer.bonus,
     },
+  };
+};
+
+export const calculateCardSessionScore = (
+  card: Question[],
+  answers: CardAnswers
+): number => {
+  return calculateCardScore(card, answers);
+};
+
+export const applyQuestionAnswer = (
+  answers: CardAnswers,
+  questionId: string,
+  answer: boolean | string
+): CardAnswers => {
+  return {
+    ...answers,
+    [questionId]:
+      typeof answer === 'boolean'
+        ? {
+            answer,
+            bonus: false,
+          }
+        : {
+            answer,
+          },
   };
 };
