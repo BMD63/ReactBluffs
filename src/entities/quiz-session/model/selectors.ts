@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { calculateCardScore } from '@/entities/question';
+import { calculateCardSessionScore } from './quizSessionModel';
 import type { RootState } from '@/app/providers/store/store';
 
 const selectQuizSession = (state: RootState) => state.quizSession;
@@ -52,6 +52,8 @@ export const selectTotalScore = (state: RootState) => {
   if (!cards.length) return 0;
 
   return cards.reduce((total, card, index) => {
-    return total + calculateCardScore(card, answersByCard?.[index] || {});
+    return (
+      total + calculateCardSessionScore(card, answersByCard?.[index] || {})
+    );
   }, 0);
 };
