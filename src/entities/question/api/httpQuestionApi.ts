@@ -98,7 +98,7 @@ export const httpQuestionApi = {
     question: UpdateQuestionDto,
     { adminToken }: AdminRequestParams
   ): Promise<QuestionDto> {
-    const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.QUESTIONS}`, {
+    const response = await fetch(getQuestionsUrl(), {
       method: 'PUT',
       headers: getAdminHeaders(adminToken),
       body: JSON.stringify(question),
