@@ -32,21 +32,29 @@ const getErrorMessage = async (
   }
 };
 
+const getQuestionsUrl = (params?: GetQuestionsParams): string => {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.QUESTIONS}`;
+
+  if (!params) {
+    return url;
+  }
+
+  const searchParams = new URLSearchParams({
+    gameMode: params.gameMode,
+  });
+
+  if (params.category) {
+    searchParams.set('category', params.category);
+  }
+
+  return `${url}?${searchParams.toString()}`;
+};
+
 export const httpQuestionApi = {
   async getQuestions(
     params: GetQuestionsParams
   ): Promise<GetQuestionsResponse> {
-    const searchParams = new URLSearchParams({
-      gameMode: params.gameMode,
-    });
-
-    if (params.category) {
-      searchParams.set('category', params.category);
-    }
-
-    const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.QUESTIONS}?${searchParams.toString()}`
-    );
+    const response = await fetch(getQuestionsUrl(params));
 
     if (!response.ok) {
       throw new Error('Failed to fetch questions');
@@ -58,18 +66,7 @@ export const httpQuestionApi = {
   },
 
   async getQuestionDtos(params: GetQuestionsParams): Promise<QuestionDto[]> {
-    const searchParams = new URLSearchParams({
-      gameMode: params.gameMode,
-    });
-
-    if (params.category) {
-      searchParams.set('category', params.category);
-    }
-
-    const response = await fetch(
-      `${API_BASE_URL}${API_ENDPOINTS.QUESTIONS}?${searchParams.toString()}`
-    );
-
+    const response = await fetch(getQuestionsUrl(params));
     if (!response.ok) {
       throw new Error('Failed to fetch question dtos');
     }
@@ -81,7 +78,7 @@ export const httpQuestionApi = {
     question: CreateQuestionDto,
     { adminToken }: AdminRequestParams
   ): Promise<QuestionDto> {
-    const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.QUESTIONS}`, {
+    const response = await fetch(getQuestionsUrl(), {
       method: 'POST',
       headers: getAdminHeaders(adminToken),
       body: JSON.stringify(question),
