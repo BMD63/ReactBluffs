@@ -1,0 +1,92 @@
+import type { TournamentConfig } from '../tournamentConfigTypes';
+
+export const offlineQuizTournamentConfig: TournamentConfig = {
+  id: 'offline-quiz',
+  title: 'Offline Quiz Tournament',
+
+  rounds: [
+    {
+      id: 'round-1',
+      title: 'Лёгкий тур',
+      type: 'openText',
+      difficulty: 'easy',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 30,
+      correctionTimeSeconds: 60,
+    },
+
+    {
+      id: 'round-2',
+      title: 'Средний тур',
+      type: 'openText',
+      difficulty: 'medium',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 30,
+      correctionTimeSeconds: 60,
+    },
+
+    {
+      id: 'round-3',
+      title: 'Да / Нет',
+      type: 'boolean',
+      difficulty: 'medium',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 20,
+      correctionTimeSeconds: 30,
+    },
+
+    {
+      id: 'round-4',
+      title: 'Аудио',
+      type: 'audio',
+      difficulty: 'medium',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 45,
+      correctionTimeSeconds: 90,
+    },
+
+    {
+      id: 'round-5',
+      title: 'Картинки',
+      type: 'image',
+      difficulty: 'medium',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 45,
+      correctionTimeSeconds: 90,
+    },
+
+    {
+      id: 'round-6',
+      title: 'Сложный тур',
+      type: 'openText',
+      difficulty: 'hard',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 30,
+      correctionTimeSeconds: 60,
+    },
+
+    {
+      id: 'round-7',
+      title: 'Три варианта',
+      type: 'multipleChoice',
+      difficulty: 'hard',
+
+      questionsCount: 8,
+
+      questionTimeSeconds: 25,
+      correctionTimeSeconds: 60,
+    },
+  ],
+};
