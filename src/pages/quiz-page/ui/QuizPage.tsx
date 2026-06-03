@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import type { GameMode } from '@/entities/game-mode';
+import { loadMockTournamentConfigs } from '@/entities/tournament-config';
 
 import {
   SCREEN,
@@ -46,6 +47,7 @@ const QuizPage = () => {
 
   useEffect(() => {
     dispatch(initUI());
+    dispatch(loadMockTournamentConfigs());
   }, [dispatch]);
 
   const handleStart = () => {
