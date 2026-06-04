@@ -6,6 +6,7 @@ export const SCREEN = {
   FINAL: 'final',
   START: 'start',
   GAME_FLOW_SELECTION: 'gameFlowSelection',
+  TOURNAMENT_INTRO: 'tournamentIntro',
   MODE_SELECTION: 'modeSelection',
   BLUFF_MENU: 'bluffMenu',
 } as const;

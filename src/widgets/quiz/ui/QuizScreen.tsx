@@ -13,6 +13,8 @@ import StartScreen from '@/widgets/quiz/ui/screens/start/StartScreen';
 import ModeSelectionScreen from '@/widgets/quiz/ui/screens/mode-selection/ModeSelectionScreen';
 import type { GameFlowMode } from '@/entities/game-flow';
 import GameFlowSelectionScreen from '@/widgets/quiz/ui/screens/game-flow-selection/GameFlowSelectionScreen';
+import type { TournamentConfig } from '@/entities/tournament-config';
+import TournamentIntroScreen from '@/widgets/quiz/ui/screens/tournament-intro/TournamentIntroScreen';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -26,7 +28,7 @@ type QuizScreenProps = {
   onStart: () => void;
   currentCardScore: number;
   totalScore: number;
-
+  activeTournamentConfig: TournamentConfig | null;
   onAnswer: (
     cardIndex: number,
     questionId: string,
@@ -67,6 +69,7 @@ const QuizScreen = ({
   onBackToStart,
   onSelectGameFlowMode,
   onBackToGameFlowSelection,
+  activeTournamentConfig,
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
@@ -77,6 +80,20 @@ const QuizScreen = ({
         <GameFlowSelectionScreen
           onSelectGameFlowMode={onSelectGameFlowMode}
           onBack={onBackToStart}
+        />
+      );
+
+    case SCREEN.TOURNAMENT_INTRO:
+      if (!activeTournamentConfig) {
+        return null;
+      }
+
+      return (
+        <TournamentIntroScreen
+          title={activeTournamentConfig.title}
+          roundsCount={activeTournamentConfig.rounds.length}
+          firstRoundTitle={activeTournamentConfig.rounds[0]?.title ?? '—'}
+          onBack={onBackToGameFlowSelection}
         />
       );
 

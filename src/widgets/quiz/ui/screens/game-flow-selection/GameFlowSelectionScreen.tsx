@@ -25,8 +25,8 @@ const gameFlowModes = [
     title: 'Турнир',
     description:
       'Режим, приближенный к оффлайн-квизу: туры, таймеры, ответы по раундам и финальный результат.',
-    buttonText: 'Скоро',
-    isAvailable: false,
+    buttonText: 'Выбрать',
+    isAvailable: true,
   },
 ];
 

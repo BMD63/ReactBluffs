@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import type { GameMode } from '@/entities/game-mode';
-import { loadMockTournamentConfigs } from '@/entities/tournament-config';
+import {
+  loadMockTournamentConfigs,
+  selectActiveTournamentConfig,
+} from '@/entities/tournament-config';
 import { GAME_FLOW_MODE, type GameFlowMode } from '@/entities/game-flow';
 
 import {
@@ -47,6 +50,8 @@ const QuizPage = () => {
 
   const totalScore = useAppSelector(selectTotalScore);
 
+  const activeTournamentConfig = useAppSelector(selectActiveTournamentConfig);
+
   useEffect(() => {
     dispatch(initUI());
     dispatch(loadMockTournamentConfigs());
@@ -67,7 +72,7 @@ const QuizPage = () => {
       setScreen(
         mode === GAME_FLOW_MODE.TRAINING
           ? SCREEN.MODE_SELECTION
-          : SCREEN.MODE_SELECTION
+          : SCREEN.TOURNAMENT_INTRO
       )
     );
   };
@@ -127,6 +132,7 @@ const QuizPage = () => {
           currentCardScore={currentCardScore}
           totalScore={totalScore}
           gameMode={gameMode}
+          activeTournamentConfig={activeTournamentConfig}
           onAnswer={answerQuizQuestion}
           onBonus={toggleQuestionBonus}
           onSubmit={submitQuizCard}
