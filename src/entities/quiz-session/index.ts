@@ -7,6 +7,7 @@ export {
   resetUI,
   setDifficulty,
   quizUIReducer,
+  setGameFlowMode,
 } from './model/quizUISlice';
 
 export {

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import type { GameMode } from '@/entities/game-mode';
 import { loadMockTournamentConfigs } from '@/entities/tournament-config';
+import { GAME_FLOW_MODE, type GameFlowMode } from '@/entities/game-flow';
 
 import {
   SCREEN,
@@ -17,6 +18,7 @@ import {
   selectGameMode,
   selectIsLoading,
   selectError,
+  setGameFlowMode,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -51,15 +53,31 @@ const QuizPage = () => {
   }, [dispatch]);
 
   const handleStart = () => {
-    dispatch(setScreen(SCREEN.MODE_SELECTION));
+    dispatch(setScreen(SCREEN.GAME_FLOW_SELECTION));
   };
   const handleSelectMode = (mode: GameMode) => {
     dispatch(setGameMode(mode));
     dispatch(setScreen(SCREEN.BLUFF_MENU));
   };
 
+  const handleSelectGameFlowMode = (mode: GameFlowMode) => {
+    dispatch(setGameFlowMode(mode));
+
+    dispatch(
+      setScreen(
+        mode === GAME_FLOW_MODE.TRAINING
+          ? SCREEN.MODE_SELECTION
+          : SCREEN.MODE_SELECTION
+      )
+    );
+  };
+
   const handleBackToStart = () => {
     dispatch(setScreen(SCREEN.START));
+  };
+
+  const handleBackToGameFlowSelection = () => {
+    dispatch(setScreen(SCREEN.GAME_FLOW_SELECTION));
   };
 
   if (isLoading) {
@@ -118,7 +136,9 @@ const QuizPage = () => {
           onGoToMenu={goToMenu}
           onStart={handleStart}
           onSelectMode={handleSelectMode}
+          onSelectGameFlowMode={handleSelectGameFlowMode}
           onBackToStart={handleBackToStart}
+          onBackToGameFlowSelection={handleBackToGameFlowSelection}
         />
       </div>
     </div>

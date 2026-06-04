@@ -5,6 +5,7 @@ export const SCREEN = {
   CARD_RESULT: 'cardResult',
   FINAL: 'final',
   START: 'start',
+  GAME_FLOW_SELECTION: 'gameFlowSelection',
   MODE_SELECTION: 'modeSelection',
   BLUFF_MENU: 'bluffMenu',
 } as const;

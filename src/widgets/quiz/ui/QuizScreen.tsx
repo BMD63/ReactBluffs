@@ -11,6 +11,8 @@ import CardResultsModal from '@/widgets/quiz/ui/modals/CardResultsModal';
 import FinalResultsModal from '@/widgets/quiz/ui/modals/FinalResultsModal';
 import StartScreen from '@/widgets/quiz/ui/screens/start/StartScreen';
 import ModeSelectionScreen from '@/widgets/quiz/ui/screens/mode-selection/ModeSelectionScreen';
+import type { GameFlowMode } from '@/entities/game-flow';
+import GameFlowSelectionScreen from '@/widgets/quiz/ui/screens/game-flow-selection/GameFlowSelectionScreen';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -39,8 +41,9 @@ type QuizScreenProps = {
   onNextCard: () => void;
   onGoToMenu: () => void;
   onBackToStart: () => void;
-
+  onBackToGameFlowSelection: () => void;
   onSelectMode: (mode: GameMode) => void;
+  onSelectGameFlowMode: (mode: GameFlowMode) => void;
 };
 
 const QuizScreen = ({
@@ -62,16 +65,26 @@ const QuizScreen = ({
   onStart,
   onSelectMode,
   onBackToStart,
+  onSelectGameFlowMode,
+  onBackToGameFlowSelection,
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
       return <StartScreen onStart={onStart} />;
 
+    case SCREEN.GAME_FLOW_SELECTION:
+      return (
+        <GameFlowSelectionScreen
+          onSelectGameFlowMode={onSelectGameFlowMode}
+          onBack={onBackToStart}
+        />
+      );
+
     case SCREEN.MODE_SELECTION:
       return (
         <ModeSelectionScreen
           onSelectMode={onSelectMode}
-          onBack={onBackToStart}
+          onBack={onBackToGameFlowSelection}
         />
       );
 
