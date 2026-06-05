@@ -9,6 +9,7 @@ export const SCREEN = {
   TOURNAMENT_INTRO: 'tournamentIntro',
   MODE_SELECTION: 'modeSelection',
   BLUFF_MENU: 'bluffMenu',
+  ROUND_INTRO: 'roundIntro',
 } as const;
 
 export type Screen = (typeof SCREEN)[keyof typeof SCREEN];

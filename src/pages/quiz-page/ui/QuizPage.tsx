@@ -85,6 +85,19 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.GAME_FLOW_SELECTION));
   };
 
+  const handleOpenRules = () => {
+    dispatch(setScreen(SCREEN.RULES));
+  };
+
+  const handleStartRound = () => {
+    // временно, пока нет экрана прохождения tournament round
+    dispatch(setScreen(SCREEN.ROUND_INTRO));
+  };
+
+  const handleRestartTournament = () => {
+    dispatch(setScreen(SCREEN.TOURNAMENT_INTRO));
+  };
+
   if (isLoading) {
     return (
       <div className="app">
@@ -145,6 +158,9 @@ const QuizPage = () => {
           onSelectGameFlowMode={handleSelectGameFlowMode}
           onBackToStart={handleBackToStart}
           onBackToGameFlowSelection={handleBackToGameFlowSelection}
+          onRulesOpen={handleOpenRules}
+          onStartRound={handleStartRound}
+          onRestartTournament={handleRestartTournament}
         />
       </div>
     </div>
