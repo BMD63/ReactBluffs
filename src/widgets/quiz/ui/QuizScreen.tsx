@@ -25,6 +25,7 @@ type QuizScreenProps = {
   currentCard: Question[] | undefined;
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
+  currentTournamentRoundIndex: number;
   totalCards: number;
   onStart: () => void;
   currentCardScore: number;
@@ -49,6 +50,7 @@ type QuizScreenProps = {
   onBackToGameFlowSelection: () => void;
   onSelectMode: (mode: GameMode) => void;
   onSelectGameFlowMode: (mode: GameFlowMode) => void;
+  onStartTournament: () => void;
 };
 
 const QuizScreen = ({
@@ -56,6 +58,7 @@ const QuizScreen = ({
   currentCard,
   currentCardAnswers,
   currentCardIndex,
+  currentTournamentRoundIndex,
   totalCards,
   currentCardScore,
   totalScore,
@@ -73,6 +76,7 @@ const QuizScreen = ({
   onSelectGameFlowMode,
   onBackToGameFlowSelection,
   activeTournamentConfig,
+  onStartTournament,
   onRulesOpen,
   onStartRound,
   onRestartTournament,
@@ -100,11 +104,13 @@ const QuizScreen = ({
           roundsCount={activeTournamentConfig.rounds.length}
           firstRoundTitle={activeTournamentConfig.rounds[0]?.title ?? '—'}
           onBack={onBackToGameFlowSelection}
+          onStartTournament={onStartTournament}
         />
       );
 
     case SCREEN.ROUND_INTRO: {
-      const currentRound = activeTournamentConfig?.rounds[0];
+      const currentRound =
+        activeTournamentConfig?.rounds[currentTournamentRoundIndex];
 
       if (!activeTournamentConfig || !currentRound) {
         return null;
@@ -112,7 +118,7 @@ const QuizScreen = ({
 
       return (
         <RoundIntroScreen
-          roundNumber={1}
+          roundNumber={currentTournamentRoundIndex + 1}
           totalRounds={activeTournamentConfig.rounds.length}
           title={currentRound.title}
           questionsCount={currentRound.questionsCount}
@@ -122,7 +128,7 @@ const QuizScreen = ({
           type={currentRound.type}
           onRules={onRulesOpen}
           onStartRound={onStartRound}
-          onExit={onBackToGameFlowSelection}
+          onExit={onBackToStart}
           onRestart={onRestartTournament}
         />
       );

@@ -4,7 +4,7 @@ type TournamentIntroScreenProps = {
   title: string;
   roundsCount: number;
   firstRoundTitle: string;
-
+  onStartTournament: () => void;
   onBack: () => void;
 };
 
@@ -12,6 +12,7 @@ const TournamentIntroScreen = ({
   title,
   roundsCount,
   firstRoundTitle,
+  onStartTournament,
   onBack,
 }: TournamentIntroScreenProps) => {
   return (
@@ -32,6 +33,9 @@ const TournamentIntroScreen = ({
       </div>
 
       <div className="mode-selection__actions">
+        <Button variant="primary" onClick={onStartTournament}>
+          Начать турнир
+        </Button>
         <Button variant="secondary" onClick={onBack}>
           ← Назад
         </Button>

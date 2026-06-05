@@ -7,7 +7,7 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
   rounds: [
     {
       id: 'round-1',
-      title: 'Лёгкий тур',
+      title: 'Разминка',
       type: 'openText',
       difficulty: 'easy',
 
@@ -19,7 +19,7 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
 
     {
       id: 'round-2',
-      title: 'Средний тур',
+      title: 'Второй тур',
       type: 'openText',
       difficulty: 'medium',
 
@@ -31,7 +31,7 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
 
     {
       id: 'round-3',
-      title: 'Да / Нет',
+      title: 'Блефы',
       type: 'boolean',
       difficulty: 'medium',
 

@@ -1,4 +1,5 @@
 import { Button } from '@/shared/ui/button';
+import './round-intro-screen.css';
 
 type RoundIntroScreenProps = {
   roundNumber: number;
@@ -30,6 +31,7 @@ const RoundIntroScreen = ({
   onExit,
   onRestart,
 }: RoundIntroScreenProps) => {
+  const canRestart = roundNumber > 1;
   return (
     <section className="mode-selection">
       <div className="mode-selection__header">
@@ -50,23 +52,27 @@ const RoundIntroScreen = ({
         <p>Время на вопрос: {questionTimeSeconds} сек.</p>
         <p>Дополнительное время: {correctionTimeSeconds} сек.</p>
 
-        <Button variant="secondary" onClick={onRules}>
-          Правила
-        </Button>
+        <div className="round-intro__primary-actions">
+          <Button variant="secondary" disabled onClick={onRules}>
+            Правила (скоро)
+          </Button>
 
-        <Button variant="primary" onClick={onStartRound}>
-          Начать тур
-        </Button>
+          <Button variant="primary" onClick={onStartRound}>
+            Начать тур
+          </Button>
+        </div>
       </div>
 
-      <div className="mode-selection__actions">
+      <div className="round-intro__secondary-actions">
         <Button variant="secondary" onClick={onExit}>
           Выйти
         </Button>
 
-        <Button variant="secondary" onClick={onRestart}>
-          Начать заново
-        </Button>
+        {canRestart && (
+          <Button variant="secondary" onClick={onRestart}>
+            Начать заново
+          </Button>
+        )}
       </div>
     </section>
   );

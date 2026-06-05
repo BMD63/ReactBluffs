@@ -156,6 +156,9 @@ export default async function handler(
     return;
   }
 
+  console.time('[api/questions] total');
+  console.log('[api/questions] method', request.method);
+
   const gameMode = request.query.gameMode;
   const category = request.query.category;
 
@@ -168,7 +171,12 @@ export default async function handler(
     query = query.eq('category', category);
   }
 
+  console.time('[api/questions] supabase select');
+
   const { data, error } = await query;
+
+  console.timeEnd('[api/questions] supabase select');
+  console.timeEnd('[api/questions] total');
 
   if (error) {
     response.status(500).json({

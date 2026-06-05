@@ -22,6 +22,8 @@ import {
   selectIsLoading,
   selectError,
   setGameFlowMode,
+  selectCurrentTournamentRoundIndex,
+  setCurrentTournamentRoundIndex,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -44,6 +46,9 @@ const QuizPage = () => {
   const isLoading = useAppSelector(selectIsLoading);
   const error = useAppSelector(selectError);
   const currentCardScore = useAppSelector(selectCurrentCardScore);
+  const currentTournamentRoundIndex = useAppSelector(
+    selectCurrentTournamentRoundIndex
+  );
 
   const { currentCard, currentCardAnswers, currentCardIndex, totalCards } =
     useAppSelector(selectCurrentCardData);
@@ -89,6 +94,10 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.RULES));
   };
 
+  const handleStartTournament = () => {
+    dispatch(setCurrentTournamentRoundIndex(0));
+    dispatch(setScreen(SCREEN.ROUND_INTRO));
+  };
   const handleStartRound = () => {
     // временно, пока нет экрана прохождения tournament round
     dispatch(setScreen(SCREEN.ROUND_INTRO));
@@ -159,8 +168,10 @@ const QuizPage = () => {
           onBackToStart={handleBackToStart}
           onBackToGameFlowSelection={handleBackToGameFlowSelection}
           onRulesOpen={handleOpenRules}
+          onStartTournament={handleStartTournament}
           onStartRound={handleStartRound}
           onRestartTournament={handleRestartTournament}
+          currentTournamentRoundIndex={currentTournamentRoundIndex}
         />
       </div>
     </div>

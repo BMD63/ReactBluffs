@@ -1,0 +1,21 @@
+.round-intro__primary-actions,
+.round-intro__secondary-actions {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  width: 100%;
+}
+
+.round-intro__primary-actions .btn,
+.round-intro__secondary-actions .btn {
+  width: min(100%, 220px);
+}
+
+.round-intro__secondary-actions {
+  margin-top: 28px;
+}

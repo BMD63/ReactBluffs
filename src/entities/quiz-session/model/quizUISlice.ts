@@ -11,6 +11,7 @@ type QuizUIState = {
   gameFlowMode: GameFlowMode;
   isLoading: boolean;
   error: string | null;
+  currentTournamentRoundIndex: number;
 };
 
 const initialState: QuizUIState = {
@@ -20,6 +21,7 @@ const initialState: QuizUIState = {
   gameFlowMode: GAME_FLOW_MODE.TRAINING,
   isLoading: false,
   error: null,
+  currentTournamentRoundIndex: 0,
 };
 
 const quizUISlice = createSlice({
@@ -47,6 +49,9 @@ const quizUISlice = createSlice({
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
     },
+    setCurrentTournamentRoundIndex(state, action: PayloadAction<number>) {
+      state.currentTournamentRoundIndex = action.payload;
+    },
   },
 });
 
@@ -58,6 +63,7 @@ export const {
   setGameFlowMode,
   setLoading,
   setError,
+  setCurrentTournamentRoundIndex,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

@@ -46,6 +46,9 @@ export const selectIsFinished = createSelector(
   }
 );
 
+export const selectCurrentTournamentRoundIndex = (state: RootState) =>
+  state.quizUI.currentTournamentRoundIndex;
+
 export const selectTotalScore = (state: RootState) => {
   const { cards, answersByCard } = selectQuizSession(state);
 
