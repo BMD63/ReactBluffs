@@ -122,11 +122,18 @@ const QuizPage = () => {
     const nextQuestionIndex = currentTournamentQuestionIndex + 1;
 
     if (nextQuestionIndex >= currentRound.questionsCount) {
+      dispatch(setScreen(SCREEN.ROUND_ANSWER_SHEET));
       return;
     }
 
     dispatch(setCurrentTournamentQuestionIndex(nextQuestionIndex));
   };
+
+  const handleFinishRound = () => {
+    // временно, пока нет экрана результатов тура
+    dispatch(setScreen(SCREEN.ROUND_INTRO));
+  };
+
   if (isLoading) {
     return (
       <div className="app">
@@ -191,6 +198,7 @@ const QuizPage = () => {
           onStartTournament={handleStartTournament}
           onStartRound={handleStartRound}
           onRestartTournament={handleRestartTournament}
+          onFinishRound={handleFinishRound}
           currentTournamentRoundIndex={currentTournamentRoundIndex}
           currentTournamentQuestionIndex={currentTournamentQuestionIndex}
           onAnswerTournamentQuestion={handleAnswerTournamentQuestion}

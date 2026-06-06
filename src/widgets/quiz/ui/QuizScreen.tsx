@@ -17,6 +17,7 @@ import type { TournamentConfig } from '@/entities/tournament-config';
 import TournamentIntroScreen from '@/widgets/quiz/ui/screens/tournament-intro/TournamentIntroScreen';
 import RoundIntroScreen from '@/widgets/quiz/ui/screens/round-intro/RoundIntroScreen';
 import TournamentQuestionScreen from '@/widgets/quiz/ui/screens/tournament-question/TournamentQuestionScreen';
+import RoundAnswerSheetScreen from '@/widgets/quiz/ui/screens/round-answer-sheet/RoundAnswerSheetScreen';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -53,6 +54,7 @@ type QuizScreenProps = {
   onSelectGameFlowMode: (mode: GameFlowMode) => void;
   onStartTournament: () => void;
   onAnswerTournamentQuestion: () => void;
+  onFinishRound: () => void;
   currentTournamentQuestionIndex: number;
 };
 
@@ -84,6 +86,7 @@ const QuizScreen = ({
   onStartRound,
   onRestartTournament,
   onAnswerTournamentQuestion,
+  onFinishRound,
   currentTournamentQuestionIndex,
 }: QuizScreenProps) => {
   switch (screen) {
@@ -156,6 +159,25 @@ const QuizScreen = ({
           onExit={onBackToStart}
           onRestart={onRestartTournament}
           onAnswer={onAnswerTournamentQuestion}
+        />
+      );
+    }
+    case SCREEN.ROUND_ANSWER_SHEET: {
+      const currentRound =
+        activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+      if (!activeTournamentConfig || !currentRound) {
+        return null;
+      }
+
+      return (
+        <RoundAnswerSheetScreen
+          roundNumber={currentTournamentRoundIndex + 1}
+          totalRounds={activeTournamentConfig.rounds.length}
+          questionsCount={currentRound.questionsCount}
+          onFinishRound={onFinishRound}
+          onExit={onBackToStart}
+          onRestart={onRestartTournament}
         />
       );
     }
