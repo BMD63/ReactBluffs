@@ -129,9 +129,24 @@ const QuizPage = () => {
     dispatch(setCurrentTournamentQuestionIndex(nextQuestionIndex));
   };
 
+  const handleNextRound = () => {
+    const nextRoundIndex = currentTournamentRoundIndex + 1;
+
+    if (
+      !activeTournamentConfig ||
+      nextRoundIndex >= activeTournamentConfig.rounds.length
+    ) {
+      return;
+    }
+
+    dispatch(setCurrentTournamentRoundIndex(nextRoundIndex));
+    dispatch(setCurrentTournamentQuestionIndex(0));
+    dispatch(setScreen(SCREEN.ROUND_INTRO));
+  };
+
   const handleFinishRound = () => {
     // временно, пока нет экрана результатов тура
-    dispatch(setScreen(SCREEN.ROUND_INTRO));
+    dispatch(setScreen(SCREEN.ROUND_RESULTS));
   };
 
   if (isLoading) {
@@ -198,6 +213,7 @@ const QuizPage = () => {
           onStartTournament={handleStartTournament}
           onStartRound={handleStartRound}
           onRestartTournament={handleRestartTournament}
+          onNextRound={handleNextRound}
           onFinishRound={handleFinishRound}
           currentTournamentRoundIndex={currentTournamentRoundIndex}
           currentTournamentQuestionIndex={currentTournamentQuestionIndex}

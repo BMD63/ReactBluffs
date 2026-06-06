@@ -12,6 +12,7 @@ export const SCREEN = {
   ROUND_INTRO: 'roundIntro',
   TOURNAMENT_QUESTION: 'tournamentQuestion',
   ROUND_ANSWER_SHEET: 'roundAnswerSheet',
+  ROUND_RESULTS: 'roundResults',
 } as const;
 
 export type Screen = (typeof SCREEN)[keyof typeof SCREEN];
