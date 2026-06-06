@@ -16,6 +16,7 @@ import GameFlowSelectionScreen from '@/widgets/quiz/ui/screens/game-flow-selecti
 import type { TournamentConfig } from '@/entities/tournament-config';
 import TournamentIntroScreen from '@/widgets/quiz/ui/screens/tournament-intro/TournamentIntroScreen';
 import RoundIntroScreen from '@/widgets/quiz/ui/screens/round-intro/RoundIntroScreen';
+import TournamentQuestionScreen from '@/widgets/quiz/ui/screens/tournament-question/TournamentQuestionScreen';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -128,6 +129,26 @@ const QuizScreen = ({
           type={currentRound.type}
           onRules={onRulesOpen}
           onStartRound={onStartRound}
+          onExit={onBackToStart}
+          onRestart={onRestartTournament}
+        />
+      );
+    }
+
+    case SCREEN.TOURNAMENT_QUESTION: {
+      const currentRound =
+        activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+      if (!activeTournamentConfig || !currentRound) {
+        return null;
+      }
+
+      return (
+        <TournamentQuestionScreen
+          roundNumber={currentTournamentRoundIndex + 1}
+          totalRounds={activeTournamentConfig.rounds.length}
+          questionNumber={1}
+          totalQuestions={currentRound.questionsCount}
           onExit={onBackToStart}
           onRestart={onRestartTournament}
         />

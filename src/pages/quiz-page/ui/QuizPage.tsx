@@ -99,8 +99,7 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.ROUND_INTRO));
   };
   const handleStartRound = () => {
-    // временно, пока нет экрана прохождения tournament round
-    dispatch(setScreen(SCREEN.ROUND_INTRO));
+    dispatch(setScreen(SCREEN.TOURNAMENT_QUESTION));
   };
 
   const handleRestartTournament = () => {
