@@ -19,6 +19,7 @@ import RoundIntroScreen from '@/widgets/quiz/ui/screens/round-intro/RoundIntroSc
 import TournamentQuestionScreen from '@/widgets/quiz/ui/screens/tournament-question/TournamentQuestionScreen';
 import RoundAnswerSheetScreen from '@/widgets/quiz/ui/screens/round-answer-sheet/RoundAnswerSheetScreen';
 import RoundResultsScreen from '@/widgets/quiz/ui/screens/round-results/RoundResultsScreen';
+import TournamentResultsScreen from '@/widgets/quiz/ui/screens/tournament-results/TournamentResultsScreen';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -57,6 +58,7 @@ type QuizScreenProps = {
   onAnswerTournamentQuestion: () => void;
   onFinishRound: () => void;
   onNextRound: () => void;
+
   currentTournamentQuestionIndex: number;
 };
 
@@ -201,6 +203,20 @@ const QuizScreen = ({
           onNextRound={onNextRound}
           onExit={onBackToStart}
           onRestart={onRestartTournament}
+        />
+      );
+    }
+
+    case SCREEN.TOURNAMENT_RESULTS: {
+      if (!activeTournamentConfig) {
+        return null;
+      }
+
+      return (
+        <TournamentResultsScreen
+          roundsCount={activeTournamentConfig.rounds.length}
+          onRestart={onRestartTournament}
+          onExit={onBackToStart}
         />
       );
     }

@@ -130,12 +130,14 @@ const QuizPage = () => {
   };
 
   const handleNextRound = () => {
+    if (!activeTournamentConfig) {
+      return;
+    }
+
     const nextRoundIndex = currentTournamentRoundIndex + 1;
 
-    if (
-      !activeTournamentConfig ||
-      nextRoundIndex >= activeTournamentConfig.rounds.length
-    ) {
+    if (nextRoundIndex >= activeTournamentConfig.rounds.length) {
+      dispatch(setScreen(SCREEN.TOURNAMENT_RESULTS));
       return;
     }
 
