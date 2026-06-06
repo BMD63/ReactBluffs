@@ -12,6 +12,7 @@ type QuizUIState = {
   isLoading: boolean;
   error: string | null;
   currentTournamentRoundIndex: number;
+  currentTournamentQuestionIndex: number;
 };
 
 const initialState: QuizUIState = {
@@ -22,6 +23,7 @@ const initialState: QuizUIState = {
   isLoading: false,
   error: null,
   currentTournamentRoundIndex: 0,
+  currentTournamentQuestionIndex: 0,
 };
 
 const quizUISlice = createSlice({
@@ -52,6 +54,9 @@ const quizUISlice = createSlice({
     setCurrentTournamentRoundIndex(state, action: PayloadAction<number>) {
       state.currentTournamentRoundIndex = action.payload;
     },
+    setCurrentTournamentQuestionIndex(state, action: PayloadAction<number>) {
+      state.currentTournamentQuestionIndex = action.payload;
+    },
   },
 });
 
@@ -64,6 +69,7 @@ export const {
   setLoading,
   setError,
   setCurrentTournamentRoundIndex,
+  setCurrentTournamentQuestionIndex,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

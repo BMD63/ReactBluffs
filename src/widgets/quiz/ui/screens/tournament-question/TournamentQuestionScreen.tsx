@@ -8,6 +8,7 @@ type TournamentQuestionScreenProps = {
 
   onExit: () => void;
   onRestart: () => void;
+  onAnswer: () => void;
 };
 
 const TournamentQuestionScreen = ({
@@ -17,6 +18,7 @@ const TournamentQuestionScreen = ({
   totalQuestions,
   onExit,
   onRestart,
+  onAnswer,
 }: TournamentQuestionScreenProps) => (
   <section className="mode-selection">
     <div className="mode-selection__header">
@@ -36,7 +38,9 @@ const TournamentQuestionScreen = ({
 
       <p>Здесь будет отображаться вопрос турнира.</p>
 
-      <Button variant="primary">Ответить</Button>
+      <Button variant="primary" onClick={onAnswer}>
+        Ответить
+      </Button>
     </div>
 
     <div className="mode-selection__actions">

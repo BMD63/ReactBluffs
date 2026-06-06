@@ -9,6 +9,7 @@ export {
   quizUIReducer,
   setGameFlowMode,
   setCurrentTournamentRoundIndex,
+  setCurrentTournamentQuestionIndex,
 } from './model/quizUISlice';
 
 export {
@@ -30,6 +31,7 @@ export {
   selectIsLoading,
   selectError,
   selectCurrentTournamentRoundIndex,
+  selectCurrentTournamentQuestionIndex,
 } from './model/selectors';
 
 export { initGame } from './model/thunks/initGame';

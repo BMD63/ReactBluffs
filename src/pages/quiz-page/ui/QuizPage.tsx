@@ -24,6 +24,8 @@ import {
   setGameFlowMode,
   selectCurrentTournamentRoundIndex,
   setCurrentTournamentRoundIndex,
+  selectCurrentTournamentQuestionIndex,
+  setCurrentTournamentQuestionIndex,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -48,6 +50,9 @@ const QuizPage = () => {
   const currentCardScore = useAppSelector(selectCurrentCardScore);
   const currentTournamentRoundIndex = useAppSelector(
     selectCurrentTournamentRoundIndex
+  );
+  const currentTournamentQuestionIndex = useAppSelector(
+    selectCurrentTournamentQuestionIndex
   );
 
   const { currentCard, currentCardAnswers, currentCardIndex, totalCards } =
@@ -106,6 +111,22 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.TOURNAMENT_INTRO));
   };
 
+  const handleAnswerTournamentQuestion = () => {
+    const currentRound =
+      activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+    if (!currentRound) {
+      return;
+    }
+
+    const nextQuestionIndex = currentTournamentQuestionIndex + 1;
+
+    if (nextQuestionIndex >= currentRound.questionsCount) {
+      return;
+    }
+
+    dispatch(setCurrentTournamentQuestionIndex(nextQuestionIndex));
+  };
   if (isLoading) {
     return (
       <div className="app">
@@ -171,6 +192,8 @@ const QuizPage = () => {
           onStartRound={handleStartRound}
           onRestartTournament={handleRestartTournament}
           currentTournamentRoundIndex={currentTournamentRoundIndex}
+          currentTournamentQuestionIndex={currentTournamentQuestionIndex}
+          onAnswerTournamentQuestion={handleAnswerTournamentQuestion}
         />
       </div>
     </div>

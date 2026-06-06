@@ -52,6 +52,8 @@ type QuizScreenProps = {
   onSelectMode: (mode: GameMode) => void;
   onSelectGameFlowMode: (mode: GameFlowMode) => void;
   onStartTournament: () => void;
+  onAnswerTournamentQuestion: () => void;
+  currentTournamentQuestionIndex: number;
 };
 
 const QuizScreen = ({
@@ -81,6 +83,8 @@ const QuizScreen = ({
   onRulesOpen,
   onStartRound,
   onRestartTournament,
+  onAnswerTournamentQuestion,
+  currentTournamentQuestionIndex,
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
@@ -147,10 +151,11 @@ const QuizScreen = ({
         <TournamentQuestionScreen
           roundNumber={currentTournamentRoundIndex + 1}
           totalRounds={activeTournamentConfig.rounds.length}
-          questionNumber={1}
+          questionNumber={currentTournamentQuestionIndex + 1}
           totalQuestions={currentRound.questionsCount}
           onExit={onBackToStart}
           onRestart={onRestartTournament}
+          onAnswer={onAnswerTournamentQuestion}
         />
       );
     }
