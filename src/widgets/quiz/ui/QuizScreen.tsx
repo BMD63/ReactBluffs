@@ -60,6 +60,7 @@ type QuizScreenProps = {
   onNextRound: () => void;
 
   currentTournamentQuestionIndex: number;
+  currentTournamentQuestions: Question[];
 };
 
 const QuizScreen = ({
@@ -93,6 +94,7 @@ const QuizScreen = ({
   onFinishRound,
   onNextRound,
   currentTournamentQuestionIndex,
+  currentTournamentQuestions,
 }: QuizScreenProps) => {
   switch (screen) {
     case SCREEN.START:
@@ -150,6 +152,8 @@ const QuizScreen = ({
     case SCREEN.TOURNAMENT_QUESTION: {
       const currentRound =
         activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+      const currentQuestion =
+        currentTournamentQuestions[currentTournamentQuestionIndex]; 
 
       if (!activeTournamentConfig || !currentRound) {
         return null;
@@ -164,6 +168,7 @@ const QuizScreen = ({
           onExit={onBackToStart}
           onRestart={onRestartTournament}
           onAnswer={onAnswerTournamentQuestion}
+          question={currentQuestion}
         />
       );
     }

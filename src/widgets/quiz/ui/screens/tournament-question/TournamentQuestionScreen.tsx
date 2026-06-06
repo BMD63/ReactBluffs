@@ -1,10 +1,12 @@
 import { Button } from '@/shared/ui/button';
+import type { Question } from '@/entities/question/model/questionTypes';
 
 type TournamentQuestionScreenProps = {
   roundNumber: number;
   totalRounds: number;
   questionNumber: number;
   totalQuestions: number;
+  question: Question | undefined;
 
   onExit: () => void;
   onRestart: () => void;
@@ -19,6 +21,7 @@ const TournamentQuestionScreen = ({
   onExit,
   onRestart,
   onAnswer,
+  question,
 }: TournamentQuestionScreenProps) => (
   <section className="mode-selection">
     <div className="mode-selection__header">
@@ -34,7 +37,7 @@ const TournamentQuestionScreen = ({
     <div className="mode-card mode-card--active">
       <div className="mode-card__icon">❓</div>
 
-      <h2>Заглушка вопроса</h2>
+      <h2>{question?.text ?? 'Вопрос не загружен'}</h2>
 
       <p>Здесь будет отображаться вопрос турнира.</p>
 

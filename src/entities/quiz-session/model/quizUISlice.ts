@@ -3,6 +3,7 @@ import { GAME_MODE, type GameMode } from '@/entities/game-mode';
 import { SCREEN, type Screen } from './config/screen';
 import { DIFFICULTY, type Difficulty } from './config/difficultyConfig';
 import { GAME_FLOW_MODE, type GameFlowMode } from '@/entities/game-flow';
+import type { Question } from '@/entities/question/model/questionTypes';
 
 type QuizUIState = {
   currentScreen: Screen;
@@ -13,6 +14,8 @@ type QuizUIState = {
   error: string | null;
   currentTournamentRoundIndex: number;
   currentTournamentQuestionIndex: number;
+  tournamentAnswersByQuestionId: Record<string, string | boolean>;
+  currentTournamentQuestions: Question[];
 };
 
 const initialState: QuizUIState = {
@@ -24,6 +27,8 @@ const initialState: QuizUIState = {
   error: null,
   currentTournamentRoundIndex: 0,
   currentTournamentQuestionIndex: 0,
+  tournamentAnswersByQuestionId: {},
+  currentTournamentQuestions: [],
 };
 
 const quizUISlice = createSlice({
@@ -54,6 +59,23 @@ const quizUISlice = createSlice({
     setCurrentTournamentRoundIndex(state, action: PayloadAction<number>) {
       state.currentTournamentRoundIndex = action.payload;
     },
+
+    setCurrentTournamentQuestions(state, action: PayloadAction<Question[]>) {
+      state.currentTournamentQuestions = action.payload;
+    },
+
+    resetCurrentTournamentQuestions(state) {
+      state.currentTournamentQuestions = [];
+    },
+
+    setTournamentQuestionAnswer(
+      state,
+      action: PayloadAction<{ questionId: string; answer: string | boolean }>
+    ) {
+      state.tournamentAnswersByQuestionId[action.payload.questionId] =
+        action.payload.answer;
+    },
+
     setCurrentTournamentQuestionIndex(state, action: PayloadAction<number>) {
       state.currentTournamentQuestionIndex = action.payload;
     },
@@ -70,6 +92,9 @@ export const {
   setError,
   setCurrentTournamentRoundIndex,
   setCurrentTournamentQuestionIndex,
+  setTournamentQuestionAnswer,
+  setCurrentTournamentQuestions,
+  resetCurrentTournamentQuestions,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

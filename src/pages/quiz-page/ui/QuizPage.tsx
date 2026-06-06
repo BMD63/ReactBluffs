@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
-import type { GameMode } from '@/entities/game-mode';
+import { GAME_MODE, type GameMode } from '@/entities/game-mode';
 import {
   loadMockTournamentConfigs,
   selectActiveTournamentConfig,
 } from '@/entities/tournament-config';
 import { GAME_FLOW_MODE, type GameFlowMode } from '@/entities/game-flow';
-
+import { questionApi } from '@/entities/question/api/questionApi';
 import {
   SCREEN,
   setScreen,
@@ -25,7 +25,11 @@ import {
   selectCurrentTournamentRoundIndex,
   setCurrentTournamentRoundIndex,
   selectCurrentTournamentQuestionIndex,
+  setCurrentTournamentQuestions,
   setCurrentTournamentQuestionIndex,
+  setLoading,
+  setError,
+  selectCurrentTournamentQuestions,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -67,6 +71,24 @@ const QuizPage = () => {
     dispatch(loadMockTournamentConfigs());
   }, [dispatch]);
 
+  const getGameModeByTournamentRoundType = (type: string): GameMode => {
+    switch (type) {
+      case 'boolean':
+        return GAME_MODE.BLUFF;
+
+      case 'multipleChoice':
+        return GAME_MODE.MULTIPLE_CHOICE;
+
+      case 'openText':
+      case 'image':
+      case 'audio':
+        return GAME_MODE.OPEN_ANSWER;
+
+      default:
+        return GAME_MODE.OPEN_ANSWER;
+    }
+  };
+
   const handleStart = () => {
     dispatch(setScreen(SCREEN.GAME_FLOW_SELECTION));
   };
@@ -74,6 +96,10 @@ const QuizPage = () => {
     dispatch(setGameMode(mode));
     dispatch(setScreen(SCREEN.BLUFF_MENU));
   };
+
+  const currentTournamentQuestions = useAppSelector(
+    selectCurrentTournamentQuestions
+  );
 
   const handleSelectGameFlowMode = (mode: GameFlowMode) => {
     dispatch(setGameFlowMode(mode));
@@ -103,8 +129,35 @@ const QuizPage = () => {
     dispatch(setCurrentTournamentRoundIndex(0));
     dispatch(setScreen(SCREEN.ROUND_INTRO));
   };
-  const handleStartRound = () => {
-    dispatch(setScreen(SCREEN.TOURNAMENT_QUESTION));
+  const handleStartRound = async () => {
+    const currentRound =
+      activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+    if (!currentRound) {
+      return;
+    }
+
+    dispatch(setLoading(true));
+    dispatch(setError(null));
+
+    try {
+      const questions = await questionApi.getQuestions({
+        gameMode: getGameModeByTournamentRoundType(currentRound.type),
+      });
+
+      dispatch(
+        setCurrentTournamentQuestions(
+          questions.slice(0, currentRound.questionsCount)
+        )
+      );
+
+      dispatch(setCurrentTournamentQuestionIndex(0));
+      dispatch(setScreen(SCREEN.TOURNAMENT_QUESTION));
+    } catch {
+      dispatch(setError('Не удалось загрузить вопросы тура'));
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   const handleRestartTournament = () => {
@@ -220,6 +273,7 @@ const QuizPage = () => {
           currentTournamentRoundIndex={currentTournamentRoundIndex}
           currentTournamentQuestionIndex={currentTournamentQuestionIndex}
           onAnswerTournamentQuestion={handleAnswerTournamentQuestion}
+          currentTournamentQuestions={currentTournamentQuestions}
         />
       </div>
     </div>

@@ -52,6 +52,9 @@ export const selectCurrentTournamentRoundIndex = (state: RootState) =>
 export const selectCurrentTournamentQuestionIndex = (state: RootState) =>
   state.quizUI.currentTournamentQuestionIndex;
 
+export const selectCurrentTournamentQuestions = (state: RootState) =>
+  state.quizUI.currentTournamentQuestions;
+
 export const selectTotalScore = (state: RootState) => {
   const { cards, answersByCard } = selectQuizSession(state);
 
