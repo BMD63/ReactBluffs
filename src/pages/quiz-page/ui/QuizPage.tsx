@@ -30,6 +30,8 @@ import {
   setLoading,
   setError,
   selectCurrentTournamentQuestions,
+  setTournamentQuestionAnswer,
+  selectTournamentAnswersByQuestionId,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -65,6 +67,10 @@ const QuizPage = () => {
   const totalScore = useAppSelector(selectTotalScore);
 
   const activeTournamentConfig = useAppSelector(selectActiveTournamentConfig);
+
+  const tournamentAnswersByQuestionId = useAppSelector(
+    selectTournamentAnswersByQuestionId
+  );
 
   useEffect(() => {
     dispatch(initUI());
@@ -162,6 +168,13 @@ const QuizPage = () => {
 
   const handleRestartTournament = () => {
     dispatch(setScreen(SCREEN.TOURNAMENT_INTRO));
+  };
+
+  const handleChangeTournamentAnswer = (
+    questionId: string,
+    answer: string | boolean
+  ) => {
+    dispatch(setTournamentQuestionAnswer({ questionId, answer }));
   };
 
   const handleAnswerTournamentQuestion = () => {
@@ -274,6 +287,8 @@ const QuizPage = () => {
           currentTournamentQuestionIndex={currentTournamentQuestionIndex}
           onAnswerTournamentQuestion={handleAnswerTournamentQuestion}
           currentTournamentQuestions={currentTournamentQuestions}
+          tournamentAnswersByQuestionId={tournamentAnswersByQuestionId}
+          onChangeTournamentAnswer={handleChangeTournamentAnswer}
         />
       </div>
     </div>

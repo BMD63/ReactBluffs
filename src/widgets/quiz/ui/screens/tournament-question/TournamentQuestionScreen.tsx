@@ -1,5 +1,6 @@
 import { Button } from '@/shared/ui/button';
 import type { Question } from '@/entities/question/model/questionTypes';
+import './tournament-question-screen.css';
 
 type TournamentQuestionScreenProps = {
   roundNumber: number;
@@ -7,7 +8,8 @@ type TournamentQuestionScreenProps = {
   questionNumber: number;
   totalQuestions: number;
   question: Question | undefined;
-
+  answer: string | boolean | undefined;
+  onChangeAnswer: (answer: string | boolean) => void;
   onExit: () => void;
   onRestart: () => void;
   onAnswer: () => void;
@@ -18,6 +20,8 @@ const TournamentQuestionScreen = ({
   totalRounds,
   questionNumber,
   totalQuestions,
+  answer,
+  onChangeAnswer,
   onExit,
   onRestart,
   onAnswer,
@@ -39,11 +43,19 @@ const TournamentQuestionScreen = ({
 
       <h2>{question?.text ?? 'Вопрос не загружен'}</h2>
 
-      <p>Здесь будет отображаться вопрос турнира.</p>
+      <div className="tournament-question-screen__answer">
+        {question?.type === 'openText' && (
+          <input
+            value={typeof answer === 'string' ? answer : ''}
+            onChange={(event) => onChangeAnswer(event.target.value)}
+            placeholder="Введите ответ"
+          />
+        )}
 
-      <Button variant="primary" onClick={onAnswer}>
-        Ответить
-      </Button>
+        <Button variant="primary" onClick={onAnswer}>
+          Ответить
+        </Button>
+      </div>
     </div>
 
     <div className="mode-selection__actions">

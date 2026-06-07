@@ -13,6 +13,7 @@ export {
   setCurrentTournamentQuestions,
   setLoading,
   setError,
+  setTournamentQuestionAnswer,
 } from './model/quizUISlice';
 
 export {
@@ -36,6 +37,7 @@ export {
   selectCurrentTournamentRoundIndex,
   selectCurrentTournamentQuestionIndex,
   selectCurrentTournamentQuestions,
+  selectTournamentAnswersByQuestionId,
 } from './model/selectors';
 
 export { initGame } from './model/thunks/initGame';
