@@ -68,3 +68,8 @@ export const selectTotalScore = (state: RootState) => {
     );
   }, 0);
 };
+export const selectTournamentQuestionIdsByRoundId = (state: RootState) =>
+  state.quizUI.tournamentQuestionIdsByRoundId;
+
+export const selectTournamentQuestionsById = (state: RootState) =>
+  state.quizUI.tournamentQuestionsById;

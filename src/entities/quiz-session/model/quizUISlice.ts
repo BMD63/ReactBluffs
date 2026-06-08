@@ -16,6 +16,8 @@ type QuizUIState = {
   currentTournamentQuestionIndex: number;
   tournamentAnswersByQuestionId: Record<string, string | boolean>;
   currentTournamentQuestions: Question[];
+  tournamentQuestionIdsByRoundId: Record<string, string[]>;
+  tournamentQuestionsById: Record<string, Question>;
 };
 
 const initialState: QuizUIState = {
@@ -29,6 +31,8 @@ const initialState: QuizUIState = {
   currentTournamentQuestionIndex: 0,
   tournamentAnswersByQuestionId: {},
   currentTournamentQuestions: [],
+  tournamentQuestionIdsByRoundId: {},
+  tournamentQuestionsById: {},
 };
 
 const quizUISlice = createSlice({
@@ -79,6 +83,22 @@ const quizUISlice = createSlice({
     setCurrentTournamentQuestionIndex(state, action: PayloadAction<number>) {
       state.currentTournamentQuestionIndex = action.payload;
     },
+    setTournamentQuestionPlan(
+      state,
+      action: PayloadAction<{
+        questionIdsByRoundId: Record<string, string[]>;
+        questionsById: Record<string, Question>;
+      }>
+    ) {
+      state.tournamentQuestionIdsByRoundId =
+        action.payload.questionIdsByRoundId;
+      state.tournamentQuestionsById = action.payload.questionsById;
+    },
+
+    resetTournamentQuestionPlan(state) {
+      state.tournamentQuestionIdsByRoundId = {};
+      state.tournamentQuestionsById = {};
+    },
   },
 });
 
@@ -95,6 +115,8 @@ export const {
   setTournamentQuestionAnswer,
   setCurrentTournamentQuestions,
   resetCurrentTournamentQuestions,
+  setTournamentQuestionPlan,
+  resetTournamentQuestionPlan,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

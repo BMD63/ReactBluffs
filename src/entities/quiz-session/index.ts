@@ -14,6 +14,8 @@ export {
   setLoading,
   setError,
   setTournamentQuestionAnswer,
+  setTournamentQuestionPlan,
+  resetTournamentQuestionPlan,
 } from './model/quizUISlice';
 
 export {
@@ -38,6 +40,8 @@ export {
   selectCurrentTournamentQuestionIndex,
   selectCurrentTournamentQuestions,
   selectTournamentAnswersByQuestionId,
+  selectTournamentQuestionIdsByRoundId,
+  selectTournamentQuestionsById,
 } from './model/selectors';
 
 export { initGame } from './model/thunks/initGame';

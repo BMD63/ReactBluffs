@@ -8,6 +8,7 @@ import {
 } from '@/entities/tournament-config';
 import { GAME_FLOW_MODE, type GameFlowMode } from '@/entities/game-flow';
 import { questionApi } from '@/entities/question/api/questionApi';
+import { createTournamentQuestionPlan } from '@/entities/quiz-session/model/createTournamentQuestionPlan';
 import {
   SCREEN,
   setScreen,
@@ -32,6 +33,9 @@ import {
   selectCurrentTournamentQuestions,
   setTournamentQuestionAnswer,
   selectTournamentAnswersByQuestionId,
+  setTournamentQuestionPlan,
+  selectTournamentQuestionIdsByRoundId,
+  selectTournamentQuestionsById,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -60,6 +64,12 @@ const QuizPage = () => {
   const currentTournamentQuestionIndex = useAppSelector(
     selectCurrentTournamentQuestionIndex
   );
+
+  const tournamentQuestionIdsByRoundId = useAppSelector(
+    selectTournamentQuestionIdsByRoundId
+  );
+
+  const tournamentQuestionsById = useAppSelector(selectTournamentQuestionsById);
 
   const { currentCard, currentCardAnswers, currentCardIndex, totalCards } =
     useAppSelector(selectCurrentCardData);
@@ -131,15 +141,8 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.RULES));
   };
 
-  const handleStartTournament = () => {
-    dispatch(setCurrentTournamentRoundIndex(0));
-    dispatch(setScreen(SCREEN.ROUND_INTRO));
-  };
-  const handleStartRound = async () => {
-    const currentRound =
-      activeTournamentConfig?.rounds[currentTournamentRoundIndex];
-
-    if (!currentRound) {
+  const handleStartTournament = async () => {
+    if (!activeTournamentConfig) {
       return;
     }
 
@@ -147,23 +150,52 @@ const QuizPage = () => {
     dispatch(setError(null));
 
     try {
-      const questions = await questionApi.getQuestions({
-        gameMode: getGameModeByTournamentRoundType(currentRound.type),
-      });
+      const questionsByRoundId = Object.fromEntries(
+        await Promise.all(
+          activeTournamentConfig.rounds.map(async (round) => {
+            const questions = await questionApi.getQuestions({
+              gameMode: getGameModeByTournamentRoundType(round.type),
+            });
 
-      dispatch(
-        setCurrentTournamentQuestions(
-          questions.slice(0, currentRound.questionsCount)
+            return [round.id, questions];
+          })
         )
       );
 
+      const questionPlan = createTournamentQuestionPlan({
+        tournamentConfig: activeTournamentConfig,
+        questionsByRoundId,
+      });
+
+      dispatch(setTournamentQuestionPlan(questionPlan));
+      dispatch(setCurrentTournamentRoundIndex(0));
       dispatch(setCurrentTournamentQuestionIndex(0));
-      dispatch(setScreen(SCREEN.TOURNAMENT_QUESTION));
+      dispatch(setScreen(SCREEN.ROUND_INTRO));
     } catch {
-      dispatch(setError('Не удалось загрузить вопросы тура'));
+      dispatch(setError('Не удалось подготовить турнир'));
     } finally {
       dispatch(setLoading(false));
     }
+  };
+  const handleStartRound = () => {
+    const currentRound =
+      activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+    if (!currentRound) {
+      return;
+    }
+
+    const questionIds = tournamentQuestionIdsByRoundId[currentRound.id] ?? [];
+
+    const questions = questionIds
+      .map((questionId) => tournamentQuestionsById[questionId])
+      .filter((question): question is NonNullable<typeof question> =>
+        Boolean(question)
+      );
+
+    dispatch(setCurrentTournamentQuestions(questions));
+    dispatch(setCurrentTournamentQuestionIndex(0));
+    dispatch(setScreen(SCREEN.TOURNAMENT_QUESTION));
   };
 
   const handleRestartTournament = () => {
