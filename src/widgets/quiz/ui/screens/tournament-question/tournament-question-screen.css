@@ -17,3 +17,11 @@
   width: 140px;
   flex: 0 0 140px;
 }
+
+.tournament-question-screen__multiple-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+}

@@ -70,6 +70,20 @@ const TournamentQuestionScreen = ({
           </div>
         )}
 
+        {question?.type === 'multipleChoice' && (
+          <div className="tournament-question-screen__multiple-options">
+            {question.options.map((option) => (
+              <Button
+                key={option}
+                variant={answer === option ? 'primary' : 'secondary'}
+                onClick={() => onChangeAnswer(option)}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+        )}
+
         <Button variant="primary" onClick={onAnswer}>
           Ответить
         </Button>
