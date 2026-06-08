@@ -1,5 +1,19 @@
 .tournament-question-screen__answer {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
+}
+
+.tournament-question-screen__boolean-options {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.tournament-question-screen__boolean-options .btn {
+  width: 140px;
+  flex: 0 0 140px;
 }

@@ -52,6 +52,24 @@ const TournamentQuestionScreen = ({
           />
         )}
 
+        {question?.type === 'boolean' && (
+          <div className="tournament-question-screen__boolean-options">
+            <Button
+              variant={answer === true ? 'primary' : 'secondary'}
+              onClick={() => onChangeAnswer(true)}
+            >
+              Да
+            </Button>
+
+            <Button
+              variant={answer === false ? 'primary' : 'secondary'}
+              onClick={() => onChangeAnswer(false)}
+            >
+              Нет
+            </Button>
+          </div>
+        )}
+
         <Button variant="primary" onClick={onAnswer}>
           Ответить
         </Button>
