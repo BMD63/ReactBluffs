@@ -198,11 +198,15 @@ const QuizScreen = ({
         return null;
       }
 
+      const questions = currentTournamentQuestions;
+
       return (
         <RoundAnswerSheetScreen
           roundNumber={currentTournamentRoundIndex + 1}
           totalRounds={activeTournamentConfig.rounds.length}
           questionsCount={currentRound.questionsCount}
+          questions={questions}
+          answersByQuestionId={tournamentAnswersByQuestionId}
           onFinishRound={onFinishRound}
           onExit={onBackToStart}
           onRestart={onRestartTournament}

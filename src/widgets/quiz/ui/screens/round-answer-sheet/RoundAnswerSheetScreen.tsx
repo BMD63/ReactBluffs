@@ -1,9 +1,12 @@
 import { Button } from '@/shared/ui/button';
+import type { Question } from '@/entities/question/model/questionTypes';
 
 type RoundAnswerSheetScreenProps = {
   roundNumber: number;
   totalRounds: number;
   questionsCount: number;
+  questions: Question[];
+  answersByQuestionId: Record<string, string | boolean>;
 
   onFinishRound: () => void;
   onExit: () => void;
@@ -14,6 +17,8 @@ const RoundAnswerSheetScreen = ({
   roundNumber,
   totalRounds,
   questionsCount,
+  questions,
+  answersByQuestionId,
   onFinishRound,
   onExit,
   onRestart,
@@ -33,6 +38,18 @@ const RoundAnswerSheetScreen = ({
       <h2>{questionsCount} вопросов</h2>
 
       <p>Здесь появится время на исправление ответов и проверка тура.</p>
+
+      <div>
+        {questions.map((question, index) => {
+          const answer = answersByQuestionId[question.id];
+
+          return (
+            <p key={question.id}>
+              {index + 1}. {answer === undefined ? '—' : String(answer)}
+            </p>
+          );
+        })}
+      </div>
 
       <Button variant="primary" onClick={onFinishRound}>
         Завершить тур
