@@ -16,6 +16,7 @@ export {
   setTournamentQuestionAnswer,
   setTournamentQuestionPlan,
   resetTournamentQuestionPlan,
+  resetTournamentSession,
 } from './model/quizUISlice';
 
 export {

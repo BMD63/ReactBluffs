@@ -210,6 +210,7 @@ const QuizScreen = ({
           onFinishRound={onFinishRound}
           onExit={onBackToStart}
           onRestart={onRestartTournament}
+          onChangeAnswer={onChangeTournamentAnswer}
         />
       );
     }

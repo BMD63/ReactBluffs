@@ -99,6 +99,14 @@ const quizUISlice = createSlice({
       state.tournamentQuestionIdsByRoundId = {};
       state.tournamentQuestionsById = {};
     },
+    resetTournamentSession(state) {
+      state.currentTournamentRoundIndex = 0;
+      state.currentTournamentQuestionIndex = 0;
+      state.tournamentAnswersByQuestionId = {};
+      state.currentTournamentQuestions = [];
+      state.tournamentQuestionIdsByRoundId = {};
+      state.tournamentQuestionsById = {};
+    },
   },
 });
 
@@ -117,6 +125,7 @@ export const {
   resetCurrentTournamentQuestions,
   setTournamentQuestionPlan,
   resetTournamentQuestionPlan,
+  resetTournamentSession,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;
