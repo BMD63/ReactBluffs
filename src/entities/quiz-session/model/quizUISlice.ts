@@ -18,6 +18,7 @@ type QuizUIState = {
   currentTournamentQuestions: Question[];
   tournamentQuestionIdsByRoundId: Record<string, string[]>;
   tournamentQuestionsById: Record<string, Question>;
+  tournamentBonusQuestionIds: string[];
 };
 
 const initialState: QuizUIState = {
@@ -33,6 +34,7 @@ const initialState: QuizUIState = {
   currentTournamentQuestions: [],
   tournamentQuestionIdsByRoundId: {},
   tournamentQuestionsById: {},
+  tournamentBonusQuestionIds: [],
 };
 
 const quizUISlice = createSlice({
@@ -106,6 +108,19 @@ const quizUISlice = createSlice({
       state.currentTournamentQuestions = [];
       state.tournamentQuestionIdsByRoundId = {};
       state.tournamentQuestionsById = {};
+      state.tournamentBonusQuestionIds = [];
+    },
+    toggleTournamentBonusQuestion(state, action: PayloadAction<string>) {
+      const questionId = action.payload;
+
+      if (state.tournamentBonusQuestionIds.includes(questionId)) {
+        state.tournamentBonusQuestionIds =
+          state.tournamentBonusQuestionIds.filter((id) => id !== questionId);
+
+        return;
+      }
+
+      state.tournamentBonusQuestionIds.push(questionId);
     },
   },
 });
@@ -126,6 +141,7 @@ export const {
   setTournamentQuestionPlan,
   resetTournamentQuestionPlan,
   resetTournamentSession,
+  toggleTournamentBonusQuestion,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;

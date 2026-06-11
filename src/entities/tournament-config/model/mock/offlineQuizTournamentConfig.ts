@@ -39,6 +39,8 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
 
       questionTimeSeconds: 20,
       correctionTimeSeconds: 30,
+
+      bonusAnswersLimit: 3,
     },
 
     {

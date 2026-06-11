@@ -15,6 +15,8 @@ export type TournamentRoundConfig = {
 
   questionTimeSeconds: number;
   correctionTimeSeconds: number;
+
+  bonusAnswersLimit?: number;
 };
 
 export type TournamentConfig = {

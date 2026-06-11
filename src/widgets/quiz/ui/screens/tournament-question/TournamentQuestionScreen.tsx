@@ -9,6 +9,9 @@ type TournamentQuestionScreenProps = {
   totalQuestions: number;
   question: Question | undefined;
   answer: string | boolean | undefined;
+  isBonusSelected: boolean;
+  shouldShowBonusButton: boolean;
+  onToggleBonus: () => void;
   onChangeAnswer: (answer: string | boolean) => void;
   onExit: () => void;
   onRestart: () => void;
@@ -20,12 +23,15 @@ const TournamentQuestionScreen = ({
   totalRounds,
   questionNumber,
   totalQuestions,
+  question,
   answer,
+  isBonusSelected,
+  shouldShowBonusButton,
+  onToggleBonus,
   onChangeAnswer,
   onExit,
   onRestart,
   onAnswer,
-  question,
 }: TournamentQuestionScreenProps) => (
   <section className="mode-selection">
     <div className="mode-selection__header">
@@ -83,7 +89,14 @@ const TournamentQuestionScreen = ({
             ))}
           </div>
         )}
-
+        {question?.type === 'boolean' && shouldShowBonusButton && (
+          <Button
+            variant={isBonusSelected ? 'primary' : 'secondary'}
+            onClick={onToggleBonus}
+          >
+            Бонусный балл
+          </Button>
+        )}
         <Button variant="primary" onClick={onAnswer}>
           Ответить
         </Button>

@@ -12,8 +12,11 @@
 
 .round-answer-sheet__answer {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   gap: 8px;
+
+  color: rgba(248, 250, 252, 0.78);
+  align-items: center;
 
   color: rgba(248, 250, 252, 0.78);
   text-align: left;

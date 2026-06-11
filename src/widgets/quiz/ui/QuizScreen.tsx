@@ -40,6 +40,9 @@ type QuizScreenProps = {
   currentCardScore: number;
   totalScore: number;
   activeTournamentConfig: TournamentConfig | null;
+  tournamentBonusQuestionIds: string[];
+
+  onToggleBonusQuestion: (questionId: string) => void;
   onAnswer: (
     cardIndex: number,
     questionId: string,
@@ -79,6 +82,8 @@ const QuizScreen = ({
   totalScore,
   gameMode,
   tournamentAnswersByQuestionId,
+  tournamentBonusQuestionIds,
+  onToggleBonusQuestion,
   onChangeTournamentAnswer,
   onAnswer,
   onBonus,
@@ -165,9 +170,48 @@ const QuizScreen = ({
       if (!activeTournamentConfig || !currentRound) {
         return null;
       }
+
       const currentAnswer = currentQuestion
         ? tournamentAnswersByQuestionId[currentQuestion.id]
         : undefined;
+
+      const bonusAnswersLimit = Math.min(
+        currentRound.bonusAnswersLimit ?? 0,
+        currentRound.questionsCount
+      );
+
+      const currentRoundBonusQuestionIds = currentTournamentQuestions
+        .map((question) => question.id)
+        .filter((questionId) =>
+          tournamentBonusQuestionIds.includes(questionId)
+        );
+
+      const isBonusSelected =
+        currentQuestion !== undefined &&
+        tournamentBonusQuestionIds.includes(currentQuestion.id);
+
+      const isBonusDisabled =
+        !isBonusSelected &&
+        currentRoundBonusQuestionIds.length >= bonusAnswersLimit;
+
+      const shouldShowBonusButton =
+        bonusAnswersLimit > 0 && (isBonusSelected || !isBonusDisabled);
+
+      const handleChangeAnswer = (answer: string | boolean) => {
+        if (!currentQuestion) {
+          return;
+        }
+
+        onChangeTournamentAnswer(currentQuestion.id, answer);
+      };
+
+      const handleToggleBonus = () => {
+        if (!currentQuestion || isBonusDisabled) {
+          return;
+        }
+
+        onToggleBonusQuestion(currentQuestion.id);
+      };
 
       return (
         <TournamentQuestionScreen
@@ -176,17 +220,14 @@ const QuizScreen = ({
           questionNumber={currentTournamentQuestionIndex + 1}
           totalQuestions={currentRound.questionsCount}
           answer={currentAnswer}
-          onChangeAnswer={(answer) => {
-            if (!currentQuestion) {
-              return;
-            }
-
-            onChangeTournamentAnswer(currentQuestion.id, answer);
-          }}
+          onChangeAnswer={handleChangeAnswer}
           onExit={onBackToStart}
           onRestart={onRestartTournament}
           onAnswer={onAnswerTournamentQuestion}
           question={currentQuestion}
+          isBonusSelected={isBonusSelected}
+          onToggleBonus={handleToggleBonus}
+          shouldShowBonusButton={shouldShowBonusButton}
         />
       );
     }
@@ -200,6 +241,17 @@ const QuizScreen = ({
 
       const questions = currentTournamentQuestions;
 
+      const bonusAnswersLimit = Math.min(
+        currentRound.bonusAnswersLimit ?? 0,
+        currentRound.questionsCount
+      );
+
+      const currentRoundBonusQuestionIds = currentTournamentQuestions
+        .map((question) => question.id)
+        .filter((questionId) =>
+          tournamentBonusQuestionIds.includes(questionId)
+        );
+
       return (
         <RoundAnswerSheetScreen
           roundNumber={currentTournamentRoundIndex + 1}
@@ -211,6 +263,10 @@ const QuizScreen = ({
           onExit={onBackToStart}
           onRestart={onRestartTournament}
           onChangeAnswer={onChangeTournamentAnswer}
+          bonusAnswersLimit={bonusAnswersLimit}
+          bonusQuestionIds={tournamentBonusQuestionIds}
+          selectedBonusCount={currentRoundBonusQuestionIds.length}
+          onToggleBonus={onToggleBonusQuestion}
         />
       );
     }

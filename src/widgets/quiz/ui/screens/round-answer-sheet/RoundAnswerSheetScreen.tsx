@@ -8,7 +8,10 @@ type RoundAnswerSheetScreenProps = {
   questionsCount: number;
   questions: Question[];
   answersByQuestionId: Record<string, string | boolean>;
-
+  bonusAnswersLimit: number;
+  bonusQuestionIds: string[];
+  selectedBonusCount: number;
+  onToggleBonus: (questionId: string) => void;
   onFinishRound: () => void;
   onExit: () => void;
   onRestart: () => void;
@@ -21,6 +24,10 @@ const RoundAnswerSheetScreen = ({
   questionsCount,
   questions,
   answersByQuestionId,
+  bonusAnswersLimit,
+  bonusQuestionIds,
+  selectedBonusCount,
+  onToggleBonus,
   onFinishRound,
   onExit,
   onRestart,
@@ -45,7 +52,13 @@ const RoundAnswerSheetScreen = ({
       <div className="round-answer-sheet__answers">
         {questions.map((question, index) => {
           const answer = answersByQuestionId[question.id];
+          const isBonusSelected = bonusQuestionIds.includes(question.id);
 
+          const isBonusDisabled =
+            !isBonusSelected && selectedBonusCount >= bonusAnswersLimit;
+
+          const shouldShowBonusButton =
+            bonusAnswersLimit > 0 && (isBonusSelected || !isBonusDisabled);
           const formattedAnswer =
             answer === undefined
               ? ''
@@ -85,6 +98,15 @@ const RoundAnswerSheetScreen = ({
                   }
                   placeholder="—"
                 />
+              )}
+
+              {shouldShowBonusButton && (
+                <Button
+                  variant={isBonusSelected ? 'primary' : 'secondary'}
+                  onClick={() => onToggleBonus(question.id)}
+                >
+                  Бонус
+                </Button>
               )}
             </div>
           );

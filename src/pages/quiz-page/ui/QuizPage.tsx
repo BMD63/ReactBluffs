@@ -36,6 +36,9 @@ import {
   setTournamentQuestionPlan,
   selectTournamentQuestionIdsByRoundId,
   selectTournamentQuestionsById,
+  resetTournamentSession,
+  selectTournamentBonusQuestionIds,
+  toggleTournamentBonusQuestion,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -68,6 +71,14 @@ const QuizPage = () => {
   const tournamentQuestionIdsByRoundId = useAppSelector(
     selectTournamentQuestionIdsByRoundId
   );
+
+  const tournamentBonusQuestionIds = useAppSelector(
+    selectTournamentBonusQuestionIds
+  );
+
+  const handleToggleBonusQuestion = (questionId: string) => {
+    dispatch(toggleTournamentBonusQuestion(questionId));
+  };
 
   const tournamentQuestionsById = useAppSelector(selectTournamentQuestionsById);
 
@@ -199,6 +210,7 @@ const QuizPage = () => {
   };
 
   const handleRestartTournament = () => {
+    dispatch(resetTournamentSession());
     dispatch(setScreen(SCREEN.TOURNAMENT_INTRO));
   };
 
@@ -321,6 +333,8 @@ const QuizPage = () => {
           currentTournamentQuestions={currentTournamentQuestions}
           tournamentAnswersByQuestionId={tournamentAnswersByQuestionId}
           onChangeTournamentAnswer={handleChangeTournamentAnswer}
+          tournamentBonusQuestionIds={tournamentBonusQuestionIds}
+          onToggleBonusQuestion={handleToggleBonusQuestion}
         />
       </div>
     </div>
