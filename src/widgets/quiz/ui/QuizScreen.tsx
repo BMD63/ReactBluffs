@@ -267,6 +267,7 @@ const QuizScreen = ({
           bonusQuestionIds={tournamentBonusQuestionIds}
           selectedBonusCount={currentRoundBonusQuestionIds.length}
           onToggleBonus={onToggleBonusQuestion}
+          correctionTimeSeconds={currentRound.correctionTimeSeconds}
         />
       );
     }

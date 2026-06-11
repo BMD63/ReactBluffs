@@ -31,3 +31,21 @@
   width: 120px;
   flex: 0 0 120px;
 }
+
+.round-answer-sheet__timer {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+
+  margin-bottom: 16px;
+
+  color: var(--color-primary);
+}
+
+.round-answer-sheet__timer--warning {
+  color: #facc15;
+}
+
+.round-answer-sheet__timer--danger {
+  color: #ef4444;
+}
