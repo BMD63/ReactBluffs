@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button';
 import type { Question } from '@/entities/question/model/questionTypes';
 import './tournament-question-screen.css';
@@ -16,6 +17,7 @@ type TournamentQuestionScreenProps = {
   onExit: () => void;
   onRestart: () => void;
   onAnswer: () => void;
+  questionTimeSeconds: number;
 };
 
 const TournamentQuestionScreen = ({
@@ -32,87 +34,116 @@ const TournamentQuestionScreen = ({
   onExit,
   onRestart,
   onAnswer,
-}: TournamentQuestionScreenProps) => (
-  <section className="mode-selection">
-    <div className="mode-selection__header">
-      <p className="mode-selection__eyebrow">
-        Тур {roundNumber} из {totalRounds}
-      </p>
+  questionTimeSeconds,
+}: TournamentQuestionScreenProps) => {
+  const [timeLeft, setTimeLeft] = useState(questionTimeSeconds);
 
-      <h1 className="mode-selection__title">
-        Вопрос {questionNumber} из {totalQuestions}
-      </h1>
-    </div>
+  const timerClassName =
+    timeLeft <= 10
+      ? 'tournament-question-screen__timer tournament-question-screen__timer--danger'
+      : timeLeft <= 20
+        ? 'tournament-question-screen__timer tournament-question-screen__timer--warning'
+        : 'tournament-question-screen__timer';
 
-    <div className="mode-card mode-card--active">
-      <div className="mode-card__icon">❓</div>
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      onAnswer();
+      return;
+    }
 
-      <h2>{question?.text ?? 'Вопрос не загружен'}</h2>
+    const timerId = window.setTimeout(() => {
+      setTimeLeft((currentTimeLeft) => currentTimeLeft - 1);
+    }, 1000);
 
-      <div className="tournament-question-screen__answer">
-        {question?.type === 'openText' && (
-          <input
-            value={typeof answer === 'string' ? answer : ''}
-            onChange={(event) => onChangeAnswer(event.target.value)}
-            placeholder="Введите ответ"
-          />
-        )}
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, [timeLeft, onAnswer]);
 
-        {question?.type === 'boolean' && (
-          <div className="tournament-question-screen__boolean-options">
-            <Button
-              variant={answer === true ? 'primary' : 'secondary'}
-              onClick={() => onChangeAnswer(true)}
-            >
-              Да
-            </Button>
+  return (
+    <section className="mode-selection">
+      <div className="mode-selection__header">
+        <p className="mode-selection__eyebrow">
+          Тур {roundNumber} из {totalRounds}
+        </p>
 
-            <Button
-              variant={answer === false ? 'primary' : 'secondary'}
-              onClick={() => onChangeAnswer(false)}
-            >
-              Нет
-            </Button>
-          </div>
-        )}
+        <h1 className="mode-selection__title">
+          Вопрос {questionNumber} из {totalQuestions}
+        </h1>
+      </div>
 
-        {question?.type === 'multipleChoice' && (
-          <div className="tournament-question-screen__multiple-options">
-            {question.options.map((option) => (
+      <div className="mode-card mode-card--active">
+        <div className="mode-card__icon">❓</div>
+
+        <h2>{question?.text ?? 'Вопрос не загружен'}</h2>
+
+        <div className={timerClassName}>⏳ {timeLeft} сек.</div>
+
+        <div className="tournament-question-screen__answer">
+          {question?.type === 'openText' && (
+            <input
+              value={typeof answer === 'string' ? answer : ''}
+              onChange={(event) => onChangeAnswer(event.target.value)}
+              placeholder="Введите ответ"
+            />
+          )}
+
+          {question?.type === 'boolean' && (
+            <div className="tournament-question-screen__boolean-options">
               <Button
-                key={option}
-                variant={answer === option ? 'primary' : 'secondary'}
-                onClick={() => onChangeAnswer(option)}
+                variant={answer === true ? 'primary' : 'secondary'}
+                onClick={() => onChangeAnswer(true)}
               >
-                {option}
+                Да
               </Button>
-            ))}
-          </div>
-        )}
-        {question?.type === 'boolean' && shouldShowBonusButton && (
-          <Button
-            variant={isBonusSelected ? 'primary' : 'secondary'}
-            onClick={onToggleBonus}
-          >
-            Бонусный балл
+
+              <Button
+                variant={answer === false ? 'primary' : 'secondary'}
+                onClick={() => onChangeAnswer(false)}
+              >
+                Нет
+              </Button>
+            </div>
+          )}
+
+          {question?.type === 'multipleChoice' && (
+            <div className="tournament-question-screen__multiple-options">
+              {question.options.map((option) => (
+                <Button
+                  key={option}
+                  variant={answer === option ? 'primary' : 'secondary'}
+                  onClick={() => onChangeAnswer(option)}
+                >
+                  {option}
+                </Button>
+              ))}
+            </div>
+          )}
+          {question?.type === 'boolean' && shouldShowBonusButton && (
+            <Button
+              variant={isBonusSelected ? 'primary' : 'secondary'}
+              onClick={onToggleBonus}
+            >
+              Бонусный балл
+            </Button>
+          )}
+          <Button variant="primary" onClick={onAnswer}>
+            Ответить
           </Button>
-        )}
-        <Button variant="primary" onClick={onAnswer}>
-          Ответить
+        </div>
+      </div>
+
+      <div className="mode-selection__actions">
+        <Button variant="secondary" onClick={onExit}>
+          Выйти
+        </Button>
+
+        <Button variant="secondary" onClick={onRestart}>
+          Начать заново
         </Button>
       </div>
-    </div>
-
-    <div className="mode-selection__actions">
-      <Button variant="secondary" onClick={onExit}>
-        Выйти
-      </Button>
-
-      <Button variant="secondary" onClick={onRestart}>
-        Начать заново
-      </Button>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default TournamentQuestionScreen;

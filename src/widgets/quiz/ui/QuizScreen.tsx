@@ -228,6 +228,7 @@ const QuizScreen = ({
           isBonusSelected={isBonusSelected}
           onToggleBonus={handleToggleBonus}
           shouldShowBonusButton={shouldShowBonusButton}
+          questionTimeSeconds={currentRound.questionTimeSeconds}
         />
       );
     }
