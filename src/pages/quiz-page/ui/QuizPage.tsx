@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import { GAME_MODE, type GameMode } from '@/entities/game-mode';
+import { calculateTournamentRoundResult } from '@/entities/quiz-session/model/calculateTournamentRoundResult';
 import {
   loadMockTournamentConfigs,
   selectActiveTournamentConfig,
@@ -39,6 +40,8 @@ import {
   resetTournamentSession,
   selectTournamentBonusQuestionIds,
   toggleTournamentBonusQuestion,
+  setCurrentTournamentRoundResult,
+  selectCurrentTournamentRoundResult,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -91,6 +94,10 @@ const QuizPage = () => {
 
   const tournamentAnswersByQuestionId = useAppSelector(
     selectTournamentAnswersByQuestionId
+  );
+
+  const currentTournamentRoundResult = useAppSelector(
+    selectCurrentTournamentRoundResult
   );
 
   useEffect(() => {
@@ -257,7 +264,13 @@ const QuizPage = () => {
   };
 
   const handleFinishRound = () => {
-    // временно, пока нет экрана результатов тура
+    const roundResult = calculateTournamentRoundResult({
+      questions: currentTournamentQuestions,
+      answersByQuestionId: tournamentAnswersByQuestionId,
+      bonusQuestionIds: tournamentBonusQuestionIds,
+    });
+
+    dispatch(setCurrentTournamentRoundResult(roundResult));
     dispatch(setScreen(SCREEN.ROUND_RESULTS));
   };
 
@@ -335,6 +348,7 @@ const QuizPage = () => {
           onChangeTournamentAnswer={handleChangeTournamentAnswer}
           tournamentBonusQuestionIds={tournamentBonusQuestionIds}
           onToggleBonusQuestion={handleToggleBonusQuestion}
+          currentTournamentRoundResult={currentTournamentRoundResult}
         />
       </div>
     </div>

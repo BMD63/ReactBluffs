@@ -38,6 +38,10 @@ const TournamentQuestionScreen = ({
 }: TournamentQuestionScreenProps) => {
   const [timeLeft, setTimeLeft] = useState(questionTimeSeconds);
 
+  useEffect(() => {
+    setTimeLeft(questionTimeSeconds);
+  }, [questionNumber, questionTimeSeconds]);
+
   const timerClassName =
     timeLeft <= 10
       ? 'tournament-question-screen__timer tournament-question-screen__timer--danger'

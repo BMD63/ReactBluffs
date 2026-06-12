@@ -1,10 +1,11 @@
 import { Button } from '@/shared/ui/button';
+import type { TournamentRoundResult } from '@/entities/quiz-session/model/calculateTournamentRoundResult';
 
 type RoundResultsScreenProps = {
   roundNumber: number;
   totalRounds: number;
   title: string;
-
+  result: TournamentRoundResult;
   onNextRound: () => void;
   onExit: () => void;
   onRestart: () => void;
@@ -14,6 +15,7 @@ const RoundResultsScreen = ({
   roundNumber,
   totalRounds,
   title,
+  result,
   onNextRound,
   onExit,
   onRestart,
@@ -32,7 +34,19 @@ const RoundResultsScreen = ({
 
       <h2>{title}</h2>
 
-      <p>Результаты тура появятся здесь.</p>
+      <div>
+        <p>
+          Правильных ответов: {result.correctAnswersCount} /{' '}
+          {result.questionsCount}
+        </p>
+
+        <p>
+          Бонусных попаданий: {result.bonusCorrectCount} /{' '}
+          {result.bonusAnswersCount}
+        </p>
+
+        <p>Очков за тур: {result.score}</p>
+      </div>
 
       <Button variant="primary" onClick={onNextRound}>
         Следующий тур

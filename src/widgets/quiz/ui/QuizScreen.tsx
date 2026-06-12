@@ -14,6 +14,7 @@ import ModeSelectionScreen from '@/widgets/quiz/ui/screens/mode-selection/ModeSe
 import type { GameFlowMode } from '@/entities/game-flow';
 import GameFlowSelectionScreen from '@/widgets/quiz/ui/screens/game-flow-selection/GameFlowSelectionScreen';
 import type { TournamentConfig } from '@/entities/tournament-config';
+import type { TournamentRoundResult } from '@/entities/quiz-session/model/calculateTournamentRoundResult';
 import TournamentIntroScreen from '@/widgets/quiz/ui/screens/tournament-intro/TournamentIntroScreen';
 import RoundIntroScreen from '@/widgets/quiz/ui/screens/round-intro/RoundIntroScreen';
 import TournamentQuestionScreen from '@/widgets/quiz/ui/screens/tournament-question/TournamentQuestionScreen';
@@ -30,6 +31,7 @@ type QuizScreenProps = {
   currentCardAnswers: CardAnswers;
   currentCardIndex: number;
   currentTournamentRoundIndex: number;
+  currentTournamentRoundResult: TournamentRoundResult | null;
   totalCards: number;
   tournamentAnswersByQuestionId: Record<string, string | boolean>;
   onChangeTournamentAnswer: (
@@ -83,6 +85,7 @@ const QuizScreen = ({
   gameMode,
   tournamentAnswersByQuestionId,
   tournamentBonusQuestionIds,
+  currentTournamentRoundResult,
   onToggleBonusQuestion,
   onChangeTournamentAnswer,
   onAnswer,
@@ -274,6 +277,10 @@ const QuizScreen = ({
     }
 
     case SCREEN.ROUND_RESULTS: {
+      if (!currentTournamentRoundResult) {
+        return null;
+      }
+
       const currentRound =
         activeTournamentConfig?.rounds[currentTournamentRoundIndex];
 
@@ -286,6 +293,7 @@ const QuizScreen = ({
           roundNumber={currentTournamentRoundIndex + 1}
           totalRounds={activeTournamentConfig.rounds.length}
           title={currentRound.title}
+          result={currentTournamentRoundResult}
           onNextRound={onNextRound}
           onExit={onBackToStart}
           onRestart={onRestartTournament}

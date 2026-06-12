@@ -4,6 +4,7 @@ import { SCREEN, type Screen } from './config/screen';
 import { DIFFICULTY, type Difficulty } from './config/difficultyConfig';
 import { GAME_FLOW_MODE, type GameFlowMode } from '@/entities/game-flow';
 import type { Question } from '@/entities/question/model/questionTypes';
+import type { TournamentRoundResult } from './calculateTournamentRoundResult';
 
 type QuizUIState = {
   currentScreen: Screen;
@@ -19,6 +20,7 @@ type QuizUIState = {
   tournamentQuestionIdsByRoundId: Record<string, string[]>;
   tournamentQuestionsById: Record<string, Question>;
   tournamentBonusQuestionIds: string[];
+  currentTournamentRoundResult: TournamentRoundResult | null;
 };
 
 const initialState: QuizUIState = {
@@ -35,6 +37,7 @@ const initialState: QuizUIState = {
   tournamentQuestionIdsByRoundId: {},
   tournamentQuestionsById: {},
   tournamentBonusQuestionIds: [],
+  currentTournamentRoundResult: null,
 };
 
 const quizUISlice = createSlice({
@@ -82,6 +85,13 @@ const quizUISlice = createSlice({
         action.payload.answer;
     },
 
+    setCurrentTournamentRoundResult(
+      state,
+      action: PayloadAction<TournamentRoundResult>
+    ) {
+      state.currentTournamentRoundResult = action.payload;
+    },
+
     setCurrentTournamentQuestionIndex(state, action: PayloadAction<number>) {
       state.currentTournamentQuestionIndex = action.payload;
     },
@@ -109,6 +119,7 @@ const quizUISlice = createSlice({
       state.tournamentQuestionIdsByRoundId = {};
       state.tournamentQuestionsById = {};
       state.tournamentBonusQuestionIds = [];
+      state.currentTournamentRoundResult = null;
     },
     toggleTournamentBonusQuestion(state, action: PayloadAction<string>) {
       const questionId = action.payload;
@@ -142,6 +153,7 @@ export const {
   resetTournamentQuestionPlan,
   resetTournamentSession,
   toggleTournamentBonusQuestion,
+  setCurrentTournamentRoundResult,
 } = quizUISlice.actions;
 
 export const quizUIReducer = quizUISlice.reducer;
