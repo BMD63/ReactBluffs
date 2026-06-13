@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks/redux';
 import { useQuizActions } from '@/widgets/quiz/model/useQuizActions';
 import { GAME_MODE, type GameMode } from '@/entities/game-mode';
+import { getGameModeByTournamentRoundType } from '@/entities/tournament-config/lib/getGameModeByTournamentRoundType';
 import { calculateTournamentRoundResult } from '@/entities/quiz-session/model/calculateTournamentRoundResult';
 import {
   loadMockTournamentConfigs,
@@ -85,6 +86,15 @@ const QuizPage = () => {
     dispatch(toggleTournamentBonusQuestion(questionId));
   };
 
+  const handleCloseRules = () => {
+    if (screen === SCREEN.RULES && activeTournamentConfig) {
+      dispatch(setScreen(SCREEN.ROUND_INTRO));
+      return;
+    }
+
+    closeRules();
+  };
+
   const tournamentQuestionsById = useAppSelector(selectTournamentQuestionsById);
 
   const { currentCard, currentCardAnswers, currentCardIndex, totalCards } =
@@ -108,24 +118,6 @@ const QuizPage = () => {
     dispatch(initUI());
     dispatch(loadMockTournamentConfigs());
   }, [dispatch]);
-
-  const getGameModeByTournamentRoundType = (type: string): GameMode => {
-    switch (type) {
-      case 'boolean':
-        return GAME_MODE.BLUFF;
-
-      case 'multipleChoice':
-        return GAME_MODE.MULTIPLE_CHOICE;
-
-      case 'openText':
-      case 'image':
-      case 'audio':
-        return GAME_MODE.OPEN_ANSWER;
-
-      default:
-        return GAME_MODE.OPEN_ANSWER;
-    }
-  };
 
   const handleStart = () => {
     dispatch(setScreen(SCREEN.GAME_FLOW_SELECTION));
@@ -340,7 +332,7 @@ const QuizPage = () => {
           onBonus={toggleQuestionBonus}
           onSubmit={submitQuizCard}
           onRestart={restartQuiz}
-          onRulesClose={closeRules}
+          onRulesClose={handleCloseRules}
           onNextCard={nextQuizCard}
           onGoToMenu={goToMenu}
           onStart={handleStart}

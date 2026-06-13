@@ -71,8 +71,8 @@ const RoundIntroScreen = ({
         <p>Дополнительное время: {correctionTimeSeconds} сек.</p>
 
         <div className="round-intro__primary-actions">
-          <Button variant="secondary" disabled onClick={onRules}>
-            Правила (скоро)
+          <Button variant="secondary" onClick={onRules}>
+            Правила
           </Button>
 
           <Button variant="primary" onClick={onStartRound}>

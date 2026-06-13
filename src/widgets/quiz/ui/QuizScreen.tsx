@@ -2,8 +2,7 @@ import { SCREEN } from '@/entities/quiz-session';
 import type { Screen } from '@/entities/quiz-session/model/config/screen';
 import type { Question } from '@/entities/question/model/questionTypes';
 import type { CardAnswers } from '@/entities/quiz-session/model/quizSessionModel';
-import type { GameMode } from '@/entities/game-mode';
-
+import { type GameMode, gameModeConfig } from '@/entities/game-mode';
 import GameModeMenu from '@/widgets/quiz/ui/menus/game-mode-menu/GameModeMenu';
 import Settings from '@/widgets/quiz/ui/setting/Settings';
 import RulesModal from '@/widgets/quiz/ui/modals/RulesModal';
@@ -21,6 +20,7 @@ import TournamentQuestionScreen from '@/widgets/quiz/ui/screens/tournament-quest
 import RoundAnswerSheetScreen from '@/widgets/quiz/ui/screens/round-answer-sheet/RoundAnswerSheetScreen';
 import RoundResultsScreen from '@/widgets/quiz/ui/screens/round-results/RoundResultsScreen';
 import TournamentResultsScreen from '@/widgets/quiz/ui/screens/tournament-results/TournamentResultsScreen';
+import { getGameModeByTournamentRoundType } from '@/entities/tournament-config/lib/getGameModeByTournamentRoundType';
 
 import { PlayQuiz } from '@/features/play-quiz';
 
@@ -353,8 +353,25 @@ const QuizScreen = ({
         />
       );
 
-    case SCREEN.RULES:
-      return <RulesModal isOpen gameMode={gameMode} onClose={onRulesClose} />;
+    case SCREEN.RULES: {
+      const currentRound =
+        activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+      const rulesGameMode = currentRound
+        ? getGameModeByTournamentRoundType(currentRound.type)
+        : gameMode;
+
+      const rulesConfig = gameModeConfig[rulesGameMode];
+
+      return (
+        <RulesModal
+          isOpen
+          title={`Правила: ${rulesConfig.title}`}
+          rules={rulesConfig.rules}
+          onClose={onRulesClose}
+        />
+      );
+    }
 
     case SCREEN.CARD_RESULT:
       if (!currentCard) return null;

@@ -29,19 +29,19 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       correctionTimeSeconds: 60,
     },
 
-    // {
-    //   id: 'round-3',
-    //   title: 'Блефы',
-    //   type: 'boolean',
-    //   difficulty: 'medium',
+    {
+      id: 'round-3',
+      title: 'Блефы',
+      type: 'boolean',
+      difficulty: 'medium',
 
-    //   questionsCount: 8,
+      questionsCount: 2,
 
-    //   questionTimeSeconds: 20,
-    //   correctionTimeSeconds: 30,
+      questionTimeSeconds: 20,
+      correctionTimeSeconds: 30,
 
-    //   bonusAnswersLimit: 3,
-    // },
+      bonusAnswersLimit: 3,
+    },
 
     // {
     //   id: 'round-4',
