@@ -1,5 +1,20 @@
 import { Button } from '@/shared/ui/button';
 import './round-intro-screen.css';
+import { pluralizeRu } from '@/shared/lib/format/pluralizeRu';
+
+const QUESTION_TYPE_LABELS: Record<string, string> = {
+  openText: 'Текстовые вопросы',
+  boolean: 'Блефы',
+  multipleChoice: 'Варианты ответа',
+  image: 'Картинки',
+  audio: 'Аудио',
+};
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  easy: 'Лёгкая',
+  medium: 'Средняя',
+  hard: 'Сложная',
+};
 
 type RoundIntroScreenProps = {
   roundNumber: number;
@@ -45,10 +60,13 @@ const RoundIntroScreen = ({
       <div className="mode-card mode-card--active">
         <div className="mode-card__icon">🏆</div>
 
-        <h2>{questionsCount} вопросов</h2>
+        <h2>
+          {questionsCount}{' '}
+          {pluralizeRu(questionsCount, ['вопрос', 'вопроса', 'вопросов'])}
+        </h2>
 
-        <p>Тип вопросов: {type}</p>
-        <p>Сложность: {difficulty}</p>
+        <p>Тип вопросов: {QUESTION_TYPE_LABELS[type] ?? type}</p>
+        <p>Сложность: {DIFFICULTY_LABELS[difficulty] ?? difficulty}</p>
         <p>Время на вопрос: {questionTimeSeconds} сек.</p>
         <p>Дополнительное время: {correctionTimeSeconds} сек.</p>
 

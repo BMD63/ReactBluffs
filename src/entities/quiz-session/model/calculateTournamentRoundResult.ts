@@ -8,6 +8,16 @@ type CalculateTournamentRoundResultParams = {
   bonusQuestionIds: string[];
 };
 
+export type TournamentQuestionResult = {
+  questionId: string;
+  questionText: string;
+  userAnswer: string | boolean | undefined;
+  correctAnswer: string | boolean;
+  isCorrect: boolean;
+  isBonus: boolean;
+  score: number;
+};
+
 export type TournamentRoundResult = {
   roundTitle: string;
   correctAnswersCount: number;
@@ -15,6 +25,19 @@ export type TournamentRoundResult = {
   bonusCorrectCount: number;
   bonusAnswersCount: number;
   score: number;
+  questionResults: TournamentQuestionResult[];
+};
+
+const getCorrectAnswer = (question: Question): string | boolean => {
+  if (question.type === 'boolean') {
+    return question.correctAnswer;
+  }
+
+  if (question.type === 'multipleChoice') {
+    return question.correctAnswer;
+  }
+
+  return question.correctAnswers[0] ?? '';
 };
 
 const isQuestionAnsweredCorrectly = (
@@ -57,24 +80,40 @@ export const calculateTournamentRoundResult = ({
   answersByQuestionId,
   bonusQuestionIds,
 }: CalculateTournamentRoundResultParams): TournamentRoundResult => {
-  const correctAnswersCount = questions.filter((question) =>
-    isQuestionAnsweredCorrectly(question, answersByQuestionId[question.id])
+  const questionResults = questions.map((question) => {
+    const userAnswer = answersByQuestionId[question.id];
+    const isCorrect = isQuestionAnsweredCorrectly(question, userAnswer);
+    const isBonus = bonusQuestionIds.includes(question.id);
+    const score = isCorrect ? (isBonus ? 2 : 1) : 0;
+
+    return {
+      questionId: question.id,
+      questionText: question.text,
+      userAnswer,
+      correctAnswer: getCorrectAnswer(question),
+      isCorrect,
+      isBonus,
+      score,
+    };
+  });
+
+  const correctAnswersCount = questionResults.filter(
+    (result) => result.isCorrect
   ).length;
 
-  const bonusCorrectCount = questions.filter(
-    (question) =>
-      bonusQuestionIds.includes(question.id) &&
-      isQuestionAnsweredCorrectly(question, answersByQuestionId[question.id])
+  const bonusCorrectCount = questionResults.filter(
+    (result) => result.isBonus && result.isCorrect
   ).length;
 
-  const score = correctAnswersCount + bonusCorrectCount;
+  const score = questionResults.reduce((sum, result) => sum + result.score, 0);
 
   return {
+    roundTitle,
     correctAnswersCount,
     questionsCount: questions.length,
     bonusCorrectCount,
     bonusAnswersCount: bonusQuestionIds.length,
     score,
-    roundTitle,
+    questionResults,
   };
 };

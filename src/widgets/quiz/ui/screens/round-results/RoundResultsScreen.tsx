@@ -1,11 +1,13 @@
 import { Button } from '@/shared/ui/button';
 import type { TournamentRoundResult } from '@/entities/quiz-session/model/calculateTournamentRoundResult';
+import './round-results-screen.css';
 
 type RoundResultsScreenProps = {
   roundNumber: number;
   totalRounds: number;
   title: string;
   result: TournamentRoundResult;
+  isLastRound: boolean;
   onNextRound: () => void;
   onExit: () => void;
   onRestart: () => void;
@@ -16,6 +18,7 @@ const RoundResultsScreen = ({
   totalRounds,
   title,
   result,
+  isLastRound,
   onNextRound,
   onExit,
   onRestart,
@@ -40,16 +43,59 @@ const RoundResultsScreen = ({
           {result.questionsCount}
         </p>
 
-        <p>
-          Бонусных попаданий: {result.bonusCorrectCount} /{' '}
-          {result.bonusAnswersCount}
-        </p>
+        {result.bonusAnswersCount > 0 && (
+          <p>
+            Бонусных попаданий: {result.bonusCorrectCount} /{' '}
+            {result.bonusAnswersCount}
+          </p>
+        )}
 
         <p>Очков за тур: {result.score}</p>
       </div>
 
+      <div className="round-results__answers">
+        {result.questionResults.map((questionResult, index) => (
+          <div
+            key={questionResult.questionId}
+            className={
+              questionResult.isCorrect
+                ? 'round-results__answer round-results__answer--correct'
+                : 'round-results__answer round-results__answer--incorrect'
+            }
+          >
+            <div>
+              <strong>{index + 1}.</strong> {questionResult.questionText}
+            </div>
+
+            <div>
+              {questionResult.isCorrect ? '✅' : '❌'} Ваш ответ:{' '}
+              {questionResult.userAnswer === undefined
+                ? '—'
+                : questionResult.userAnswer === true
+                  ? 'Да'
+                  : questionResult.userAnswer === false
+                    ? 'Нет'
+                    : questionResult.userAnswer}
+            </div>
+
+            {!questionResult.isCorrect && (
+              <div>
+                ✅ Правильный ответ:{' '}
+                {questionResult.correctAnswer === true
+                  ? 'Да'
+                  : questionResult.correctAnswer === false
+                    ? 'Нет'
+                    : questionResult.correctAnswer}
+              </div>
+            )}
+
+            <div>Очки: {questionResult.score}</div>
+          </div>
+        ))}
+      </div>
+
       <Button variant="primary" onClick={onNextRound}>
-        Следующий тур
+        {isLastRound ? 'Результаты турнира' : 'Следующий тур'}
       </Button>
     </div>
 

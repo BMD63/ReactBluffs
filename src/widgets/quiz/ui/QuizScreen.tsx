@@ -290,12 +290,17 @@ const QuizScreen = ({
         return null;
       }
 
+      const isLastRound =
+        currentTournamentRoundIndex ===
+        activeTournamentConfig.rounds.length - 1;
+
       return (
         <RoundResultsScreen
           roundNumber={currentTournamentRoundIndex + 1}
           totalRounds={activeTournamentConfig.rounds.length}
           title={currentRound.title}
           result={currentTournamentRoundResult}
+          isLastRound={isLastRound}
           onNextRound={onNextRound}
           onExit={onBackToStart}
           onRestart={onRestartTournament}
