@@ -2,12 +2,14 @@ import { isAnswerAccepted } from '@/entities/question/lib/isAnswerAccepted';
 import type { Question } from '@/entities/question/model/questionTypes';
 
 type CalculateTournamentRoundResultParams = {
+  roundTitle: string;
   questions: Question[];
   answersByQuestionId: Record<string, string | boolean>;
   bonusQuestionIds: string[];
 };
 
 export type TournamentRoundResult = {
+  roundTitle: string;
   correctAnswersCount: number;
   questionsCount: number;
   bonusCorrectCount: number;
@@ -50,6 +52,7 @@ const isQuestionAnsweredCorrectly = (
 };
 
 export const calculateTournamentRoundResult = ({
+  roundTitle,
   questions,
   answersByQuestionId,
   bonusQuestionIds,
@@ -72,5 +75,6 @@ export const calculateTournamentRoundResult = ({
     bonusCorrectCount,
     bonusAnswersCount: bonusQuestionIds.length,
     score,
+    roundTitle,
   };
 };

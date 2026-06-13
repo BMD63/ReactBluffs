@@ -78,3 +78,6 @@ export const selectTournamentQuestionsById = (state: RootState) =>
 
 export const selectCurrentTournamentRoundResult = (state: RootState) =>
   state.quizUI.currentTournamentRoundResult;
+
+export const selectTournamentRoundResults = (state: RootState) =>
+  state.quizUI.tournamentRoundResults;

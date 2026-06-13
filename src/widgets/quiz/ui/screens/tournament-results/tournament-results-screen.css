@@ -1,0 +1,25 @@
+.tournament-results__summary {
+  width: min(100%, 420px);
+
+  display: grid;
+  gap: 16px;
+
+  color: rgba(248, 250, 252, 0.78);
+}
+
+.tournament-results__rounds {
+  display: grid;
+  gap: 8px;
+}
+
+.tournament-results__round {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tournament-results__total {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+}

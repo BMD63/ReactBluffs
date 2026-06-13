@@ -19,6 +19,7 @@ export {
   resetTournamentSession,
   toggleTournamentBonusQuestion,
   setCurrentTournamentRoundResult,
+  addTournamentRoundResult,
 } from './model/quizUISlice';
 
 export {
@@ -47,6 +48,7 @@ export {
   selectTournamentQuestionsById,
   selectTournamentBonusQuestionIds,
   selectCurrentTournamentRoundResult,
+  selectTournamentRoundResults,
 } from './model/selectors';
 
 export { initGame } from './model/thunks/initGame';

@@ -34,6 +34,7 @@ type QuizScreenProps = {
   currentTournamentRoundResult: TournamentRoundResult | null;
   totalCards: number;
   tournamentAnswersByQuestionId: Record<string, string | boolean>;
+  tournamentRoundResults: TournamentRoundResult[];
   onChangeTournamentAnswer: (
     questionId: string,
     answer: string | boolean
@@ -86,6 +87,7 @@ const QuizScreen = ({
   tournamentAnswersByQuestionId,
   tournamentBonusQuestionIds,
   currentTournamentRoundResult,
+  tournamentRoundResults,
   onToggleBonusQuestion,
   onChangeTournamentAnswer,
   onAnswer,
@@ -309,6 +311,7 @@ const QuizScreen = ({
       return (
         <TournamentResultsScreen
           roundsCount={activeTournamentConfig.rounds.length}
+          results={tournamentRoundResults}
           onRestart={onRestartTournament}
           onExit={onBackToStart}
         />

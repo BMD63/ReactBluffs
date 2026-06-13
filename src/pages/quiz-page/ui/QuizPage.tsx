@@ -42,6 +42,8 @@ import {
   toggleTournamentBonusQuestion,
   setCurrentTournamentRoundResult,
   selectCurrentTournamentRoundResult,
+  addTournamentRoundResult,
+  selectTournamentRoundResults,
 } from '@/entities/quiz-session';
 
 import QuizScreen from '@/widgets/quiz/ui/QuizScreen';
@@ -99,6 +101,8 @@ const QuizPage = () => {
   const currentTournamentRoundResult = useAppSelector(
     selectCurrentTournamentRoundResult
   );
+
+  const tournamentRoundResults = useAppSelector(selectTournamentRoundResults);
 
   useEffect(() => {
     dispatch(initUI());
@@ -164,6 +168,7 @@ const QuizPage = () => {
       return;
     }
 
+    dispatch(resetTournamentSession());
     dispatch(setLoading(true));
     dispatch(setError(null));
 
@@ -263,14 +268,23 @@ const QuizPage = () => {
     dispatch(setScreen(SCREEN.ROUND_INTRO));
   };
 
+  const currentRound =
+    activeTournamentConfig?.rounds[currentTournamentRoundIndex];
+
+  if (!currentRound) {
+    return;
+  }
+
   const handleFinishRound = () => {
     const roundResult = calculateTournamentRoundResult({
+      roundTitle: currentRound.title,
       questions: currentTournamentQuestions,
       answersByQuestionId: tournamentAnswersByQuestionId,
       bonusQuestionIds: tournamentBonusQuestionIds,
     });
 
     dispatch(setCurrentTournamentRoundResult(roundResult));
+    dispatch(addTournamentRoundResult(roundResult));
     dispatch(setScreen(SCREEN.ROUND_RESULTS));
   };
 
@@ -349,6 +363,7 @@ const QuizPage = () => {
           tournamentBonusQuestionIds={tournamentBonusQuestionIds}
           onToggleBonusQuestion={handleToggleBonusQuestion}
           currentTournamentRoundResult={currentTournamentRoundResult}
+          tournamentRoundResults={tournamentRoundResults}
         />
       </div>
     </div>

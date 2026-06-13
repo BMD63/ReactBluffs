@@ -11,7 +11,7 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       type: 'openText',
       difficulty: 'easy',
 
-      questionsCount: 8,
+      questionsCount: 3,
 
       questionTimeSeconds: 30,
       correctionTimeSeconds: 60,
@@ -23,72 +23,72 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       type: 'openText',
       difficulty: 'medium',
 
-      questionsCount: 8,
+      questionsCount: 3,
 
       questionTimeSeconds: 30,
       correctionTimeSeconds: 60,
     },
 
-    {
-      id: 'round-3',
-      title: 'Блефы',
-      type: 'boolean',
-      difficulty: 'medium',
+    // {
+    //   id: 'round-3',
+    //   title: 'Блефы',
+    //   type: 'boolean',
+    //   difficulty: 'medium',
 
-      questionsCount: 8,
+    //   questionsCount: 8,
 
-      questionTimeSeconds: 20,
-      correctionTimeSeconds: 30,
+    //   questionTimeSeconds: 20,
+    //   correctionTimeSeconds: 30,
 
-      bonusAnswersLimit: 3,
-    },
+    //   bonusAnswersLimit: 3,
+    // },
 
-    {
-      id: 'round-4',
-      title: 'Аудио',
-      type: 'audio',
-      difficulty: 'medium',
+    // {
+    //   id: 'round-4',
+    //   title: 'Аудио',
+    //   type: 'audio',
+    //   difficulty: 'medium',
 
-      questionsCount: 8,
+    //   questionsCount: 8,
 
-      questionTimeSeconds: 45,
-      correctionTimeSeconds: 90,
-    },
+    //   questionTimeSeconds: 45,
+    //   correctionTimeSeconds: 90,
+    // },
 
-    {
-      id: 'round-5',
-      title: 'Картинки',
-      type: 'image',
-      difficulty: 'medium',
+    // {
+    //   id: 'round-5',
+    //   title: 'Картинки',
+    //   type: 'image',
+    //   difficulty: 'medium',
 
-      questionsCount: 8,
+    //   questionsCount: 8,
 
-      questionTimeSeconds: 45,
-      correctionTimeSeconds: 90,
-    },
+    //   questionTimeSeconds: 45,
+    //   correctionTimeSeconds: 90,
+    // },
 
-    {
-      id: 'round-6',
-      title: 'Сложный тур',
-      type: 'openText',
-      difficulty: 'hard',
+    // {
+    //   id: 'round-6',
+    //   title: 'Сложный тур',
+    //   type: 'openText',
+    //   difficulty: 'hard',
 
-      questionsCount: 8,
+    //   questionsCount: 8,
 
-      questionTimeSeconds: 30,
-      correctionTimeSeconds: 60,
-    },
+    //   questionTimeSeconds: 30,
+    //   correctionTimeSeconds: 60,
+    // },
 
-    {
-      id: 'round-7',
-      title: 'Три варианта',
-      type: 'multipleChoice',
-      difficulty: 'hard',
+    // {
+    //   id: 'round-7',
+    //   title: 'Три варианта',
+    //   type: 'multipleChoice',
+    //   difficulty: 'hard',
 
-      questionsCount: 8,
+    //   questionsCount: 8,
 
-      questionTimeSeconds: 25,
-      correctionTimeSeconds: 60,
-    },
+    //   questionTimeSeconds: 25,
+    //   correctionTimeSeconds: 60,
+    // },
   ],
 };
