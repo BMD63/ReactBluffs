@@ -33,24 +33,20 @@ const RoundResultsScreen = ({
     </div>
 
     <div className="mode-card mode-card--active">
-      <div className="mode-card__icon">✅</div>
-
       <h2>{title}</h2>
 
-      <div>
-        <p>
-          Правильных ответов: {result.correctAnswersCount} /{' '}
-          {result.questionsCount}
-        </p>
+      <div className="round-results__summary">
+        <span>
+          Правильных: {result.correctAnswersCount} / {result.questionsCount}
+        </span>
 
         {result.bonusAnswersCount > 0 && (
-          <p>
-            Бонусных попаданий: {result.bonusCorrectCount} /{' '}
-            {result.bonusAnswersCount}
-          </p>
+          <span>
+            Бонусы: {result.bonusCorrectCount} / {result.bonusAnswersCount}
+          </span>
         )}
 
-        <p>Очков за тур: {result.score}</p>
+        <span>Очки: {result.score}</span>
       </div>
 
       <div className="round-results__answers">
