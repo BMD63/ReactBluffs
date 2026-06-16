@@ -1,6 +1,13 @@
+/* .modal {
+  width: min(96vw, 900px);
+  max-height: 92vh;
+} */
+
 .modal {
   width: min(96vw, 900px);
   max-height: 92vh;
+
+  overflow-y: auto;
 }
 
 .modal hr {

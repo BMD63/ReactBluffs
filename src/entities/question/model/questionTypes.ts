@@ -36,17 +36,23 @@ export type OpenTextQuestion = BaseQuestion & {
   correctAnswers: string[];
 };
 
+export type QuestionMedia = {
+  type: 'image' | 'audio';
+  url: string;
+  alt?: string;
+};
+
 export type ImageQuestion = BaseQuestion & {
   type: typeof QUESTION_TYPE.IMAGE;
   gameMode: 'openAnswer';
-  imageUrl: string;
+  media: QuestionMedia & { type: 'image' };
   correctAnswers: string[];
 };
 
 export type AudioQuestion = BaseQuestion & {
   type: typeof QUESTION_TYPE.AUDIO;
   gameMode: 'openAnswer';
-  audioUrl: string;
+  media: QuestionMedia & { type: 'audio' };
   correctAnswers: string[];
 };
 

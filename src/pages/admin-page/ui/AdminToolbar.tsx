@@ -35,6 +35,8 @@ const AdminToolbar = ({
         >
           <option value="">Select question type</option>
           <option value="openText">Open answer</option>
+          <option value="image">Image question</option>
+          <option value="audio">Audio question</option>
           <option value="multipleChoice">Multiple choice</option>
           <option value="boolean">Bluff / True-False</option>
         </select>

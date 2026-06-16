@@ -41,3 +41,10 @@
 .tournament-question-screen__timer--danger {
   color: #ef4444;
 }
+
+.tournament-question-screen__image {
+  width: min(100%, 420px);
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 16px;
+}

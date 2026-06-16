@@ -13,6 +13,10 @@ type QuestionCreateFormProps = {
   fieldErrors: FieldErrors;
   isEditing: boolean;
   isSaving: boolean;
+  mediaUrl: string;
+  mediaAlt: string;
+  onMediaUrlChange: (value: string) => void;
+  onMediaAltChange: (value: string) => void;
   onQuestionTextChange: (value: string) => void;
   onAnswerChange: (value: string) => void;
   onAliasesChange: (value: string) => void;
@@ -39,6 +43,10 @@ const QuestionCreateForm = ({
   fieldErrors,
   isEditing,
   isSaving,
+  mediaUrl,
+  mediaAlt,
+  onMediaUrlChange,
+  onMediaAltChange,
   onQuestionTextChange,
   onAnswerChange,
   onAliasesChange,
@@ -77,6 +85,53 @@ const QuestionCreateForm = ({
               <p className="error-text">{fieldErrors.answer}</p>
             )}
           </label>
+          <label>
+            Aliases
+            <textarea
+              placeholder="One alias per line"
+              value={aliases}
+              onChange={(event) => onAliasesChange(event.target.value)}
+            />
+            <small>Alternative accepted answers. One alias per line.</small>
+          </label>
+        </>
+      )}
+
+      {(questionType === 'image' || questionType === 'audio') && (
+        <>
+          <label>
+            Correct answer
+            <input
+              type="text"
+              placeholder="Enter correct answer"
+              value={answer}
+              onChange={(event) => onAnswerChange(event.target.value)}
+            />
+            {fieldErrors.answer && (
+              <p className="error-text">{fieldErrors.answer}</p>
+            )}
+          </label>
+
+          <label>
+            Media URL
+            <input
+              type="text"
+              placeholder="Enter media URL"
+              value={mediaUrl}
+              onChange={(event) => onMediaUrlChange(event.target.value)}
+            />
+          </label>
+
+          <label>
+            Media alt
+            <input
+              type="text"
+              placeholder="Enter media alt"
+              value={mediaAlt}
+              onChange={(event) => onMediaAltChange(event.target.value)}
+            />
+          </label>
+
           <label>
             Aliases
             <textarea

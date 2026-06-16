@@ -1,6 +1,11 @@
 export type FieldErrors = Record<string, string>;
 
-export type AdminQuestionType = 'boolean' | 'multipleChoice' | 'openText';
+export type AdminQuestionType =
+  | 'openText'
+  | 'boolean'
+  | 'multipleChoice'
+  | 'image'
+  | 'audio';
 
 export type AdminQuestion = {
   id: string;
@@ -11,6 +16,11 @@ export type AdminQuestion = {
   answer?: string;
   aliases?: string[];
   options?: string[];
+  media?: {
+    type: 'image' | 'audio';
+    url: string;
+    alt?: string;
+  };
 };
 
 export type QuestionFormValues = {
@@ -22,4 +32,6 @@ export type QuestionFormValues = {
   option2: string;
   option3: string;
   multipleChoiceAnswer: string;
+  mediaUrl: string;
+  mediaAlt: string;
 };

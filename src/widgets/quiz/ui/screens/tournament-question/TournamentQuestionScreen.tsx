@@ -81,6 +81,14 @@ const TournamentQuestionScreen = ({
 
         <h2>{question?.text ?? 'Вопрос не загружен'}</h2>
 
+        {question?.type === 'image' && (
+          <img
+            className="tournament-question-screen__image"
+            src={question.media.url}
+            alt={question.media.alt ?? question.text}
+          />
+        )}
+
         <div className={timerClassName}>⏳ {timeLeft} сек.</div>
 
         <div className="tournament-question-screen__answer">

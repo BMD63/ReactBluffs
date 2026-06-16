@@ -34,15 +34,25 @@ export type OpenTextQuestionDto = BaseQuestionDto & {
 export type ImageQuestionDto = BaseQuestionDto & {
   type: 'image';
   gameMode: 'openAnswer';
-  imageUrl: string;
-  correctAnswers: string[];
+  answer: string;
+  aliases?: string[];
+  media: {
+    type: 'image';
+    url: string;
+    alt?: string;
+  };
 };
 
 export type AudioQuestionDto = BaseQuestionDto & {
   type: 'audio';
   gameMode: 'openAnswer';
-  audioUrl: string;
-  correctAnswers: string[];
+  answer: string;
+  aliases?: string[];
+  media: {
+    type: 'audio';
+    url: string;
+    alt?: string;
+  };
 };
 
 export type QuestionDto =

@@ -18,7 +18,9 @@ export const mapQuestionRowToDto = (question: QuestionRow) => ({
   gameMode: question.game_mode,
   text: question.text,
 
-  ...(question.type === 'openText'
+  ...(question.type === 'openText' ||
+  question.type === 'image' ||
+  question.type === 'audio'
     ? { answer: question.answer }
     : question.type === 'multipleChoice'
       ? { correctAnswer: question.answer }

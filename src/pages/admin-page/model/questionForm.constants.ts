@@ -9,4 +9,6 @@ export const EMPTY_QUESTION_FORM_VALUES: QuestionFormValues = {
   option2: '',
   option3: '',
   multipleChoiceAnswer: '',
+  mediaUrl: '',
+  mediaAlt: '',
 };

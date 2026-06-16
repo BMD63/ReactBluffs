@@ -12,4 +12,6 @@ export const createFormValuesFromQuestion = (
   option3: question.options?.[2] ?? '',
   multipleChoiceAnswer:
     typeof question.correctAnswer === 'string' ? question.correctAnswer : '',
+  mediaUrl: question.media?.url ?? '',
+  mediaAlt: question.media?.alt ?? '',
 });

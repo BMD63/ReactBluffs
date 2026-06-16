@@ -44,13 +44,31 @@ export default async function handler(
         game_mode: question.gameMode,
         text: question.text,
         answer:
-          question.type === 'openText'
+          question.type === 'openText' ||
+          question.type === 'image' ||
+          question.type === 'audio'
             ? question.answer
             : String(question.correctAnswer),
         aliases:
-          question.type === 'openText' ? (question.aliases ?? null) : null,
+          question.type === 'openText' ||
+          question.type === 'image' ||
+          question.type === 'audio'
+            ? (question.aliases ?? null)
+            : null,
         options: question.type === 'multipleChoice' ? question.options : null,
         category: question.category,
+        media_type:
+          question.type === 'image' || question.type === 'audio'
+            ? question.media.type
+            : null,
+        media_url:
+          question.type === 'image' || question.type === 'audio'
+            ? question.media.url
+            : null,
+        media_alt:
+          question.type === 'image' || question.type === 'audio'
+            ? (question.media.alt ?? null)
+            : null,
       })
       .select()
       .single();
@@ -123,11 +141,17 @@ export default async function handler(
         game_mode: question.gameMode,
         text: question.text,
         answer:
-          question.type === 'openText'
+          question.type === 'openText' ||
+          question.type === 'image' ||
+          question.type === 'audio'
             ? question.answer
             : String(question.correctAnswer),
         aliases:
-          question.type === 'openText' ? (question.aliases ?? null) : null,
+          question.type === 'openText' ||
+          question.type === 'image' ||
+          question.type === 'audio'
+            ? (question.aliases ?? null)
+            : null,
         options: question.type === 'multipleChoice' ? question.options : null,
         category: question.category,
       })

@@ -14,6 +14,10 @@ type QuestionEditorModalProps = {
   fieldErrors: FieldErrors;
   isEditing: boolean;
   isSaving: boolean;
+  mediaUrl: string;
+  mediaAlt: string;
+  onMediaUrlChange: (value: string) => void;
+  onMediaAltChange: (value: string) => void;
   onQuestionTextChange: (value: string) => void;
   onAnswerChange: (value: string) => void;
   onAliasesChange: (value: string) => void;

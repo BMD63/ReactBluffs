@@ -100,6 +100,27 @@ const AdminPage = () => {
       };
     }
 
+    if (questionType === 'image' || questionType === 'audio') {
+      return {
+        id: editingQuestionId ?? crypto.randomUUID(),
+        type: questionType,
+        gameMode: 'openAnswer',
+        text: formValues.questionText,
+        answer: formValues.answer,
+        aliases: formValues.aliases
+          .split('\n')
+          .map((alias) => alias.trim())
+          .filter(Boolean),
+        category: 'general',
+
+        media: {
+          type: questionType,
+          url: formValues.mediaUrl,
+          alt: formValues.mediaAlt || undefined,
+        },
+      };
+    }
+
     if (questionType === 'boolean') {
       return {
         id: editingQuestionId ?? crypto.randomUUID(),
@@ -306,6 +327,10 @@ const AdminPage = () => {
                 isEditing={Boolean(editingQuestionId)}
                 isSaving={isSavingQuestion}
                 isCloseConfirmOpen={isCloseConfirmOpen}
+                mediaUrl={formValues.mediaUrl}
+                mediaAlt={formValues.mediaAlt}
+                onMediaUrlChange={(value) => updateFormValue('mediaUrl', value)}
+                onMediaAltChange={(value) => updateFormValue('mediaAlt', value)}
                 onCloseWithoutSaving={closeQuestionForm}
                 onBackToEditor={() => setIsCloseConfirmOpen(false)}
                 onQuestionTextChange={(value) =>

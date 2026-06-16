@@ -13,7 +13,11 @@ type UseAdminQuestionsParams = {
 };
 
 const getGameModeByQuestionType = (questionType: AdminQuestionType) => {
-  if (questionType === 'openText') {
+  if (
+    questionType === 'openText' ||
+    questionType === 'image' ||
+    questionType === 'audio'
+  ) {
     return 'openAnswer';
   }
 

@@ -1,8 +1,20 @@
 import { QUESTION_TYPE, type Question } from '../model/questionTypes';
 
-import type { OpenTextQuestionDto, QuestionDto } from './questionApi.types';
+import type {
+  AudioQuestionDto,
+  ImageQuestionDto,
+  OpenTextQuestionDto,
+  QuestionDto,
+} from './questionApi.types';
 
-const mapOpenTextQuestionDto = (questionDto: OpenTextQuestionDto): Question => {
+type OpenAnswerQuestionDto =
+  | OpenTextQuestionDto
+  | ImageQuestionDto
+  | AudioQuestionDto;
+
+const mapOpenAnswerQuestionDto = (
+  questionDto: OpenAnswerQuestionDto
+): Question => {
   return {
     ...questionDto,
     correctAnswers: [questionDto.answer, ...(questionDto.aliases ?? [])],
@@ -14,7 +26,9 @@ export const mapQuestionDtoToQuestion = (
 ): Question => {
   switch (questionDto.type) {
     case QUESTION_TYPE.OPEN_TEXT:
-      return mapOpenTextQuestionDto(questionDto);
+    case QUESTION_TYPE.IMAGE:
+    case QUESTION_TYPE.AUDIO:
+      return mapOpenAnswerQuestionDto(questionDto);
 
     default:
       return questionDto;
