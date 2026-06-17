@@ -172,7 +172,10 @@ const QuizPage = () => {
               gameMode: getGameModeByTournamentRoundType(round.type),
             });
 
-            return [round.id, questions];
+            return [
+              round.id,
+              questions.filter((question) => question.type === round.type),
+            ];
           })
         )
       );

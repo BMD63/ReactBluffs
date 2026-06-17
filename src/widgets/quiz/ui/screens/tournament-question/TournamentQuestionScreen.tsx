@@ -77,7 +77,7 @@ const TournamentQuestionScreen = ({
       </div>
 
       <div className="mode-card mode-card--active">
-        <div className="mode-card__icon">❓</div>
+        {/* <div className="mode-card__icon">❓</div> */}
 
         <h2>{question?.text ?? 'Вопрос не загружен'}</h2>
 
@@ -92,7 +92,7 @@ const TournamentQuestionScreen = ({
         <div className={timerClassName}>⏳ {timeLeft} сек.</div>
 
         <div className="tournament-question-screen__answer">
-          {question?.type === 'openText' && (
+          {(question?.type === 'openText' || question?.type === 'image') && (
             <input
               value={typeof answer === 'string' ? answer : ''}
               onChange={(event) => onChangeAnswer(event.target.value)}

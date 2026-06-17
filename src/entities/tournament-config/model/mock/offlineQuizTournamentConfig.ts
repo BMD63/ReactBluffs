@@ -29,19 +29,19 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       correctionTimeSeconds: 60,
     },
 
-    {
-      id: 'round-3',
-      title: 'Блефы',
-      type: 'boolean',
-      difficulty: 'medium',
+    // {
+    //   id: 'round-3',
+    //   title: 'Блефы',
+    //   type: 'boolean',
+    //   difficulty: 'medium',
 
-      questionsCount: 2,
+    //   questionsCount: 2,
 
-      questionTimeSeconds: 20,
-      correctionTimeSeconds: 30,
+    //   questionTimeSeconds: 20,
+    //   correctionTimeSeconds: 30,
 
-      bonusAnswersLimit: 3,
-    },
+    //   bonusAnswersLimit: 3,
+    // },
 
     // {
     //   id: 'round-4',
@@ -55,17 +55,17 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
     //   correctionTimeSeconds: 90,
     // },
 
-    // {
-    //   id: 'round-5',
-    //   title: 'Картинки',
-    //   type: 'image',
-    //   difficulty: 'medium',
+    {
+      id: 'round-5',
+      title: 'Картинки',
+      type: 'image',
+      difficulty: 'medium',
 
-    //   questionsCount: 8,
+      questionsCount: 2,
 
-    //   questionTimeSeconds: 45,
-    //   correctionTimeSeconds: 90,
-    // },
+      questionTimeSeconds: 45,
+      correctionTimeSeconds: 90,
+    },
 
     // {
     //   id: 'round-6',
