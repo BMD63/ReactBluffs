@@ -423,3 +423,35 @@
     background-position: -120% 0;
   }
 }
+
+.admin-media-preview {
+  width: min(100%, 280px);
+  max-height: 180px;
+  object-fit: contain;
+
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.question-item__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.question-item__header p {
+  margin: 0;
+}
+
+.question-item__preview {
+  flex-shrink: 0;
+
+  width: 64px;
+  height: 64px;
+
+  object-fit: cover;
+
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}

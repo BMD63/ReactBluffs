@@ -18,7 +18,17 @@ const QuestionListItem = ({
 }: QuestionListItemProps) => {
   return (
     <div className="question-item">
-      <p>{question.text}</p>
+      <div className="question-item__header">
+        {question.type === 'image' && question.media?.url && (
+          <img
+            className="question-item__preview"
+            src={question.media.url}
+            alt={question.media.alt ?? question.text}
+          />
+        )}
+
+        <p>{question.text}</p>
+      </div>
 
       <div className="question-actions">
         <button type="button" onClick={() => onToggleDetails(question.id)}>

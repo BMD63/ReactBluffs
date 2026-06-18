@@ -143,6 +143,14 @@ const QuestionCreateForm = ({
             {isUploadingMedia && <small>Uploading...</small>}
           </label>
 
+          {questionType === 'image' && mediaUrl && (
+            <img
+              className="admin-media-preview"
+              src={mediaUrl}
+              alt={mediaAlt || 'Question media preview'}
+            />
+          )}
+
           {isUploadingMedia && <p>Uploading...</p>}
 
           <label>
