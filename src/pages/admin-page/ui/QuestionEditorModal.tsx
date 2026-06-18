@@ -16,6 +16,8 @@ type QuestionEditorModalProps = {
   isSaving: boolean;
   mediaUrl: string;
   mediaAlt: string;
+  isUploadingMedia: boolean;
+  onMediaFileChange: (file: File) => Promise<void>;
   onMediaUrlChange: (value: string) => void;
   onMediaAltChange: (value: string) => void;
   onQuestionTextChange: (value: string) => void;

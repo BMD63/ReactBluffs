@@ -13,8 +13,10 @@ type QuestionCreateFormProps = {
   fieldErrors: FieldErrors;
   isEditing: boolean;
   isSaving: boolean;
+  isUploadingMedia: boolean;
   mediaUrl: string;
   mediaAlt: string;
+  onMediaFileChange: (file: File) => Promise<void>;
   onMediaUrlChange: (value: string) => void;
   onMediaAltChange: (value: string) => void;
   onQuestionTextChange: (value: string) => void;
@@ -45,6 +47,8 @@ const QuestionCreateForm = ({
   isSaving,
   mediaUrl,
   mediaAlt,
+  isUploadingMedia,
+  onMediaFileChange,
   onMediaUrlChange,
   onMediaAltChange,
   onQuestionTextChange,
@@ -121,6 +125,25 @@ const QuestionCreateForm = ({
               onChange={(event) => onMediaUrlChange(event.target.value)}
             />
           </label>
+
+          <label>
+            Upload media
+            <input
+              type="file"
+              accept={questionType === 'audio' ? 'audio/*' : 'image/*'}
+              disabled={isUploadingMedia}
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+
+                if (file) {
+                  void onMediaFileChange(file);
+                }
+              }}
+            />
+            {isUploadingMedia && <small>Uploading...</small>}
+          </label>
+
+          {isUploadingMedia && <p>Uploading...</p>}
 
           <label>
             Media alt

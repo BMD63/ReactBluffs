@@ -7,6 +7,7 @@ import AdminToast from './AdminToast';
 import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model/useAdminQuestions';
 import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
+import { uploadQuestionMedia } from '@/shared/api/uploadQuestionMedia';
 import type {
   AdminQuestionType,
   FieldErrors,
@@ -31,6 +32,7 @@ const AdminPage = () => {
   const [status, setStatus] = useState<string | null>(null);
   const [isSavingQuestion, setIsSavingQuestion] = useState(false);
   const [isCloseConfirmOpen, setIsCloseConfirmOpen] = useState(false);
+  const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(
@@ -193,6 +195,35 @@ const AdminPage = () => {
     }
   };
 
+  const handleMediaFileChange = async (file: File) => {
+    if (
+      !questionType ||
+      (questionType !== 'image' && questionType !== 'audio')
+    ) {
+      return;
+    }
+
+    setIsUploadingMedia(true);
+
+    try {
+      if (!adminToken) {
+        return;
+      }
+
+      const mediaUrl = await uploadQuestionMedia(
+        file,
+        questionType,
+        adminToken
+      );
+
+      updateFormValue('mediaUrl', mediaUrl);
+    } catch {
+      setStatus('Failed to upload media');
+    } finally {
+      setIsUploadingMedia(false);
+    }
+  };
+
   const handleResetForm = () => {
     setFieldErrors({});
     setStatus(null);
@@ -329,6 +360,8 @@ const AdminPage = () => {
                 isCloseConfirmOpen={isCloseConfirmOpen}
                 mediaUrl={formValues.mediaUrl}
                 mediaAlt={formValues.mediaAlt}
+                isUploadingMedia={isUploadingMedia}
+                onMediaFileChange={handleMediaFileChange}
                 onMediaUrlChange={(value) => updateFormValue('mediaUrl', value)}
                 onMediaAltChange={(value) => updateFormValue('mediaAlt', value)}
                 onCloseWithoutSaving={closeQuestionForm}

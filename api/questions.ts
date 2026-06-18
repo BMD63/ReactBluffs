@@ -154,6 +154,18 @@ export default async function handler(
             : null,
         options: question.type === 'multipleChoice' ? question.options : null,
         category: question.category,
+        media_type:
+          question.type === 'image' || question.type === 'audio'
+            ? question.media.type
+            : null,
+        media_url:
+          question.type === 'image' || question.type === 'audio'
+            ? question.media.url
+            : null,
+        media_alt:
+          question.type === 'image' || question.type === 'audio'
+            ? (question.media.alt ?? null)
+            : null,
       })
       .eq('id', question.id)
       .select()
