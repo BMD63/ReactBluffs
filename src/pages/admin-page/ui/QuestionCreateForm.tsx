@@ -128,19 +128,40 @@ const QuestionCreateForm = ({
 
           <label>
             Upload media
-            <input
-              type="file"
-              accept={questionType === 'audio' ? 'audio/*' : 'image/*'}
-              disabled={isUploadingMedia}
-              onChange={(event) => {
-                const file = event.target.files?.[0];
+            <div
+              className="admin-media-dropzone"
+              onDragOver={(event) => {
+                event.preventDefault();
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+
+                const file = event.dataTransfer.files[0];
 
                 if (file) {
                   void onMediaFileChange(file);
                 }
               }}
-            />
-            {isUploadingMedia && <small>Uploading...</small>}
+            >
+              <input
+                type="file"
+                accept={questionType === 'audio' ? 'audio/*' : 'image/*'}
+                disabled={isUploadingMedia}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+
+                  if (file) {
+                    void onMediaFileChange(file);
+                  }
+                }}
+              />
+
+              <span>
+                {isUploadingMedia
+                  ? 'Uploading...'
+                  : 'Drop file here or choose file'}
+              </span>
+            </div>
           </label>
 
           {questionType === 'image' && mediaUrl && (
@@ -249,12 +270,11 @@ const QuestionCreateForm = ({
               ? 'Save question'
               : 'Create question'}
         </button>
-        <button type="button" onClick={onReset}>
-          Cancel
-        </button>
-        <button type="button" onClick={onClear}>
-          Clear form
-        </button>
+        {!isEditing && (
+          <button type="button" onClick={onClear}>
+            Clear form
+          </button>
+        )}
       </div>
     </form>
   );
