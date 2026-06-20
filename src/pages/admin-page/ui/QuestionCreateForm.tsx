@@ -11,6 +11,7 @@ type QuestionCreateFormProps = {
   option3: string;
   multipleChoiceAnswer: string;
   fieldErrors: FieldErrors;
+  shouldShowClearButton: boolean;
   isEditing: boolean;
   isSaving: boolean;
   isUploadingMedia: boolean;
@@ -45,6 +46,7 @@ const QuestionCreateForm = ({
   fieldErrors,
   isEditing,
   isSaving,
+  shouldShowClearButton,
   mediaUrl,
   mediaAlt,
   isUploadingMedia,
@@ -270,7 +272,7 @@ const QuestionCreateForm = ({
               ? 'Save question'
               : 'Create question'}
         </button>
-        {!isEditing && (
+        {!isEditing && shouldShowClearButton && (
           <button type="button" onClick={onClear}>
             Clear form
           </button>

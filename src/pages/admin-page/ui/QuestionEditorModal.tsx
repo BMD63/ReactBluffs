@@ -17,6 +17,7 @@ type QuestionEditorModalProps = {
   mediaUrl: string;
   mediaAlt: string;
   isUploadingMedia: boolean;
+  shouldShowClearButton: boolean;
   onMediaFileChange: (file: File) => Promise<void>;
   onMediaUrlChange: (value: string) => void;
   onMediaAltChange: (value: string) => void;

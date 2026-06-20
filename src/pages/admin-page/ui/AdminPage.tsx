@@ -251,6 +251,17 @@ const AdminPage = () => {
     closeQuestionForm();
   };
 
+  const isFormEmpty =
+    !formValues.questionText &&
+    !formValues.answer &&
+    !formValues.aliases &&
+    !formValues.option1 &&
+    !formValues.option2 &&
+    !formValues.option3 &&
+    !formValues.multipleChoiceAnswer &&
+    !formValues.mediaUrl &&
+    !formValues.mediaAlt;
+
   // ***   JSX   ***
 
   if (!isUnlocked) {
@@ -361,6 +372,7 @@ const AdminPage = () => {
                 mediaUrl={formValues.mediaUrl}
                 mediaAlt={formValues.mediaAlt}
                 isUploadingMedia={isUploadingMedia}
+                shouldShowClearButton={!isFormEmpty}
                 onMediaFileChange={handleMediaFileChange}
                 onMediaUrlChange={(value) => updateFormValue('mediaUrl', value)}
                 onMediaAltChange={(value) => updateFormValue('mediaAlt', value)}
