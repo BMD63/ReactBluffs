@@ -12,6 +12,8 @@ type QuestionCreateFormProps = {
   multipleChoiceAnswer: string;
   fieldErrors: FieldErrors;
   shouldShowClearButton: boolean;
+  fileInputResetKey: number;
+  uploadedFileName: string;
   isEditing: boolean;
   isSaving: boolean;
   isUploadingMedia: boolean;
@@ -47,6 +49,8 @@ const QuestionCreateForm = ({
   isEditing,
   isSaving,
   shouldShowClearButton,
+  fileInputResetKey,
+  uploadedFileName,
   mediaUrl,
   mediaAlt,
   isUploadingMedia,
@@ -65,6 +69,7 @@ const QuestionCreateForm = ({
   onReset,
   onClear,
 }: QuestionCreateFormProps) => {
+  const mediaFileName = uploadedFileName || mediaUrl.split('/').pop() || '';
   return (
     <form id="admin-question-form" className="admin-form" onSubmit={onSubmit}>
       <label>
@@ -138,30 +143,33 @@ const QuestionCreateForm = ({
               onDrop={(event) => {
                 event.preventDefault();
 
-                const file = event.dataTransfer.files[0];
+                const file = event.dataTransfer.files?.[0];
 
                 if (file) {
                   void onMediaFileChange(file);
                 }
               }}
             >
-              <input
-                type="file"
-                accept={questionType === 'audio' ? 'audio/*' : 'image/*'}
-                disabled={isUploadingMedia}
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
+              <label className="admin-media-upload-button">
+                <input
+                  key={fileInputResetKey}
+                  type="file"
+                  accept={questionType === 'audio' ? 'audio/*' : 'image/*'}
+                  disabled={isUploadingMedia}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
 
-                  if (file) {
-                    void onMediaFileChange(file);
-                  }
-                }}
-              />
+                    if (file) {
+                      void onMediaFileChange(file);
+                    }
+                  }}
+                />
 
-              <span>
-                {isUploadingMedia
-                  ? 'Uploading...'
-                  : 'Drop file here or choose file'}
+                {isUploadingMedia ? 'Uploading...' : 'Choose file'}
+              </label>
+
+              <span className="admin-media-dropzone-text">
+                {uploadedFileName || 'or drop file here'}
               </span>
             </div>
           </label>
@@ -179,6 +187,10 @@ const QuestionCreateForm = ({
           )}
 
           {isUploadingMedia && <p>Uploading...</p>}
+
+          <span className="admin-media-dropzone-text">
+            {mediaFileName || 'or drop file here'}
+          </span>
 
           <label>
             Media alt

@@ -42,7 +42,6 @@ export const imageQuestionDtoSchema = baseQuestionSchema.extend({
 export const audioQuestionDtoSchema = baseQuestionSchema.extend({
   type: z.literal('audio'),
   gameMode: z.literal('openAnswer'),
-  audioUrl: z.string().trim().min(1, 'Audio URL is required'),
   answer: z.string().trim().min(1, 'Answer is required'),
   aliases: z.array(z.string().trim().min(1)).optional(),
   media: z.object({

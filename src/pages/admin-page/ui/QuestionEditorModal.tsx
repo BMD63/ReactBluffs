@@ -12,6 +12,8 @@ type QuestionEditorModalProps = {
   option2: string;
   option3: string;
   multipleChoiceAnswer: string;
+  fileInputResetKey: number;
+  uploadedFileName: string;
   fieldErrors: FieldErrors;
   isEditing: boolean;
   isSaving: boolean;

@@ -42,6 +42,9 @@ const AdminPage = () => {
     null
   );
 
+  const [fileInputResetKey, setFileInputResetKey] = useState(0);
+  const [uploadedFileName, setUploadedFileName] = useState('');
+
   const {
     formValues,
     hasUnsavedChanges,
@@ -84,6 +87,12 @@ const AdminPage = () => {
     sessionStorage.setItem(ADMIN_TOKEN_STORAGE_KEY, password.trim());
 
     window.location.reload();
+  };
+
+  const handleClearForm = () => {
+    openEmptyForm();
+    setFileInputResetKey((key) => key + 1);
+    setUploadedFileName('');
   };
 
   const buildQuestionPayload = () => {
@@ -187,6 +196,7 @@ const AdminPage = () => {
         openEmptyForm();
       }
 
+      setFileInputResetKey((key) => key + 1);
       setIsCloseConfirmOpen(false);
 
       setStatus(editingQuestionId ? 'Question updated!' : 'Question created!');
@@ -196,6 +206,7 @@ const AdminPage = () => {
   };
 
   const handleMediaFileChange = async (file: File) => {
+    setUploadedFileName(file.name);
     if (
       !questionType ||
       (questionType !== 'image' && questionType !== 'audio')
@@ -224,11 +235,23 @@ const AdminPage = () => {
     }
   };
 
+  const closeQuestionForm = () => {
+    setEditingQuestionId(null);
+    setIsCreateFormOpen(false);
+    setFieldErrors({});
+    setStatus(null);
+    resetForm();
+    setIsCloseConfirmOpen(false);
+    setFileInputResetKey((key) => key + 1);
+    setUploadedFileName('');
+  };
+
   const handleResetForm = () => {
     setFieldErrors({});
     setStatus(null);
-
+    setFileInputResetKey((key) => key + 1);
     resetToInitialFormValues();
+    setUploadedFileName('');
   };
 
   const handleToolbarToggle = () => {
@@ -310,15 +333,6 @@ const AdminPage = () => {
     return matchesType && searchableText.includes(normalizedSearchQuery);
   });
 
-  const closeQuestionForm = () => {
-    setEditingQuestionId(null);
-    setIsCreateFormOpen(false);
-    setFieldErrors({});
-    setStatus(null);
-    resetForm();
-    setIsCloseConfirmOpen(false);
-  };
-
   const handleEditQuestion = (questionId: string) => {
     const questionToEdit = questions.find(
       (question) => question.id === questionId
@@ -365,6 +379,8 @@ const AdminPage = () => {
                 option2={formValues.option2}
                 option3={formValues.option3}
                 multipleChoiceAnswer={formValues.multipleChoiceAnswer}
+                fileInputResetKey={fileInputResetKey}
+                uploadedFileName={uploadedFileName}
                 fieldErrors={fieldErrors}
                 isEditing={Boolean(editingQuestionId)}
                 isSaving={isSavingQuestion}
@@ -395,7 +411,7 @@ const AdminPage = () => {
                 onSubmit={handleCreateQuestion}
                 onReset={handleResetForm}
                 onClose={handleToolbarToggle}
-                onClear={openEmptyForm}
+                onClear={handleClearForm}
               />
             )}
 
