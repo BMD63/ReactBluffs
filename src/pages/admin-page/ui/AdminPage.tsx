@@ -42,6 +42,8 @@ const AdminPage = () => {
     null
   );
 
+  const [shouldCloseAfterSave, setShouldCloseAfterSave] = useState(false);
+
   const [fileInputResetKey, setFileInputResetKey] = useState(0);
   const [uploadedFileName, setUploadedFileName] = useState('');
 
@@ -186,6 +188,16 @@ const AdminPage = () => {
 
         setFieldErrors(errors);
         setStatus(result.error ?? 'Failed to save question');
+
+        return;
+      }
+
+      if (shouldCloseAfterSave) {
+        setShouldCloseAfterSave(false);
+        closeQuestionForm();
+        setStatus(
+          editingQuestionId ? 'Question updated!' : 'Question created!'
+        );
 
         return;
       }
@@ -389,6 +401,7 @@ const AdminPage = () => {
                 mediaAlt={formValues.mediaAlt}
                 isUploadingMedia={isUploadingMedia}
                 shouldShowClearButton={!isFormEmpty}
+                onSaveAndClose={() => setShouldCloseAfterSave(true)}
                 onMediaFileChange={handleMediaFileChange}
                 onMediaUrlChange={(value) => updateFormValue('mediaUrl', value)}
                 onMediaAltChange={(value) => updateFormValue('mediaAlt', value)}

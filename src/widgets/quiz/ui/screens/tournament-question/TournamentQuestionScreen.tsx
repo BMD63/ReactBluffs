@@ -89,10 +89,20 @@ const TournamentQuestionScreen = ({
           />
         )}
 
+        {question?.type === 'audio' && (
+          <audio
+            className="tournament-question-screen__audio"
+            controls
+            src={question.media.url}
+          />
+        )}
+
         <div className={timerClassName}>⏳ {timeLeft} сек.</div>
 
         <div className="tournament-question-screen__answer">
-          {(question?.type === 'openText' || question?.type === 'image') && (
+          {(question?.type === 'openText' ||
+            question?.type === 'image' ||
+            question?.type === 'audio') && (
             <input
               value={typeof answer === 'string' ? answer : ''}
               onChange={(event) => onChangeAnswer(event.target.value)}

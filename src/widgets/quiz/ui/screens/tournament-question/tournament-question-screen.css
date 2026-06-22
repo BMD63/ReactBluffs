@@ -48,3 +48,8 @@
   object-fit: contain;
   border-radius: 16px;
 }
+
+.tournament-question-screen__audio {
+  width: min(100%, 480px);
+  height: 40px;
+}

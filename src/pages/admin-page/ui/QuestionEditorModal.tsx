@@ -21,6 +21,7 @@ type QuestionEditorModalProps = {
   mediaAlt: string;
   isUploadingMedia: boolean;
   shouldShowClearButton: boolean;
+  onSaveAndClose: () => void;
   onMediaFileChange: (file: File) => Promise<void>;
   onMediaUrlChange: (value: string) => void;
   onMediaAltChange: (value: string) => void;
@@ -65,7 +66,11 @@ const QuestionEditorModal = (props: QuestionEditorModalProps) => {
             <p>Discard changes?</p>
 
             <div className="admin-confirm-actions">
-              <button type="submit" form="admin-question-form">
+              <button
+                type="submit"
+                form="admin-question-form"
+                onClick={props.onSaveAndClose}
+              >
                 Save and close
               </button>
 
