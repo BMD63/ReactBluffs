@@ -7,6 +7,14 @@ type QuestionDetailsProps = {
 const QuestionDetails = ({ question }: QuestionDetailsProps) => {
   return (
     <div className="question-details">
+      {question.type === 'audio' && question.media?.url && (
+        <audio
+          className="question-details__audio"
+          controls
+          src={question.media.url}
+        />
+      )}
+
       {'answer' in question && question.answer && (
         <p>Answer: {question.answer}</p>
       )}

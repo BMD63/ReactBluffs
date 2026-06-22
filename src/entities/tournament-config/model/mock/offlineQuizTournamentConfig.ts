@@ -17,17 +17,17 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       correctionTimeSeconds: 60,
     },
 
-    {
-      id: 'round-2',
-      title: 'Второй тур',
-      type: 'openText',
-      difficulty: 'medium',
+    // {
+    //   id: 'round-2',
+    //   title: 'Второй тур',
+    //   type: 'openText',
+    //   difficulty: 'medium',
 
-      questionsCount: 3,
+    //   questionsCount: 3,
 
-      questionTimeSeconds: 30,
-      correctionTimeSeconds: 60,
-    },
+    //   questionTimeSeconds: 30,
+    //   correctionTimeSeconds: 60,
+    // },
 
     // {
     //   id: 'round-3',
@@ -43,29 +43,29 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
     //   bonusAnswersLimit: 3,
     // },
 
-    // {
-    //   id: 'round-4',
-    //   title: 'Аудио',
-    //   type: 'audio',
-    //   difficulty: 'medium',
-
-    //   questionsCount: 8,
-
-    //   questionTimeSeconds: 45,
-    //   correctionTimeSeconds: 90,
-    // },
-
     {
-      id: 'round-5',
-      title: 'Картинки',
-      type: 'image',
+      id: 'round-4',
+      title: 'Аудио',
+      type: 'audio',
       difficulty: 'medium',
 
-      questionsCount: 2,
+      questionsCount: 3,
 
       questionTimeSeconds: 45,
       correctionTimeSeconds: 90,
     },
+
+    // {
+    //   id: 'round-5',
+    //   title: 'Картинки',
+    //   type: 'image',
+    //   difficulty: 'medium',
+
+    //   questionsCount: 2,
+
+    //   questionTimeSeconds: 45,
+    //   correctionTimeSeconds: 90,
+    // },
 
     // {
     //   id: 'round-6',
