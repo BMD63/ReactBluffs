@@ -160,7 +160,10 @@
   z-index: 1000;
 
   display: grid;
-  place-items: center;
+  place-items: start center;
+
+  min-height: 100vh;
+  overflow-y: auto;
 
   padding: 24px;
 
@@ -172,9 +175,8 @@
 
 .admin-editor-modal {
   width: min(100%, 720px);
-  max-height: min(90vh, 760px);
-
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
 
   padding: 24px;
 
@@ -369,9 +371,6 @@
     0 12px 40px rgba(0, 0, 0, 0.35),
     0 0 18px rgba(56, 189, 248, 0.2);
 }
-.modal > .admin-editor-modal-overlay {
-  animation: none;
-}
 
 .question-item--skeleton {
   min-height: 104px;
@@ -490,4 +489,8 @@
 
 .admin-media-dropzone input {
   margin: 0 auto;
+}
+
+.admin-audio-preview {
+  width: 100%;
 }

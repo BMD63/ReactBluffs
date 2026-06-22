@@ -1,5 +1,6 @@
 import QuestionCreateForm from './QuestionCreateForm';
 import type { AdminQuestionType, FieldErrors } from './admin.types';
+import { createPortal } from 'react-dom';
 
 type QuestionEditorModalProps = {
   questionType: AdminQuestionType;
@@ -40,7 +41,7 @@ type QuestionEditorModalProps = {
 };
 
 const QuestionEditorModal = (props: QuestionEditorModalProps) => {
-  return (
+  return createPortal(
     <div className="admin-editor-modal-overlay">
       <div className="admin-editor-modal">
         <div className="admin-editor-modal-header">
@@ -77,7 +78,8 @@ const QuestionEditorModal = (props: QuestionEditorModalProps) => {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

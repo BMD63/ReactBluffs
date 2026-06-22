@@ -174,6 +174,10 @@ const QuestionCreateForm = ({
             />
           )}
 
+          {questionType === 'audio' && mediaUrl && (
+            <audio className="admin-audio-preview" controls src={mediaUrl} />
+          )}
+
           {isUploadingMedia && <p>Uploading...</p>}
 
           <label>
