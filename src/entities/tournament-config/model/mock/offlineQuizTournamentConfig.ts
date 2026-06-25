@@ -11,7 +11,7 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       type: 'openText',
       difficulty: 'easy',
 
-      questionsCount: 3,
+      questionsCount: 2,
 
       questionTimeSeconds: 30,
       correctionTimeSeconds: 60,
@@ -49,23 +49,23 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
       type: 'audio',
       difficulty: 'medium',
 
-      questionsCount: 3,
+      questionsCount: 2,
 
       questionTimeSeconds: 45,
       correctionTimeSeconds: 90,
     },
 
-    // {
-    //   id: 'round-5',
-    //   title: 'Картинки',
-    //   type: 'image',
-    //   difficulty: 'medium',
+    {
+      id: 'round-5',
+      title: 'Картинки',
+      type: 'image',
+      difficulty: 'medium',
 
-    //   questionsCount: 2,
+      questionsCount: 2,
 
-    //   questionTimeSeconds: 45,
-    //   correctionTimeSeconds: 90,
-    // },
+      questionTimeSeconds: 90,
+      correctionTimeSeconds: 90,
+    },
 
     // {
     //   id: 'round-6',
