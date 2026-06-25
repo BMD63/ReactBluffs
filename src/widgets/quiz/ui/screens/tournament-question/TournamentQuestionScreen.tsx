@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button';
+import { QuizTimer } from '@/shared/ui/timer';
 import type { Question } from '@/entities/question/model/questionTypes';
 import './tournament-question-screen.css';
 
@@ -55,6 +56,7 @@ const TournamentQuestionScreen = ({
     >
       {isTextAnswerQuestion && (
         <input
+          className="quiz-input"
           value={typeof answer === 'string' ? answer : ''}
           onChange={(event) => onChangeAnswer(event.target.value)}
           placeholder="Введите ответ"
@@ -115,13 +117,6 @@ const TournamentQuestionScreen = ({
   useEffect(() => {
     setTimeLeft(questionTimeSeconds);
   }, [questionNumber, questionTimeSeconds]);
-
-  const timerClassName =
-    timeLeft <= 10
-      ? 'tournament-question-screen__timer tournament-question-screen__timer--danger'
-      : timeLeft <= 20
-        ? 'tournament-question-screen__timer tournament-question-screen__timer--warning'
-        : 'tournament-question-screen__timer';
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -186,7 +181,7 @@ const TournamentQuestionScreen = ({
             </div>
 
             <div className="tournament-question-screen__controls">
-              <div className={timerClassName}>⏳ {timeLeft} сек.</div>
+              <QuizTimer seconds={timeLeft} />
               {answerBlock}
             </div>
           </div>
@@ -201,7 +196,10 @@ const TournamentQuestionScreen = ({
             )}
 
             <div className="tournament-question-screen__bottom-controls">
-              <div className={timerClassName}>⏳ {timeLeft} сек.</div>
+              <div className="tournament-question-screen__timer-slot">
+                <QuizTimer seconds={timeLeft} />
+              </div>
+
               {answerBlock}
             </div>
           </>

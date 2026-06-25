@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button';
+import { QuizTimer } from '@/shared/ui/timer';
 import type { Question } from '@/entities/question/model/questionTypes';
 import './round-answer-sheet-screen.css';
 
@@ -53,13 +54,6 @@ const RoundAnswerSheetScreen = ({
     };
   }, [timeLeft, onFinishRound]);
 
-  const timerClassName =
-    timeLeft <= 10
-      ? 'round-answer-sheet__timer round-answer-sheet__timer--danger'
-      : timeLeft <= 20
-        ? 'round-answer-sheet__timer round-answer-sheet__timer--warning'
-        : 'round-answer-sheet__timer';
-
   return (
     <section className="mode-selection">
       <div className="mode-selection__header">
@@ -77,7 +71,7 @@ const RoundAnswerSheetScreen = ({
 
         <p>Вы можете проверить и исправить свои ответы.</p>
 
-        <div className={timerClassName}>⏳ {timeLeft} сек.</div>
+        <QuizTimer seconds={timeLeft} />
 
         <div className="round-answer-sheet__answers">
           {questions.map((question, index) => {
@@ -120,6 +114,7 @@ const RoundAnswerSheetScreen = ({
                   </div>
                 ) : (
                   <input
+                    className="quiz-input"
                     value={
                       typeof formattedAnswer === 'string' ? formattedAnswer : ''
                     }

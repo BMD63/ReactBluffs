@@ -1,0 +1,15 @@
+.quiz-timer {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+
+  color: var(--color-primary);
+}
+
+.quiz-timer--warning {
+  color: #facc15;
+}
+
+.quiz-timer--danger {
+  color: #ef4444;
+}
