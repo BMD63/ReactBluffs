@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import AdminToolbar from './AdminToolbar';
 import QuestionList from './QuestionList';
+import AdminHome from './AdminHome';
+import AdminNav from './AdminNav';
 import QuestionEditorModal from './QuestionEditorModal';
 import DeleteQuestionModal from './DeleteQuestionModal';
 import AdminToast from './AdminToast';
@@ -16,10 +18,14 @@ import type {
 
 import './AdminPage.css';
 
+type AdminSection = 'home' | 'questions' | 'tournamentConfig';
+
 const ADMIN_TOKEN_STORAGE_KEY = 'quiz-admin-token';
 
 const AdminPage = () => {
   const [password, setPassword] = useState('');
+
+  const [adminSection, setAdminSection] = useState<AdminSection>('home');
 
   const [questionType, setQuestionType] = useState<AdminQuestionType | null>(
     null
@@ -365,19 +371,29 @@ const AdminPage = () => {
       <div className="modal">
         <AdminToast message={status} />
         <h1>Admin</h1>
-        <AdminToolbar
-          questionType={questionType}
-          isCreateFormOpen={isCreateFormOpen}
-          onQuestionTypeChange={(type) => {
-            setQuestionType(type);
-            setSearchQuery('');
-            setIsCreateFormOpen(false);
-          }}
-          onAddQuestion={handleToolbarToggle}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+        <AdminNav
+          activeSection={adminSection}
+          onSectionChange={setAdminSection}
         />
-        {questionType && (
+        {adminSection === 'home' && <AdminHome />}
+        {adminSection === 'tournamentConfig' && (
+          <p>Tournament config coming soon</p>
+        )}
+        {adminSection === 'questions' && (
+          <AdminToolbar
+            questionType={questionType}
+            isCreateFormOpen={isCreateFormOpen}
+            onQuestionTypeChange={(type) => {
+              setQuestionType(type);
+              setSearchQuery('');
+              setIsCreateFormOpen(false);
+            }}
+            onAddQuestion={handleToolbarToggle}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+        )}
+        {adminSection === 'questions' && questionType && (
           <>
             {isCreateFormOpen && (
               <QuestionEditorModal

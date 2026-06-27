@@ -17,4 +17,4 @@ export type {
   TournamentRoundConfig,
 } from './model/tournamentConfigTypes';
 
-export { loadMockTournamentConfigs } from './model/loadMockTournamentConfigs';
+export { loadMockTournamentConfigs } from './model/loadTournamentConfigs';

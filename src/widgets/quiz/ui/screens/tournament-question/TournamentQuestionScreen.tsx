@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/shared/ui/button';
 import { QuizTimer } from '@/shared/ui/timer';
 import type { Question } from '@/entities/question/model/questionTypes';
@@ -44,7 +44,9 @@ const TournamentQuestionScreen = ({
     question?.type === 'image' ||
     question?.type === 'audio';
 
-  const isImageQuestion = question?.type === 'image';
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [hasAudioStarted, setHasAudioStarted] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
   const answerBlock = (
     <div
@@ -119,6 +121,16 @@ const TournamentQuestionScreen = ({
   }, [questionNumber, questionTimeSeconds]);
 
   useEffect(() => {
+    setHasAudioStarted(false);
+    setIsAudioPlaying(false);
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  }, [question?.id]);
+
+  useEffect(() => {
     if (timeLeft <= 0) {
       onAnswer();
       return;
@@ -132,6 +144,22 @@ const TournamentQuestionScreen = ({
       window.clearTimeout(timerId);
     };
   }, [timeLeft, onAnswer]);
+
+  const handlePlayAudio = async () => {
+    if (!audioRef.current || hasAudioStarted) {
+      return;
+    }
+
+    setHasAudioStarted(true);
+    setIsAudioPlaying(true);
+
+    try {
+      await audioRef.current.play();
+    } catch {
+      setHasAudioStarted(false);
+      setIsAudioPlaying(false);
+    }
+  };
 
   return (
     <section className="mode-selection">
@@ -188,11 +216,26 @@ const TournamentQuestionScreen = ({
         ) : (
           <>
             {question?.type === 'audio' && (
-              <audio
-                className="tournament-question-screen__audio"
-                controls
-                src={question.media.url}
-              />
+              <div className="tournament-question-screen__audio-once">
+                <audio
+                  ref={audioRef}
+                  src={question.media.url}
+                  preload="auto"
+                  onEnded={() => setIsAudioPlaying(false)}
+                />
+
+                <Button
+                  variant={hasAudioStarted ? 'secondary' : 'primary'}
+                  onClick={handlePlayAudio}
+                  disabled={hasAudioStarted}
+                >
+                  {isAudioPlaying
+                    ? 'Аудио воспроизводится...'
+                    : hasAudioStarted
+                      ? 'Аудио прослушано'
+                      : 'Прослушать аудио'}
+                </Button>
+              </div>
             )}
 
             <div className="tournament-question-screen__bottom-controls">
