@@ -5,6 +5,7 @@ import AdminHome from './AdminHome';
 import AdminNav from './AdminNav';
 import QuestionEditorModal from './QuestionEditorModal';
 import DeleteQuestionModal from './DeleteQuestionModal';
+import AdminLayout from './AdminLayout';
 import { TournamentConfigManager } from './tournament-config';
 import AdminToast from './AdminToast';
 import { useQuestionEditor } from '../model/useQuestionEditor';
@@ -308,9 +309,10 @@ const AdminPage = () => {
 
   if (!isUnlocked) {
     return (
-      <div className="app">
-        <div className="modal">
+      <AdminLayout>
+        <section className="admin-login">
           <h1>Admin Access</h1>
+
           <input
             type="password"
             placeholder="Enter admin password"
@@ -321,8 +323,8 @@ const AdminPage = () => {
           <button type="button" onClick={handleUnlock}>
             Unlock
           </button>
-        </div>
-      </div>
+        </section>
+      </AdminLayout>
     );
   }
 
@@ -368,109 +370,107 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="app">
-      <div className="modal">
-        <AdminToast message={status} />
-        <h1>Admin</h1>
-        <AdminNav
-          activeSection={adminSection}
-          onSectionChange={setAdminSection}
+    <AdminLayout>
+      <AdminToast message={status} />
+      <h1>Admin</h1>
+      <AdminNav
+        activeSection={adminSection}
+        onSectionChange={setAdminSection}
+      />
+      {adminSection === 'home' && <AdminHome />}
+      {adminSection === 'tournamentConfig' && <TournamentConfigManager />}
+      {adminSection === 'questions' && (
+        <AdminToolbar
+          questionType={questionType}
+          isCreateFormOpen={isCreateFormOpen}
+          onQuestionTypeChange={(type) => {
+            setQuestionType(type);
+            setSearchQuery('');
+            setIsCreateFormOpen(false);
+          }}
+          onAddQuestion={handleToolbarToggle}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
         />
-        {adminSection === 'home' && <AdminHome />}
-        {adminSection === 'tournamentConfig' && <TournamentConfigManager />}
-        {adminSection === 'questions' && (
-          <AdminToolbar
-            questionType={questionType}
-            isCreateFormOpen={isCreateFormOpen}
-            onQuestionTypeChange={(type) => {
-              setQuestionType(type);
-              setSearchQuery('');
-              setIsCreateFormOpen(false);
-            }}
-            onAddQuestion={handleToolbarToggle}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-        )}
-        {adminSection === 'questions' && questionType && (
-          <>
-            {isCreateFormOpen && (
-              <QuestionEditorModal
-                questionType={questionType}
-                questionText={formValues.questionText}
-                answer={formValues.answer}
-                aliases={formValues.aliases}
-                status={status}
-                booleanAnswer={formValues.booleanAnswer}
-                option1={formValues.option1}
-                option2={formValues.option2}
-                option3={formValues.option3}
-                multipleChoiceAnswer={formValues.multipleChoiceAnswer}
-                fileInputResetKey={fileInputResetKey}
-                uploadedFileName={uploadedFileName}
-                fieldErrors={fieldErrors}
-                isEditing={Boolean(editingQuestionId)}
-                isSaving={isSavingQuestion}
-                isCloseConfirmOpen={isCloseConfirmOpen}
-                mediaUrl={formValues.mediaUrl}
-                mediaAlt={formValues.mediaAlt}
-                isUploadingMedia={isUploadingMedia}
-                shouldShowClearButton={!isFormEmpty}
-                onSaveAndClose={() => setShouldCloseAfterSave(true)}
-                onMediaFileChange={handleMediaFileChange}
-                onMediaUrlChange={(value) => updateFormValue('mediaUrl', value)}
-                onMediaAltChange={(value) => updateFormValue('mediaAlt', value)}
-                onCloseWithoutSaving={closeQuestionForm}
-                onBackToEditor={() => setIsCloseConfirmOpen(false)}
-                onQuestionTextChange={(value) =>
-                  updateFormValue('questionText', value)
-                }
-                onAnswerChange={(value) => updateFormValue('answer', value)}
-                onAliasesChange={(value) => updateFormValue('aliases', value)}
-                onBooleanAnswerChange={(value) =>
-                  updateFormValue('booleanAnswer', value)
-                }
-                onOption1Change={(value) => updateFormValue('option1', value)}
-                onOption2Change={(value) => updateFormValue('option2', value)}
-                onOption3Change={(value) => updateFormValue('option3', value)}
-                onMultipleChoiceAnswerChange={(value) =>
-                  updateFormValue('multipleChoiceAnswer', value)
-                }
-                onSubmit={handleCreateQuestion}
-                onReset={handleResetForm}
-                onClose={handleToolbarToggle}
-                onClear={handleClearForm}
-              />
-            )}
-
-            {questionIdToDelete && (
-              <DeleteQuestionModal
-                onConfirm={() => {
-                  deleteQuestion(questionIdToDelete);
-                  setQuestionIdToDelete(null);
-                }}
-                onCancel={() => setQuestionIdToDelete(null)}
-              />
-            )}
-
-            <hr />
-
-            <QuestionList
-              questions={filteredQuestions}
-              expandedQuestionId={expandedQuestionId}
-              onToggleDetails={(questionId) =>
-                setExpandedQuestionId(
-                  expandedQuestionId === questionId ? null : questionId
-                )
+      )}
+      {adminSection === 'questions' && questionType && (
+        <>
+          {isCreateFormOpen && (
+            <QuestionEditorModal
+              questionType={questionType}
+              questionText={formValues.questionText}
+              answer={formValues.answer}
+              aliases={formValues.aliases}
+              status={status}
+              booleanAnswer={formValues.booleanAnswer}
+              option1={formValues.option1}
+              option2={formValues.option2}
+              option3={formValues.option3}
+              multipleChoiceAnswer={formValues.multipleChoiceAnswer}
+              fileInputResetKey={fileInputResetKey}
+              uploadedFileName={uploadedFileName}
+              fieldErrors={fieldErrors}
+              isEditing={Boolean(editingQuestionId)}
+              isSaving={isSavingQuestion}
+              isCloseConfirmOpen={isCloseConfirmOpen}
+              mediaUrl={formValues.mediaUrl}
+              mediaAlt={formValues.mediaAlt}
+              isUploadingMedia={isUploadingMedia}
+              shouldShowClearButton={!isFormEmpty}
+              onSaveAndClose={() => setShouldCloseAfterSave(true)}
+              onMediaFileChange={handleMediaFileChange}
+              onMediaUrlChange={(value) => updateFormValue('mediaUrl', value)}
+              onMediaAltChange={(value) => updateFormValue('mediaAlt', value)}
+              onCloseWithoutSaving={closeQuestionForm}
+              onBackToEditor={() => setIsCloseConfirmOpen(false)}
+              onQuestionTextChange={(value) =>
+                updateFormValue('questionText', value)
               }
-              onDelete={setQuestionIdToDelete}
-              onEdit={handleEditQuestion}
-              isLoading={isLoadingQuestions}
+              onAnswerChange={(value) => updateFormValue('answer', value)}
+              onAliasesChange={(value) => updateFormValue('aliases', value)}
+              onBooleanAnswerChange={(value) =>
+                updateFormValue('booleanAnswer', value)
+              }
+              onOption1Change={(value) => updateFormValue('option1', value)}
+              onOption2Change={(value) => updateFormValue('option2', value)}
+              onOption3Change={(value) => updateFormValue('option3', value)}
+              onMultipleChoiceAnswerChange={(value) =>
+                updateFormValue('multipleChoiceAnswer', value)
+              }
+              onSubmit={handleCreateQuestion}
+              onReset={handleResetForm}
+              onClose={handleToolbarToggle}
+              onClear={handleClearForm}
             />
-          </>
-        )}
-      </div>
-    </div>
+          )}
+
+          {questionIdToDelete && (
+            <DeleteQuestionModal
+              onConfirm={() => {
+                deleteQuestion(questionIdToDelete);
+                setQuestionIdToDelete(null);
+              }}
+              onCancel={() => setQuestionIdToDelete(null)}
+            />
+          )}
+
+          <hr />
+
+          <QuestionList
+            questions={filteredQuestions}
+            expandedQuestionId={expandedQuestionId}
+            onToggleDetails={(questionId) =>
+              setExpandedQuestionId(
+                expandedQuestionId === questionId ? null : questionId
+              )
+            }
+            onDelete={setQuestionIdToDelete}
+            onEdit={handleEditQuestion}
+            isLoading={isLoadingQuestions}
+          />
+        </>
+      )}
+    </AdminLayout>
   );
 };
 

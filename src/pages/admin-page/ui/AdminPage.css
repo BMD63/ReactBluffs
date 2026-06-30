@@ -781,3 +781,86 @@
   margin-top: 8px;
   color: rgba(248, 250, 252, 0.68);
 }
+
+.admin-layout {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.admin-layout__content {
+  display: block;
+
+  width: min(96vw, 1280px);
+  padding: 32px;
+
+  overflow: visible;
+
+  text-align: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(56, 189, 248, 0.14),
+      transparent 42%
+    ),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.76));
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 28px 76px rgba(0, 0, 0, 0.38);
+}
+
+.admin-page__title {
+  margin: 0 0 18px;
+
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1;
+}
+
+.admin-login {
+  max-width: 420px;
+  margin: 0 auto;
+
+  display: grid;
+  gap: 16px;
+}
+.admin-layout__content > h1 {
+  margin: 0 0 20px;
+
+  color: var(--color-text);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
+  text-align: center;
+}
+
+.admin-layout__content > .admin-nav {
+  margin-bottom: 32px;
+}
+
+.admin-home {
+  color: var(--color-text);
+}
+
+.admin-home h2 {
+  margin: 0 0 16px;
+}
+
+.admin-home p {
+  margin: 0 0 12px;
+
+  color: rgba(248, 250, 252, 0.72);
+}
+
+.admin-layout__content {
+  color: var(--color-text);
+}
