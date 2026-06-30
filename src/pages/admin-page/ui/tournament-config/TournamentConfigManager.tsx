@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-
+import { Button } from '@/shared/ui/button';
 import TournamentConfigAdmin from './TournamentConfigAdmin';
-import TournamentConfigHeader from './TournamentConfigHeader';
+import ConfigurationCard from './ConfigurationCard';
 
 import {
   tournamentConfigApi,
@@ -36,15 +36,33 @@ const TournamentConfigManager = () => {
 
   return (
     <section>
-      <TournamentConfigHeader
-        configs={configs}
-        selectedConfigId={selectedConfigId}
-        selectedConfig={config}
-        onSelectConfig={setSelectedConfigId}
-        onCreateConfig={() => {
-          console.log('Create configuration');
-        }}
-      />
+      <div className="admin-config-manager__header">
+        <div>
+          <p className="admin-config-header__eyebrow">Configurations</p>
+          <h2>Choose configuration</h2>
+        </div>
+
+        <Button
+          variant="secondary"
+          onClick={() => {
+            console.log('Create configuration');
+          }}
+        >
+          New configuration
+        </Button>
+      </div>
+      <div className="admin-config-cards">
+        {configs.map((configItem) => (
+          <ConfigurationCard
+            key={configItem.id}
+            config={configItem}
+            isActive={configItem.id === selectedConfigId}
+            onOpen={() => {
+              setSelectedConfigId(configItem.id);
+            }}
+          />
+        ))}
+      </div>
 
       <TournamentConfigAdmin config={config} />
     </section>

@@ -32,4 +32,20 @@ export const mockTournamentConfigApi = {
 
     return config;
   },
+
+  async createConfig(config: TournamentConfig): Promise<TournamentConfig> {
+    tournamentConfigs.push(config);
+
+    return config;
+  },
+
+  async deleteConfig(configId: string): Promise<void> {
+    const configIndex = tournamentConfigs.findIndex(
+      (config) => config.id === configId
+    );
+
+    if (configIndex !== -1) {
+      tournamentConfigs.splice(configIndex, 1);
+    }
+  },
 };
