@@ -92,3 +92,34 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
     // },
   ],
 };
+
+export const musicQuizTournamentConfig: TournamentConfig = {
+  id: 'music-quiz',
+  title: 'Music Quiz',
+
+  rounds: [
+    {
+      id: 'music-round-1',
+      title: 'Музыкальная разминка',
+      type: 'audio',
+      difficulty: 'easy',
+
+      questionsCount: 2,
+
+      questionTimeSeconds: 90,
+      correctionTimeSeconds: 60,
+    },
+
+    {
+      id: 'music-round-2',
+      title: 'Картинки из клипов',
+      type: 'image',
+      difficulty: 'medium',
+
+      questionsCount: 2,
+
+      questionTimeSeconds: 90,
+      correctionTimeSeconds: 60,
+    },
+  ],
+};

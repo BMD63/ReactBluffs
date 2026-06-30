@@ -5,9 +5,10 @@ import AdminHome from './AdminHome';
 import AdminNav from './AdminNav';
 import QuestionEditorModal from './QuestionEditorModal';
 import DeleteQuestionModal from './DeleteQuestionModal';
+import { TournamentConfigManager } from './tournament-config';
 import AdminToast from './AdminToast';
 import { useQuestionEditor } from '../model/useQuestionEditor';
-import { useAdminQuestions } from '../model/useAdminQuestions';
+import { useAdminQuestions } from '../model//useAdminQuestions';
 import { createFormValuesFromQuestion } from '../model/createFormValuesFromQuestion';
 import { uploadQuestionMedia } from '@/shared/api/uploadQuestionMedia';
 import type {
@@ -376,9 +377,7 @@ const AdminPage = () => {
           onSectionChange={setAdminSection}
         />
         {adminSection === 'home' && <AdminHome />}
-        {adminSection === 'tournamentConfig' && (
-          <p>Tournament config coming soon</p>
-        )}
+        {adminSection === 'tournamentConfig' && <TournamentConfigManager />}
         {adminSection === 'questions' && (
           <AdminToolbar
             questionType={questionType}
