@@ -5,6 +5,7 @@ import ConfigurationsPanel from './ConfigurationsPanel';
 import RoundsPanel from './RoundsPanel';
 import RoundEditor from './RoundEditor';
 import RoundEditorPanel from './RoundEditorPanel';
+import ConfigurationEditor from './ConfigurationEditor';
 import {
   tournamentConfigApi,
   type TournamentConfig,
@@ -62,6 +63,18 @@ const TournamentConfigPage = () => {
     setSelectedConfigId(createdConfig.id);
   };
 
+  const handleSaveConfig = async (updatedConfig: TournamentConfig) => {
+    const savedConfig = await tournamentConfigApi.updateConfig(updatedConfig);
+
+    setConfig(savedConfig);
+
+    setConfigs((currentConfigs) =>
+      currentConfigs.map((configItem) =>
+        configItem.id === savedConfig.id ? savedConfig : configItem
+      )
+    );
+  };
+
   if (config === undefined) {
     return <p>Loading...</p>;
   }
@@ -115,7 +128,9 @@ const TournamentConfigPage = () => {
         </RoundsPanel>
 
         <RoundEditorPanel>
-          {editorTarget === 'config' && <p>Configuration editor</p>}
+          {editorTarget === 'config' && (
+            <ConfigurationEditor config={config} onSave={handleSaveConfig} />
+          )}
 
           {editorTarget === 'round' &&
             (selectedRound ? (
