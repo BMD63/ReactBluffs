@@ -7,7 +7,7 @@ import QuestionEditorModal from './QuestionEditorModal';
 import DeleteQuestionModal from './DeleteQuestionModal';
 import AdminLayout from './AdminLayout';
 import AdminWorkspace from './AdminWorkspace';
-import { TournamentConfigManager } from './tournament-config';
+import { TournamentConfigPage } from './tournament-config';
 import AdminToast from './AdminToast';
 import { useQuestionEditor } from '../model/useQuestionEditor';
 import { useAdminQuestions } from '../model//useAdminQuestions';
@@ -380,7 +380,9 @@ const AdminPage = () => {
       />
       <AdminWorkspace>
         {adminSection === 'home' && <AdminHome />}
-        {adminSection === 'tournamentConfig' && <TournamentConfigManager />}
+
+        {adminSection === 'tournamentConfig' && <TournamentConfigPage />}
+
         {adminSection === 'questions' && (
           <AdminToolbar
             questionType={questionType}
@@ -395,6 +397,7 @@ const AdminPage = () => {
             onSearchChange={setSearchQuery}
           />
         )}
+
         {adminSection === 'questions' && questionType && (
           <>
             {isCreateFormOpen && (

@@ -1,1 +1,1 @@
-export { default as TournamentConfigManager } from './TournamentConfigManager';
+export { default as TournamentConfigPage } from './TournamentConfigPage';
