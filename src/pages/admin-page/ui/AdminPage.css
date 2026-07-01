@@ -661,6 +661,8 @@
 }
 
 .admin-rounds-list {
+  display: grid;
+  gap: 12px;
   max-height: 620px;
   overflow-y: auto;
   padding-right: 8px;
@@ -706,7 +708,7 @@
 
 .admin-round-card {
   padding: 18px;
-
+  width: 100%;
   display: grid;
   justify-items: center;
   gap: 8px;
