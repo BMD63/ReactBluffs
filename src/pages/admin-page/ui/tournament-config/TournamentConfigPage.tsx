@@ -18,9 +18,23 @@ const TournamentConfigPage = () => {
     DEFAULT_TOURNAMENT_CONFIG_ID
   );
 
+  const createEmptyTournamentConfig = (): TournamentConfig => {
+    const configId = crypto.randomUUID();
+
+    return {
+      id: configId,
+      title: 'New configuration',
+
+      rounds: [],
+    };
+  };
+
   const [configs, setConfigs] = useState<TournamentConfig[]>([]);
   const [config, setConfig] = useState<TournamentConfig | null>();
   const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
+  const [editorTarget, setEditorTarget] = useState<'config' | 'round'>(
+    'config'
+  );
 
   useEffect(() => {
     tournamentConfigApi.getConfigs().then(setConfigs);
@@ -38,6 +52,15 @@ const TournamentConfigPage = () => {
       setSelectedRoundId(loadedConfig.rounds.at(0)?.id ?? null);
     });
   }, [selectedConfigId]);
+
+  const handleCreateConfig = async () => {
+    const newConfig = createEmptyTournamentConfig();
+    const createdConfig = await tournamentConfigApi.createConfig(newConfig);
+    const updatedConfigs = await tournamentConfigApi.getConfigs();
+
+    setConfigs(await tournamentConfigApi.getConfigs());
+    setSelectedConfigId(createdConfig.id);
+  };
 
   if (config === undefined) {
     return <p>Loading...</p>;
@@ -60,12 +83,7 @@ const TournamentConfigPage = () => {
               <h2>Choose configuration</h2>
             </div>
 
-            <Button
-              variant="secondary"
-              onClick={() => {
-                console.log('Create configuration');
-              }}
-            >
+            <Button variant="secondary" onClick={handleCreateConfig}>
               New configuration
             </Button>
           </div>
@@ -78,6 +96,7 @@ const TournamentConfigPage = () => {
                 isActive={configItem.id === selectedConfigId}
                 onOpen={() => {
                   setSelectedConfigId(configItem.id);
+                  setEditorTarget('config');
                 }}
               />
             ))}
@@ -88,16 +107,22 @@ const TournamentConfigPage = () => {
           <RoundsList
             config={config}
             selectedRoundId={selectedRoundId}
-            onSelectRound={setSelectedRoundId}
+            onSelectRound={(roundId) => {
+              setSelectedRoundId(roundId);
+              setEditorTarget('round');
+            }}
           />
         </RoundsPanel>
 
         <RoundEditorPanel>
-          {selectedRound ? (
-            <RoundEditor round={selectedRound} />
-          ) : (
-            <p>Select a round to edit.</p>
-          )}
+          {editorTarget === 'config' && <p>Configuration editor</p>}
+
+          {editorTarget === 'round' &&
+            (selectedRound ? (
+              <RoundEditor round={selectedRound} />
+            ) : (
+              <p>Select a round to edit.</p>
+            ))}
         </RoundEditorPanel>
       </div>
     </section>
