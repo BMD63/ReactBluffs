@@ -373,11 +373,13 @@ const AdminPage = () => {
   return (
     <AdminLayout>
       <AdminToast message={status} />
-      <h1>Admin</h1>
-      <AdminNav
-        activeSection={adminSection}
-        onSectionChange={setAdminSection}
-      />
+      <header className="admin-page__header">
+        <h1>Admin</h1>
+        <AdminNav
+          activeSection={adminSection}
+          onSectionChange={setAdminSection}
+        />
+      </header>
       <AdminWorkspace>
         {adminSection === 'home' && <AdminHome />}
 

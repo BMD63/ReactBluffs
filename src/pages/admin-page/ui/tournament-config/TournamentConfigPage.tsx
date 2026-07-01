@@ -9,7 +9,7 @@ import {
   tournamentConfigApi,
   type TournamentConfig,
 } from '@/entities/tournament-config';
-import RoundList from './RoundsList';
+import RoundsList from './RoundsList';
 
 const DEFAULT_TOURNAMENT_CONFIG_ID = 'offline-quiz';
 
@@ -27,7 +27,16 @@ const TournamentConfigPage = () => {
   }, []);
 
   useEffect(() => {
-    tournamentConfigApi.getConfig(selectedConfigId).then(setConfig);
+    tournamentConfigApi.getConfig(selectedConfigId).then((loadedConfig) => {
+      setConfig(loadedConfig);
+
+      if (!loadedConfig) {
+        setSelectedRoundId(null);
+        return;
+      }
+
+      setSelectedRoundId(loadedConfig.rounds.at(0)?.id ?? null);
+    });
   }, [selectedConfigId]);
 
   if (config === undefined) {
@@ -76,7 +85,7 @@ const TournamentConfigPage = () => {
         </ConfigurationsPanel>
 
         <RoundsPanel>
-          <RoundList
+          <RoundsList
             config={config}
             selectedRoundId={selectedRoundId}
             onSelectRound={setSelectedRoundId}
