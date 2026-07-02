@@ -13,6 +13,7 @@ import RoundsPanel from './RoundsPanel';
 import RoundEditorPanel from './RoundEditorPanel';
 import RoundsList from './RoundsList';
 import TournamentEditor from './TournamentEditor';
+import ConfirmActionModal from '../ConfirmActionModal';
 
 const DEFAULT_TOURNAMENT_CONFIG_ID = 'offline-quiz';
 
@@ -49,6 +50,9 @@ const TournamentConfigPage = () => {
   const [editorTarget, setEditorTarget] = useState<'config' | 'round'>(
     'config'
   );
+
+  const [isDeleteRoundConfirmOpen, setIsDeleteRoundConfirmOpen] =
+    useState(false);
 
   useEffect(() => {
     tournamentConfigApi.getConfigs().then(setConfigs);
@@ -112,7 +116,7 @@ const TournamentConfigPage = () => {
     }));
   };
 
-  const handleDeleteRound = async () => {
+  const deleteSelectedRound = async () => {
     if (!selectedRoundId) {
       return;
     }
@@ -134,6 +138,16 @@ const TournamentConfigPage = () => {
 
     setSelectedRoundId(nextSelectedRoundId);
     setEditorTarget(nextSelectedRoundId ? 'round' : 'config');
+  };
+
+  const confirmDeleteRound = async () => {
+    await deleteSelectedRound();
+
+    setIsDeleteRoundConfirmOpen(false);
+  };
+
+  const handleDeleteRoundRequest = () => {
+    setIsDeleteRoundConfirmOpen(true);
   };
 
   const handleAddRound = async () => {
@@ -212,9 +226,19 @@ const TournamentConfigPage = () => {
             onSaveConfig={handleSaveConfig}
             onSaveRound={handleSaveRound}
             onAddRound={handleAddRound}
-            onDeleteRound={handleDeleteRound}
+            onDeleteRoundRequest={handleDeleteRoundRequest}
           />
         </RoundEditorPanel>
+        {isDeleteRoundConfirmOpen && (
+          <ConfirmActionModal
+            title="Delete round?"
+            description="This action cannot be undone."
+            confirmLabel="Delete"
+            isDanger
+            onCancel={() => setIsDeleteRoundConfirmOpen(false)}
+            onConfirm={confirmDeleteRound}
+          />
+        )}
       </div>
     </section>
   );
