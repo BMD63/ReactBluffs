@@ -16,6 +16,13 @@ const formatOptionalValue = (value: number | undefined) => {
 
 const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
   const [title, setTitle] = useState(round.title);
+  const [difficulty, setDifficulty] = useState<
+    TournamentRoundConfig['difficulty']
+  >(round.difficulty);
+
+  useEffect(() => {
+    setTitle(round.title);
+  }, [round.id, round.title]);
 
   useEffect(() => {
     setTitle(round.title);
@@ -33,6 +40,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
     onSave({
       ...round,
       title: normalizedTitle,
+      difficulty,
     });
   };
 
@@ -59,7 +67,16 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
             </div>
 
             <FormField label="Difficulty">
-              <input value={round.difficulty} readOnly />
+              <select
+                value={difficulty}
+                onChange={(event) =>
+                  setDifficulty(event.target.value as typeof difficulty)
+                }
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
             </FormField>
           </dl>
         </div>
