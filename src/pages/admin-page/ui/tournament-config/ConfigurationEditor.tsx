@@ -7,12 +7,14 @@ type ConfigurationEditorProps = {
   config: TournamentConfig;
   onSave: (config: TournamentConfig) => void;
   onAddRound: () => void;
+  onDeleteRequest: () => void;
 };
 
 const ConfigurationEditor = ({
   config,
   onSave,
   onAddRound,
+  onDeleteRequest,
 }: ConfigurationEditorProps) => {
   const [title, setTitle] = useState(config.title);
 
@@ -72,6 +74,9 @@ const ConfigurationEditor = ({
           </Button>
         </div>
         <Button variant="primary">Save</Button>
+        <Button type="button" variant="secondary" onClick={onDeleteRequest}>
+          Delete configuration
+        </Button>
       </form>
     </section>
   );

@@ -50,6 +50,8 @@ const TournamentConfigPage = () => {
   const [editorTarget, setEditorTarget] = useState<'config' | 'round'>(
     'config'
   );
+  const [isDeleteConfigConfirmOpen, setIsDeleteConfigConfirmOpen] =
+    useState(false);
 
   const [isDeleteRoundConfirmOpen, setIsDeleteRoundConfirmOpen] =
     useState(false);
@@ -140,14 +142,50 @@ const TournamentConfigPage = () => {
     setEditorTarget(nextSelectedRoundId ? 'round' : 'config');
   };
 
+  const deleteSelectedConfig = async () => {
+    if (!config) {
+      return;
+    }
+
+    await tournamentConfigApi.deleteConfig(config.id);
+
+    const updatedConfigs = await tournamentConfigApi.getConfigs();
+
+    setConfigs(updatedConfigs);
+
+    const nextConfig = updatedConfigs.at(0);
+
+    if (!nextConfig) {
+      setConfig(null);
+      setSelectedConfigId('');
+      setSelectedRoundId(null);
+      setEditorTarget('config');
+
+      return;
+    }
+
+    setSelectedConfigId(nextConfig.id);
+    setEditorTarget('config');
+  };
+
   const confirmDeleteRound = async () => {
     await deleteSelectedRound();
 
     setIsDeleteRoundConfirmOpen(false);
   };
 
+  const confirmDeleteConfig = async () => {
+    await deleteSelectedConfig();
+
+    setIsDeleteConfigConfirmOpen(false);
+  };
+
   const handleDeleteRoundRequest = () => {
     setIsDeleteRoundConfirmOpen(true);
+  };
+
+  const handleDeleteConfigRequest = () => {
+    setIsDeleteConfigConfirmOpen(true);
   };
 
   const handleAddRound = async () => {
@@ -227,6 +265,7 @@ const TournamentConfigPage = () => {
             onSaveRound={handleSaveRound}
             onAddRound={handleAddRound}
             onDeleteRoundRequest={handleDeleteRoundRequest}
+            onDeleteConfigRequest={handleDeleteConfigRequest}
           />
         </RoundEditorPanel>
         {isDeleteRoundConfirmOpen && (
@@ -237,6 +276,16 @@ const TournamentConfigPage = () => {
             isDanger
             onCancel={() => setIsDeleteRoundConfirmOpen(false)}
             onConfirm={confirmDeleteRound}
+          />
+        )}
+        {isDeleteConfigConfirmOpen && (
+          <ConfirmActionModal
+            title="Delete configuration?"
+            description="All rounds in this configuration will be removed."
+            confirmLabel="Delete"
+            isDanger
+            onCancel={() => setIsDeleteConfigConfirmOpen(false)}
+            onConfirm={confirmDeleteConfig}
           />
         )}
       </div>

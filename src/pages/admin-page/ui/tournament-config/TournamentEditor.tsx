@@ -16,7 +16,7 @@ type TournamentEditorProps = {
 
   onSaveConfig: (config: TournamentConfig) => void;
   onSaveRound: (round: TournamentRoundConfig) => void;
-
+  onDeleteConfigRequest: () => void;
   onAddRound: () => void;
   onDeleteRoundRequest: () => void;
 };
@@ -29,6 +29,7 @@ const TournamentEditor = ({
   onSaveRound,
   onAddRound,
   onDeleteRoundRequest,
+  onDeleteConfigRequest,
 }: TournamentEditorProps) => {
   if (editorTarget === 'config') {
     return (
@@ -36,6 +37,7 @@ const TournamentEditor = ({
         config={config}
         onSave={onSaveConfig}
         onAddRound={onAddRound}
+        onDeleteRequest={onDeleteConfigRequest}
       />
     );
   }
