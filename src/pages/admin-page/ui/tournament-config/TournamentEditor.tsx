@@ -18,6 +18,7 @@ type TournamentEditorProps = {
   onSaveRound: (round: TournamentRoundConfig) => void;
 
   onAddRound: () => void;
+  onDeleteRound: () => void;
 };
 
 const TournamentEditor = ({
@@ -27,6 +28,7 @@ const TournamentEditor = ({
   onSaveConfig,
   onSaveRound,
   onAddRound,
+  onDeleteRound,
 }: TournamentEditorProps) => {
   if (editorTarget === 'config') {
     return (
@@ -42,7 +44,13 @@ const TournamentEditor = ({
     return <p>Select a round to edit.</p>;
   }
 
-  return <RoundEditor round={selectedRound} onSave={onSaveRound} />;
+  return (
+    <RoundEditor
+      round={selectedRound}
+      onSave={onSaveRound}
+      onDelete={onDeleteRound}
+    />
+  );
 };
 
 export default TournamentEditor;

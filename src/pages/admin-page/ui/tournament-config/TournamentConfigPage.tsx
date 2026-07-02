@@ -112,6 +112,30 @@ const TournamentConfigPage = () => {
     }));
   };
 
+  const handleDeleteRound = async () => {
+    if (!selectedRoundId) {
+      return;
+    }
+
+    const deletedRoundId = selectedRoundId;
+
+    const savedConfig = await updateCurrentConfig((currentConfig) => ({
+      ...currentConfig,
+      rounds: currentConfig.rounds.filter(
+        (round) => round.id !== deletedRoundId
+      ),
+    }));
+
+    if (!savedConfig) {
+      return;
+    }
+
+    const nextSelectedRoundId = savedConfig.rounds.at(0)?.id ?? null;
+
+    setSelectedRoundId(nextSelectedRoundId);
+    setEditorTarget(nextSelectedRoundId ? 'round' : 'config');
+  };
+
   const handleAddRound = async () => {
     const newRound = createEmptyRound();
 
@@ -188,6 +212,7 @@ const TournamentConfigPage = () => {
             onSaveConfig={handleSaveConfig}
             onSaveRound={handleSaveRound}
             onAddRound={handleAddRound}
+            onDeleteRound={handleDeleteRound}
           />
         </RoundEditorPanel>
       </div>

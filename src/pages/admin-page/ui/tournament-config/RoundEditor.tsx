@@ -6,13 +6,14 @@ import type { TournamentRoundConfig } from '@/entities/tournament-config';
 type RoundEditorProps = {
   round: TournamentRoundConfig;
   onSave: (round: TournamentRoundConfig) => void;
+  onDelete: () => void;
 };
 
 const formatOptionalValue = (value: number | undefined) => {
   return typeof value === 'number' ? value : '—';
 };
 
-const RoundEditor = ({ round, onSave }: RoundEditorProps) => {
+const RoundEditor = ({ round, onSave, onDelete }: RoundEditorProps) => {
   const [title, setTitle] = useState(round.title);
 
   useEffect(() => {
@@ -103,6 +104,9 @@ const RoundEditor = ({ round, onSave }: RoundEditorProps) => {
         </div>
 
         <Button variant="primary">Save</Button>
+        <Button type="button" variant="secondary" onClick={onDelete}>
+          Delete round
+        </Button>
       </form>
     </section>
   );
