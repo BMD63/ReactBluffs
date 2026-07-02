@@ -6,9 +6,14 @@ import type { TournamentConfig } from '@/entities/tournament-config';
 type ConfigurationEditorProps = {
   config: TournamentConfig;
   onSave: (config: TournamentConfig) => void;
+  onAddRound: () => void;
 };
 
-const ConfigurationEditor = ({ config, onSave }: ConfigurationEditorProps) => {
+const ConfigurationEditor = ({
+  config,
+  onSave,
+  onAddRound,
+}: ConfigurationEditorProps) => {
   const [title, setTitle] = useState(config.title);
 
   useEffect(() => {
@@ -59,7 +64,13 @@ const ConfigurationEditor = ({ config, onSave }: ConfigurationEditorProps) => {
             </div>
           </dl>
         </div>
+        <div className="configuration-editor__section">
+          <h3>Rounds</h3>
 
+          <Button type="button" variant="secondary" onClick={onAddRound}>
+            + Add round
+          </Button>
+        </div>
         <Button variant="primary">Save</Button>
       </form>
     </section>

@@ -30,6 +30,18 @@ const TournamentConfigPage = () => {
     };
   };
 
+  const createEmptyRound = () => {
+    return {
+      id: crypto.randomUUID(),
+      title: 'New round',
+      type: 'openText' as const,
+      difficulty: 'easy' as const,
+      questionsCount: 1,
+      questionTimeSeconds: 30,
+      correctionTimeSeconds: 60,
+    };
+  };
+
   const [configs, setConfigs] = useState<TournamentConfig[]>([]);
   const [config, setConfig] = useState<TournamentConfig | null>();
   const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
@@ -73,6 +85,32 @@ const TournamentConfigPage = () => {
         configItem.id === savedConfig.id ? savedConfig : configItem
       )
     );
+  };
+
+  const handleAddRound = async () => {
+    if (!config) {
+      return;
+    }
+
+    const newRound = createEmptyRound();
+
+    const updatedConfig: TournamentConfig = {
+      ...config,
+      rounds: [...config.rounds, newRound],
+    };
+
+    const savedConfig = await tournamentConfigApi.updateConfig(updatedConfig);
+
+    setConfig(savedConfig);
+
+    setConfigs((currentConfigs) =>
+      currentConfigs.map((configItem) =>
+        configItem.id === savedConfig.id ? savedConfig : configItem
+      )
+    );
+
+    setSelectedRoundId(newRound.id);
+    setEditorTarget('round');
   };
 
   if (config === undefined) {
@@ -129,7 +167,11 @@ const TournamentConfigPage = () => {
 
         <RoundEditorPanel>
           {editorTarget === 'config' && (
-            <ConfigurationEditor config={config} onSave={handleSaveConfig} />
+            <ConfigurationEditor
+              config={config}
+              onSave={handleSaveConfig}
+              onAddRound={handleAddRound}
+            />
           )}
 
           {editorTarget === 'round' &&
