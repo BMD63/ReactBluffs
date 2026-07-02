@@ -1,46 +1,47 @@
 import { useEffect, useState } from 'react';
+
 import { Button } from '@/shared/ui/button';
-import ConfigurationCard from './ConfigurationCard';
-import ConfigurationsPanel from './ConfigurationsPanel';
-import RoundsPanel from './RoundsPanel';
-import RoundEditor from './RoundEditor';
-import RoundEditorPanel from './RoundEditorPanel';
-import ConfigurationEditor from './ConfigurationEditor';
 import {
   tournamentConfigApi,
   type TournamentConfig,
+  type TournamentRoundConfig,
 } from '@/entities/tournament-config';
+
+import ConfigurationCard from './ConfigurationCard';
+import ConfigurationsPanel from './ConfigurationsPanel';
+import RoundsPanel from './RoundsPanel';
+import RoundEditorPanel from './RoundEditorPanel';
 import RoundsList from './RoundsList';
+import TournamentEditor from './TournamentEditor';
 
 const DEFAULT_TOURNAMENT_CONFIG_ID = 'offline-quiz';
+
+const createEmptyTournamentConfig = (): TournamentConfig => {
+  const configId = crypto.randomUUID();
+
+  return {
+    id: configId,
+    title: 'New configuration',
+    rounds: [],
+  };
+};
+
+const createEmptyRound = () => {
+  return {
+    id: crypto.randomUUID(),
+    title: 'New round',
+    type: 'openText' as const,
+    difficulty: 'easy' as const,
+    questionsCount: 1,
+    questionTimeSeconds: 30,
+    correctionTimeSeconds: 60,
+  };
+};
 
 const TournamentConfigPage = () => {
   const [selectedConfigId, setSelectedConfigId] = useState(
     DEFAULT_TOURNAMENT_CONFIG_ID
   );
-
-  const createEmptyTournamentConfig = (): TournamentConfig => {
-    const configId = crypto.randomUUID();
-
-    return {
-      id: configId,
-      title: 'New configuration',
-
-      rounds: [],
-    };
-  };
-
-  const createEmptyRound = () => {
-    return {
-      id: crypto.randomUUID(),
-      title: 'New round',
-      type: 'openText' as const,
-      difficulty: 'easy' as const,
-      questionsCount: 1,
-      questionTimeSeconds: 30,
-      correctionTimeSeconds: 60,
-    };
-  };
 
   const [configs, setConfigs] = useState<TournamentConfig[]>([]);
   const [config, setConfig] = useState<TournamentConfig | null>();
@@ -68,46 +69,60 @@ const TournamentConfigPage = () => {
 
   const handleCreateConfig = async () => {
     const newConfig = createEmptyTournamentConfig();
+
     const createdConfig = await tournamentConfigApi.createConfig(newConfig);
     const updatedConfigs = await tournamentConfigApi.getConfigs();
 
-    setConfigs(await tournamentConfigApi.getConfigs());
+    setConfigs(updatedConfigs);
     setSelectedConfigId(createdConfig.id);
+    setEditorTarget('config');
+  };
+
+  const updateCurrentConfig = async (
+    updater: (config: TournamentConfig) => TournamentConfig
+  ) => {
+    if (!config) {
+      return null;
+    }
+
+    const updatedConfig = updater(config);
+    const savedConfig = await tournamentConfigApi.updateConfig(updatedConfig);
+
+    setConfig(savedConfig);
+
+    setConfigs((currentConfigs) =>
+      currentConfigs.map((configItem) =>
+        configItem.id === savedConfig.id ? savedConfig : configItem
+      )
+    );
+
+    return savedConfig;
   };
 
   const handleSaveConfig = async (updatedConfig: TournamentConfig) => {
-    const savedConfig = await tournamentConfigApi.updateConfig(updatedConfig);
+    await updateCurrentConfig(() => updatedConfig);
+  };
 
-    setConfig(savedConfig);
-
-    setConfigs((currentConfigs) =>
-      currentConfigs.map((configItem) =>
-        configItem.id === savedConfig.id ? savedConfig : configItem
-      )
-    );
+  const handleSaveRound = async (updatedRound: TournamentRoundConfig) => {
+    await updateCurrentConfig((currentConfig) => ({
+      ...currentConfig,
+      rounds: currentConfig.rounds.map((round) =>
+        round.id === updatedRound.id ? updatedRound : round
+      ),
+    }));
   };
 
   const handleAddRound = async () => {
-    if (!config) {
-      return;
-    }
-
     const newRound = createEmptyRound();
 
-    const updatedConfig: TournamentConfig = {
-      ...config,
-      rounds: [...config.rounds, newRound],
-    };
+    const savedConfig = await updateCurrentConfig((currentConfig) => ({
+      ...currentConfig,
+      rounds: [...currentConfig.rounds, newRound],
+    }));
 
-    const savedConfig = await tournamentConfigApi.updateConfig(updatedConfig);
-
-    setConfig(savedConfig);
-
-    setConfigs((currentConfigs) =>
-      currentConfigs.map((configItem) =>
-        configItem.id === savedConfig.id ? savedConfig : configItem
-      )
-    );
+    if (!savedConfig) {
+      return;
+    }
 
     setSelectedRoundId(newRound.id);
     setEditorTarget('round');
@@ -166,20 +181,14 @@ const TournamentConfigPage = () => {
         </RoundsPanel>
 
         <RoundEditorPanel>
-          {editorTarget === 'config' && (
-            <ConfigurationEditor
-              config={config}
-              onSave={handleSaveConfig}
-              onAddRound={handleAddRound}
-            />
-          )}
-
-          {editorTarget === 'round' &&
-            (selectedRound ? (
-              <RoundEditor round={selectedRound} />
-            ) : (
-              <p>Select a round to edit.</p>
-            ))}
+          <TournamentEditor
+            editorTarget={editorTarget}
+            config={config}
+            selectedRound={selectedRound}
+            onSaveConfig={handleSaveConfig}
+            onSaveRound={handleSaveRound}
+            onAddRound={handleAddRound}
+          />
         </RoundEditorPanel>
       </div>
     </section>
