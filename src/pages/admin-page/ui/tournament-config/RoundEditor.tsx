@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/shared/ui/button';
+import FormField from '../FormField';
 import type { TournamentRoundConfig } from '@/entities/tournament-config';
 
 type RoundEditorProps = {
@@ -43,14 +44,13 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
         <div className="admin-round-editor__section">
           <h4>General</h4>
 
-          <label>
-            Title
+          <FormField label="Title">
             <input
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Round title"
             />
-          </label>
+          </FormField>
 
           <dl className="admin-round-editor__details">
             <div>
@@ -58,10 +58,9 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
               <dd>{round.type}</dd>
             </div>
 
-            <div>
-              <dt>Difficulty</dt>
-              <dd>{round.difficulty}</dd>
-            </div>
+            <FormField label="Difficulty">
+              <input value={round.difficulty} readOnly />
+            </FormField>
           </dl>
         </div>
 

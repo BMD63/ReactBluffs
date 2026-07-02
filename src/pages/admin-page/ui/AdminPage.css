@@ -1007,3 +1007,21 @@
 
   background: var(--color-surface);
 }
+
+.admin-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-form-field__label {
+  color: var(--color-text-muted);
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.admin-form-field__hint {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button';
 import type { TournamentConfig } from '@/entities/tournament-config';
 
+import FormField from '../FormField';
+
 type ConfigurationEditorProps = {
   config: TournamentConfig;
   onSave: (config: TournamentConfig) => void;
@@ -45,27 +47,23 @@ const ConfigurationEditor = ({
         <div className="configuration-editor__section">
           <h3>General</h3>
 
-          <label>
-            Title
+          <FormField label="Title">
             <input
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Configuration title"
             />
-          </label>
+          </FormField>
 
-          <dl className="configuration-editor__details">
-            <div>
-              <dt>ID</dt>
-              <dd>{config.id}</dd>
-            </div>
+          <FormField label="ID">
+            <input value={config.id} readOnly />
+          </FormField>
 
-            <div>
-              <dt>Rounds</dt>
-              <dd>{config.rounds.length}</dd>
-            </div>
-          </dl>
+          <FormField label="Rounds">
+            <input value={config.rounds.length} readOnly />
+          </FormField>
         </div>
+
         <div className="configuration-editor__section">
           <h3>Rounds</h3>
 
@@ -73,7 +71,9 @@ const ConfigurationEditor = ({
             + Add round
           </Button>
         </div>
+
         <Button variant="primary">Save</Button>
+
         <Button type="button" variant="secondary" onClick={onDeleteRequest}>
           Delete configuration
         </Button>
