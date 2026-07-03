@@ -118,6 +118,12 @@ const TournamentConfigPage = () => {
     }));
   };
 
+  const handleBonusLimitReset = () => {
+    console.log(
+      'Questions count is lower than Bonus limit. Please set Bonus limit again.'
+    );
+  };
+
   const deleteSelectedRound = async () => {
     if (!selectedRoundId) {
       return;
@@ -266,6 +272,7 @@ const TournamentConfigPage = () => {
             onAddRound={handleAddRound}
             onDeleteRoundRequest={handleDeleteRoundRequest}
             onDeleteConfigRequest={handleDeleteConfigRequest}
+            onBonusLimitReset={handleBonusLimitReset}
           />
         </RoundEditorPanel>
         {isDeleteRoundConfirmOpen && (

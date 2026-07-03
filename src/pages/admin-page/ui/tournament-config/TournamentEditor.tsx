@@ -19,6 +19,7 @@ type TournamentEditorProps = {
   onDeleteConfigRequest: () => void;
   onAddRound: () => void;
   onDeleteRoundRequest: () => void;
+  onBonusLimitReset?: () => void;
 };
 
 const TournamentEditor = ({

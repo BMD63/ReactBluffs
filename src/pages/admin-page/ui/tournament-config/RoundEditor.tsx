@@ -8,10 +8,7 @@ type RoundEditorProps = {
   round: TournamentRoundConfig;
   onSave: (round: TournamentRoundConfig) => void;
   onDeleteRequest: () => void;
-};
-
-const formatOptionalValue = (value: number | undefined) => {
-  return typeof value === 'number' ? String(value) : '—';
+  onBonusLimitReset?: () => void;
 };
 
 const parseNumber = (value: string) => {
@@ -20,8 +17,13 @@ const parseNumber = (value: string) => {
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
-const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
-  const [draftRound, setDraftRound] = useState(round);
+const RoundEditor = ({
+  round,
+  onSave,
+  onDeleteRequest,
+  onBonusLimitReset,
+}: RoundEditorProps) => {
+  const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
 
   useEffect(() => {
     setDraftRound(round);
@@ -41,6 +43,13 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
     updateDraftRound('title', event.target.value);
   };
 
+  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    updateDraftRound(
+      'type',
+      event.target.value as TournamentRoundConfig['type']
+    );
+  };
+
   const handleDifficultyChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -53,7 +62,42 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
   const handleQuestionsCountChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    updateDraftRound('questionsCount', parseNumber(event.target.value));
+    const questionsCount = parseNumber(event.target.value);
+
+    setDraftRound((currentRound) => {
+      const shouldResetBonusLimit =
+        (currentRound.bonusAnswersLimit ?? 0) > questionsCount;
+
+      if (shouldResetBonusLimit) {
+        onBonusLimitReset?.();
+      }
+
+      return {
+        ...currentRound,
+        questionsCount,
+        bonusAnswersLimit: shouldResetBonusLimit
+          ? 0
+          : (currentRound.bonusAnswersLimit ?? 0),
+      };
+    });
+  };
+
+  const handleQuestionTimeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    updateDraftRound('questionTimeSeconds', parseNumber(event.target.value));
+  };
+
+  const handleCorrectionTimeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    updateDraftRound('correctionTimeSeconds', parseNumber(event.target.value));
+  };
+
+  const handleBonusLimitChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    updateDraftRound('bonusAnswersLimit', parseNumber(event.target.value));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -88,7 +132,11 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
           </FormField>
 
           <FormField label="Type">
-            <input value={round.type} readOnly />
+            <select value={draftRound.type} onChange={handleTypeChange}>
+              <option value="openText">Open text</option>
+              <option value="multipleChoice">Multiple choice</option>
+              <option value="bluff">Bluff</option>
+            </select>
           </FormField>
 
           <FormField label="Difficulty">
@@ -119,12 +167,22 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
         <div className="admin-round-editor__section">
           <h4>Timing</h4>
 
-          <FormField label="Question time">
-            <input value={`${round.questionTimeSeconds} sec`} readOnly />
+          <FormField label="Question time (sec)">
+            <input
+              type="number"
+              min={1}
+              value={draftRound.questionTimeSeconds}
+              onChange={handleQuestionTimeChange}
+            />
           </FormField>
 
-          <FormField label="Correction time">
-            <input value={`${round.correctionTimeSeconds} sec`} readOnly />
+          <FormField label="Correction time (sec)">
+            <input
+              type="number"
+              min={0}
+              value={draftRound.correctionTimeSeconds}
+              onChange={handleCorrectionTimeChange}
+            />
           </FormField>
         </div>
 
@@ -133,17 +191,22 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
 
           <FormField label="Bonus answers limit">
             <input
-              value={formatOptionalValue(round.bonusAnswersLimit)}
-              readOnly
+              type="number"
+              min={0}
+              max={draftRound.questionsCount}
+              value={draftRound.bonusAnswersLimit ?? 0}
+              onChange={handleBonusLimitChange}
             />
           </FormField>
         </div>
 
-        <Button variant="primary">Save</Button>
+        <div className="admin-editor-actions">
+          <Button variant="primary">Save</Button>
 
-        <Button type="button" variant="secondary" onClick={onDeleteRequest}>
-          Delete round
-        </Button>
+          <Button type="button" variant="secondary" onClick={onDeleteRequest}>
+            Delete round
+          </Button>
+        </div>
       </form>
     </section>
   );

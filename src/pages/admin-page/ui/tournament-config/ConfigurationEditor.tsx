@@ -72,11 +72,13 @@ const ConfigurationEditor = ({
           </Button>
         </div>
 
-        <Button variant="primary">Save</Button>
+        <div className="admin-editor-actions">
+          <Button variant="primary">Save</Button>
 
-        <Button type="button" variant="secondary" onClick={onDeleteRequest}>
-          Delete configuration
-        </Button>
+          <Button type="button" variant="secondary" onClick={onDeleteRequest}>
+            Delete round
+          </Button>
+        </div>
       </form>
     </section>
   );

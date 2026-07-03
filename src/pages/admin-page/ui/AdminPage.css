@@ -1025,3 +1025,31 @@
   font-size: 13px;
   color: var(--color-text-secondary);
 }
+
+.admin-round-editor form,
+.configuration-editor form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-round-editor__section,
+.configuration-editor__section {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-round-editor__section h4,
+.configuration-editor__section h3 {
+  margin: 0;
+}
+
+.admin-form-field {
+  gap: 6px;
+}
+
+.admin-editor-actions {
+  display: flex;
+  gap: 12px;
+
+  margin-top: 8px;
+}
