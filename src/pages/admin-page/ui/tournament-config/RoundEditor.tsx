@@ -11,36 +11,63 @@ type RoundEditorProps = {
 };
 
 const formatOptionalValue = (value: number | undefined) => {
-  return typeof value === 'number' ? value : '—';
+  return typeof value === 'number' ? String(value) : '—';
+};
+
+const parseNumber = (value: string) => {
+  const parsed = Number(value);
+
+  return Number.isFinite(parsed) ? parsed : 0;
 };
 
 const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
-  const [title, setTitle] = useState(round.title);
-  const [difficulty, setDifficulty] = useState<
-    TournamentRoundConfig['difficulty']
-  >(round.difficulty);
+  const [draftRound, setDraftRound] = useState(round);
 
   useEffect(() => {
-    setTitle(round.title);
-  }, [round.id, round.title]);
+    setDraftRound(round);
+  }, [round]);
 
-  useEffect(() => {
-    setTitle(round.title);
-  }, [round.id, round.title]);
+  const updateDraftRound = <Key extends keyof TournamentRoundConfig>(
+    field: Key,
+    value: TournamentRoundConfig[Key]
+  ) => {
+    setDraftRound((currentRound) => ({
+      ...currentRound,
+      [field]: value,
+    }));
+  };
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateDraftRound('title', event.target.value);
+  };
+
+  const handleDifficultyChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    updateDraftRound(
+      'difficulty',
+      event.target.value as TournamentRoundConfig['difficulty']
+    );
+  };
+
+  const handleQuestionsCountChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    updateDraftRound('questionsCount', parseNumber(event.target.value));
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const normalizedTitle = title.trim();
+    const normalizedTitle = draftRound.title.trim();
 
     if (!normalizedTitle) {
       return;
     }
 
     onSave({
-      ...round,
+      ...draftRound,
       title: normalizedTitle,
-      difficulty,
     });
   };
 
@@ -54,72 +81,66 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
 
           <FormField label="Title">
             <input
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
+              value={draftRound.title}
+              onChange={handleTitleChange}
               placeholder="Round title"
             />
           </FormField>
 
-          <dl className="admin-round-editor__details">
-            <div>
-              <dt>Type</dt>
-              <dd>{round.type}</dd>
-            </div>
+          <FormField label="Type">
+            <input value={round.type} readOnly />
+          </FormField>
 
-            <FormField label="Difficulty">
-              <select
-                value={difficulty}
-                onChange={(event) =>
-                  setDifficulty(event.target.value as typeof difficulty)
-                }
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
-            </FormField>
-          </dl>
+          <FormField label="Difficulty">
+            <select
+              value={draftRound.difficulty}
+              onChange={handleDifficultyChange}
+            >
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </FormField>
         </div>
 
         <div className="admin-round-editor__section">
           <h4>Questions</h4>
 
-          <dl className="admin-round-editor__details">
-            <div>
-              <dt>Questions count</dt>
-              <dd>{round.questionsCount}</dd>
-            </div>
-          </dl>
+          <FormField label="Questions count">
+            <input
+              type="number"
+              min={1}
+              value={draftRound.questionsCount}
+              onChange={handleQuestionsCountChange}
+            />
+          </FormField>
         </div>
 
         <div className="admin-round-editor__section">
           <h4>Timing</h4>
 
-          <dl className="admin-round-editor__details">
-            <div>
-              <dt>Question time</dt>
-              <dd>{round.questionTimeSeconds} sec</dd>
-            </div>
+          <FormField label="Question time">
+            <input value={`${round.questionTimeSeconds} sec`} readOnly />
+          </FormField>
 
-            <div>
-              <dt>Correction time</dt>
-              <dd>{round.correctionTimeSeconds} sec</dd>
-            </div>
-          </dl>
+          <FormField label="Correction time">
+            <input value={`${round.correctionTimeSeconds} sec`} readOnly />
+          </FormField>
         </div>
 
         <div className="admin-round-editor__section">
           <h4>Bonus</h4>
 
-          <dl className="admin-round-editor__details">
-            <div>
-              <dt>Bonus answers limit</dt>
-              <dd>{formatOptionalValue(round.bonusAnswersLimit)}</dd>
-            </div>
-          </dl>
+          <FormField label="Bonus answers limit">
+            <input
+              value={formatOptionalValue(round.bonusAnswersLimit)}
+              readOnly
+            />
+          </FormField>
         </div>
 
         <Button variant="primary">Save</Button>
+
         <Button type="button" variant="secondary" onClick={onDeleteRequest}>
           Delete round
         </Button>
