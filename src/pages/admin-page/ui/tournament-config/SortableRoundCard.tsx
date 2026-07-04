@@ -19,13 +19,17 @@ const SortableRoundCard = (props: SortableRoundCardProps) => {
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className="sortable-round-card"
-      {...attributes}
-      {...listeners}
-    >
+    <div ref={setNodeRef} style={style} className="sortable-round-card">
+      <button
+        type="button"
+        className="sortable-round-card__handle"
+        aria-label={`Move round ${props.roundNumber}`}
+        {...attributes}
+        {...listeners}
+      >
+        ⋮⋮
+      </button>
+
       <RoundCard {...props} />
     </div>
   );

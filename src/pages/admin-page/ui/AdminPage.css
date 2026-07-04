@@ -981,3 +981,27 @@
 .admin-confirm-modal__actions button {
   min-width: 120px;
 }
+
+.sortable-round-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.sortable-round-card__handle {
+  width: 28px;
+  min-height: 100%;
+
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+
+  background: rgba(15, 23, 42, 0.42);
+  color: var(--color-text-muted);
+
+  cursor: grab;
+}
+
+.sortable-round-card__handle:active {
+  cursor: grabbing;
+}
