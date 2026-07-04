@@ -1053,3 +1053,11 @@
 
   margin-top: 8px;
 }
+.admin-editor-section {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-editor-section h4 {
+  margin: 0;
+}

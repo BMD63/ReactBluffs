@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { Button } from '@/shared/ui/button';
+import EditorSection from '../EditorSection';
+
 import type { TournamentConfig } from '@/entities/tournament-config';
 
 import FormField from '../FormField';
@@ -44,9 +46,7 @@ const ConfigurationEditor = ({
       <h2>Configuration</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="configuration-editor__section">
-          <h3>General</h3>
-
+        <EditorSection title="General">
           <FormField label="Title">
             <input
               value={title}
@@ -62,15 +62,13 @@ const ConfigurationEditor = ({
           <FormField label="Rounds">
             <input value={config.rounds.length} readOnly />
           </FormField>
-        </div>
+        </EditorSection>
 
-        <div className="configuration-editor__section">
-          <h3>Rounds</h3>
-
+        <EditorSection title="Rounds">
           <Button type="button" variant="secondary" onClick={onAddRound}>
             + Add round
           </Button>
-        </div>
+        </EditorSection>
 
         <div className="admin-editor-actions">
           <Button variant="primary">Save</Button>

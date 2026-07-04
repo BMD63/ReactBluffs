@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/shared/ui/button';
 import FormField from '../FormField';
+import EditorSection from '../EditorSection';
 import type { TournamentRoundConfig } from '@/entities/tournament-config';
 
 type RoundEditorProps = {
   round: TournamentRoundConfig;
   onSave: (round: TournamentRoundConfig) => void;
   onDeleteRequest: () => void;
-  onBonusLimitReset?: () => void;
 };
 
 const parseNumber = (value: string) => {
@@ -17,12 +17,7 @@ const parseNumber = (value: string) => {
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
-const RoundEditor = ({
-  round,
-  onSave,
-  onDeleteRequest,
-  onBonusLimitReset,
-}: RoundEditorProps) => {
+const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
   const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
 
   useEffect(() => {
@@ -67,10 +62,6 @@ const RoundEditor = ({
     setDraftRound((currentRound) => {
       const shouldResetBonusLimit =
         (currentRound.bonusAnswersLimit ?? 0) > questionsCount;
-
-      if (shouldResetBonusLimit) {
-        onBonusLimitReset?.();
-      }
 
       return {
         ...currentRound,
@@ -120,9 +111,7 @@ const RoundEditor = ({
       <h3>Edit round</h3>
 
       <form onSubmit={handleSubmit}>
-        <div className="admin-round-editor__section">
-          <h4>General</h4>
-
+        <EditorSection title="General">
           <FormField label="Title">
             <input
               value={draftRound.title}
@@ -149,11 +138,9 @@ const RoundEditor = ({
               <option value="hard">Hard</option>
             </select>
           </FormField>
-        </div>
+        </EditorSection>
 
-        <div className="admin-round-editor__section">
-          <h4>Questions</h4>
-
+        <EditorSection title="Questions">
           <FormField label="Questions count">
             <input
               type="number"
@@ -162,11 +149,9 @@ const RoundEditor = ({
               onChange={handleQuestionsCountChange}
             />
           </FormField>
-        </div>
+        </EditorSection>
 
-        <div className="admin-round-editor__section">
-          <h4>Timing</h4>
-
+        <EditorSection title="Timing">
           <FormField label="Question time (sec)">
             <input
               type="number"
@@ -184,11 +169,9 @@ const RoundEditor = ({
               onChange={handleCorrectionTimeChange}
             />
           </FormField>
-        </div>
+        </EditorSection>
 
-        <div className="admin-round-editor__section">
-          <h4>Bonus</h4>
-
+        <EditorSection title="Bonus">
           <FormField label="Bonus answers limit">
             <input
               type="number"
@@ -198,7 +181,7 @@ const RoundEditor = ({
               onChange={handleBonusLimitChange}
             />
           </FormField>
-        </div>
+        </EditorSection>
 
         <div className="admin-editor-actions">
           <Button variant="primary">Save</Button>
