@@ -39,6 +39,23 @@ const createEmptyRound = () => {
   };
 };
 
+const reorderItems = <Item,>(
+  items: Item[],
+  fromIndex: number,
+  toIndex: number
+) => {
+  const updatedItems = [...items];
+  const [movedItem] = updatedItems.splice(fromIndex, 1);
+
+  if (!movedItem) {
+    return items;
+  }
+
+  updatedItems.splice(toIndex, 0, movedItem);
+
+  return updatedItems;
+};
+
 const TournamentConfigPage = () => {
   const [selectedConfigId, setSelectedConfigId] = useState(
     DEFAULT_TOURNAMENT_CONFIG_ID
@@ -210,6 +227,30 @@ const TournamentConfigPage = () => {
     setEditorTarget('round');
   };
 
+  const handleReorderRounds = async (
+    activeRoundId: string,
+    overRoundId: string
+  ) => {
+    await updateCurrentConfig((currentConfig) => {
+      const fromIndex = currentConfig.rounds.findIndex(
+        (round) => round.id === activeRoundId
+      );
+
+      const toIndex = currentConfig.rounds.findIndex(
+        (round) => round.id === overRoundId
+      );
+
+      if (fromIndex === -1 || toIndex === -1) {
+        return currentConfig;
+      }
+
+      return {
+        ...currentConfig,
+        rounds: reorderItems(currentConfig.rounds, fromIndex, toIndex),
+      };
+    });
+  };
+
   if (config === undefined) {
     return <p>Loading...</p>;
   }
@@ -259,6 +300,7 @@ const TournamentConfigPage = () => {
               setSelectedRoundId(roundId);
               setEditorTarget('round');
             }}
+            onReorderRounds={handleReorderRounds}
           />
         </RoundsPanel>
 

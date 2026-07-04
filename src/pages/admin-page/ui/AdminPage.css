@@ -901,12 +901,12 @@
 .admin-round-editor form,
 .configuration-editor form {
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .admin-editor-section {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .admin-editor-section h4 {

@@ -1,28 +1,28 @@
-import RoundCard from './RoundCard';
-
+import SortableRoundsList from './SortableRoundsList';
 import type { TournamentConfig } from '@/entities/tournament-config';
 
-type RoundList = {
+type RoundListProps = {
   config: TournamentConfig;
   selectedRoundId: string | null;
   onSelectRound: (roundId: string) => void;
+  onReorderRounds: (activeRoundId: string, overRoundId: string) => void;
 };
 
-const RoundList = ({ config, selectedRoundId, onSelectRound }: RoundList) => {
+const RoundList = ({
+  config,
+  selectedRoundId,
+  onSelectRound,
+  onReorderRounds,
+}: RoundListProps) => {
   return (
     <section>
       <div className="admin-rounds-list">
-        {config.rounds.map((round, index) => (
-          <RoundCard
-            key={round.id}
-            round={round}
-            roundNumber={index + 1}
-            isActive={round.id === selectedRoundId}
-            onSelect={() => {
-              onSelectRound(round.id);
-            }}
-          />
-        ))}
+        <SortableRoundsList
+          config={config}
+          selectedRoundId={selectedRoundId}
+          onSelectRound={onSelectRound}
+          onReorderRounds={onReorderRounds}
+        />
       </div>
     </section>
   );
