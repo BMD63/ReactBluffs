@@ -1,4 +1,10 @@
-import { closestCenter, DndContext } from '@dnd-kit/core';
+import {
+  closestCenter,
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import type { DragEndEvent } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -23,6 +29,13 @@ const SortableRoundsList = ({
   onReorderRounds,
 }: SortableRoundsListProps) => {
   const roundIds = config.rounds.map((round) => round.id);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -34,7 +47,11 @@ const SortableRoundsList = ({
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <SortableContext items={roundIds} strategy={verticalListSortingStrategy}>
         {config.rounds.map((round, index) => (
           <SortableRoundCard
