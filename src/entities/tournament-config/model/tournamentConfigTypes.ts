@@ -1,6 +1,8 @@
 import type { QuestionType } from '@/entities/question';
 
-export type TournamentDifficulty = 'easy' | 'medium' | 'hard';
+export const TOURNAMENT_DIFFICULTIES = ['easy', 'medium', 'hard'] as const;
+
+export type TournamentDifficulty = (typeof TOURNAMENT_DIFFICULTIES)[number];
 
 export type TournamentRoundType = QuestionType;
 

@@ -18,3 +18,5 @@ export type {
 } from './model/tournamentConfigTypes';
 
 export { loadMockTournamentConfigs } from './model/loadTournamentConfigs';
+
+export { roundSchema } from './model/roundSchema';

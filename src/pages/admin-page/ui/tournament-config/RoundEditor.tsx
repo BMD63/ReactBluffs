@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-
+import type { z } from 'zod';
 import { Button } from '@/shared/ui/button';
 import FormField from '../FormField';
 import EditorSection from '../EditorSection';
 import type { TournamentRoundConfig } from '@/entities/tournament-config';
+
+import { roundSchema } from '@/entities/tournament-config';
 
 type RoundEditorProps = {
   round: TournamentRoundConfig;
@@ -11,17 +13,24 @@ type RoundEditorProps = {
   onDeleteRequest: () => void;
 };
 
+type RoundFormErrors = z.inferFlattenedErrors<
+  typeof roundSchema
+>['fieldErrors'];
+
 const parseNumber = (value: string) => {
   const parsed = Number(value);
 
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
+const [errors, setErrors] = useState<RoundFormErrors>({});
+
 const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
   const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
 
   useEffect(() => {
     setDraftRound(round);
+    setErrors({});
   }, [round]);
 
   const updateDraftRound = <Key extends keyof TournamentRoundConfig>(
@@ -94,16 +103,16 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const normalizedTitle = draftRound.title.trim();
+    const result = roundSchema.safeParse(draftRound);
 
-    if (!normalizedTitle) {
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
       return;
     }
 
-    onSave({
-      ...draftRound,
-      title: normalizedTitle,
-    });
+    setErrors({});
+
+    onSave(result.data);
   };
 
   return (
