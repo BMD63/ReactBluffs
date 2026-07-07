@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import type { z } from 'zod';
+
 import { Button } from '@/shared/ui/button';
+import {
+  roundSchema,
+  type TournamentRoundConfig,
+} from '@/entities/tournament-config';
+
 import FormField from '../FormField';
 import EditorSection from '../EditorSection';
-import type { TournamentRoundConfig } from '@/entities/tournament-config';
-
-import { roundSchema } from '@/entities/tournament-config';
 
 type RoundEditorProps = {
   round: TournamentRoundConfig;
   onSave: (round: TournamentRoundConfig) => void;
   onDeleteRequest: () => void;
+  onBonusLimitReset: () => void;
 };
 
 type RoundFormErrors = z.inferFlattenedErrors<
@@ -23,10 +27,14 @@ const parseNumber = (value: string) => {
   return Number.isFinite(parsed) ? parsed : 0;
 };
 
-const [errors, setErrors] = useState<RoundFormErrors>({});
-
-const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
+const RoundEditor = ({
+  round,
+  onSave,
+  onDeleteRequest,
+  onBonusLimitReset,
+}: RoundEditorProps) => {
   const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
+  const [errors, setErrors] = useState<RoundFormErrors>({});
 
   useEffect(() => {
     setDraftRound(round);
@@ -43,8 +51,16 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
     }));
   };
 
+  const clearFieldError = (field: keyof RoundFormErrors) => {
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [field]: undefined,
+    }));
+  };
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateDraftRound('title', event.target.value);
+    clearFieldError('title');
   };
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,6 +68,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
       'type',
       event.target.value as TournamentRoundConfig['type']
     );
+    clearFieldError('type');
   };
 
   const handleDifficultyChange = (
@@ -61,6 +78,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
       'difficulty',
       event.target.value as TournamentRoundConfig['difficulty']
     );
+    clearFieldError('difficulty');
   };
 
   const handleQuestionsCountChange = (
@@ -72,6 +90,10 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
       const shouldResetBonusLimit =
         (currentRound.bonusAnswersLimit ?? 0) > questionsCount;
 
+      if (shouldResetBonusLimit) {
+        onBonusLimitReset();
+      }
+
       return {
         ...currentRound,
         questionsCount,
@@ -80,24 +102,28 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
           : (currentRound.bonusAnswersLimit ?? 0),
       };
     });
+    clearFieldError('questionsCount');
   };
 
   const handleQuestionTimeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     updateDraftRound('questionTimeSeconds', parseNumber(event.target.value));
+    clearFieldError('questionTimeSeconds');
   };
 
   const handleCorrectionTimeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     updateDraftRound('correctionTimeSeconds', parseNumber(event.target.value));
+    clearFieldError('correctionTimeSeconds');
   };
 
   const handleBonusLimitChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     updateDraftRound('bonusAnswersLimit', parseNumber(event.target.value));
+    clearFieldError('bonusAnswersLimit');
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -121,7 +147,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
 
       <form onSubmit={handleSubmit}>
         <EditorSection title="General">
-          <FormField label="Title">
+          <FormField label="Title" error={errors.title?.[0]}>
             <input
               value={draftRound.title}
               onChange={handleTitleChange}
@@ -129,7 +155,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
             />
           </FormField>
 
-          <FormField label="Type">
+          <FormField label="Type" error={errors.type?.[0]}>
             <select value={draftRound.type} onChange={handleTypeChange}>
               <option value="openText">Open text</option>
               <option value="multipleChoice">Multiple choice</option>
@@ -137,7 +163,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
             </select>
           </FormField>
 
-          <FormField label="Difficulty">
+          <FormField label="Difficulty" error={errors.difficulty?.[0]}>
             <select
               value={draftRound.difficulty}
               onChange={handleDifficultyChange}
@@ -150,7 +176,7 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
         </EditorSection>
 
         <EditorSection title="Questions">
-          <FormField label="Questions count">
+          <FormField label="Questions count" error={errors.questionsCount?.[0]}>
             <input
               type="number"
               min={1}
@@ -161,7 +187,10 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
         </EditorSection>
 
         <EditorSection title="Timing">
-          <FormField label="Question time (sec)">
+          <FormField
+            label="Question time (sec)"
+            error={errors.questionTimeSeconds?.[0]}
+          >
             <input
               type="number"
               min={1}
@@ -170,7 +199,10 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
             />
           </FormField>
 
-          <FormField label="Correction time (sec)">
+          <FormField
+            label="Correction time (sec)"
+            error={errors.correctionTimeSeconds?.[0]}
+          >
             <input
               type="number"
               min={0}
@@ -181,7 +213,10 @@ const RoundEditor = ({ round, onSave, onDeleteRequest }: RoundEditorProps) => {
         </EditorSection>
 
         <EditorSection title="Bonus">
-          <FormField label="Bonus answers limit">
+          <FormField
+            label="Bonus answers limit"
+            error={errors.bonusAnswersLimit?.[0]}
+          >
             <input
               type="number"
               min={0}

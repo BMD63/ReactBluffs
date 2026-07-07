@@ -15,6 +15,10 @@ import RoundsList from './RoundsList';
 import TournamentEditor from './TournamentEditor';
 import ConfirmActionModal from '../ConfirmActionModal';
 
+type TournamentConfigPageProps = {
+  onStatusChange: (message: string) => void;
+};
+
 const DEFAULT_TOURNAMENT_CONFIG_ID = 'offline-quiz';
 
 const createEmptyTournamentConfig = (): TournamentConfig => {
@@ -56,7 +60,9 @@ const reorderItems = <Item,>(
   return updatedItems;
 };
 
-const TournamentConfigPage = () => {
+const TournamentConfigPage = ({
+  onStatusChange,
+}: TournamentConfigPageProps) => {
   const [selectedConfigId, setSelectedConfigId] = useState(
     DEFAULT_TOURNAMENT_CONFIG_ID
   );
@@ -136,8 +142,8 @@ const TournamentConfigPage = () => {
   };
 
   const handleBonusLimitReset = () => {
-    console.log(
-      'Questions count is lower than Bonus limit. Please set Bonus limit again.'
+    onStatusChange(
+      'Bonus answers limit was reset because it cannot exceed the questions count.'
     );
   };
 

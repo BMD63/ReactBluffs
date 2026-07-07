@@ -383,7 +383,9 @@ const AdminPage = () => {
       <AdminWorkspace>
         {adminSection === 'home' && <AdminHome />}
 
-        {adminSection === 'tournamentConfig' && <TournamentConfigPage />}
+        {adminSection === 'tournamentConfig' && (
+          <TournamentConfigPage onStatusChange={setStatus} />
+        )}
 
         {adminSection === 'questions' && (
           <AdminToolbar

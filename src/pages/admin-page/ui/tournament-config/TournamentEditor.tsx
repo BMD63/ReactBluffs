@@ -6,8 +6,6 @@ import type {
   TournamentRoundConfig,
 } from '@/entities/tournament-config';
 
-type TournamentEditorTarget = 'config' | 'round';
-
 type TournamentEditorProps = {
   editorTarget: 'config' | 'round';
 
@@ -19,7 +17,7 @@ type TournamentEditorProps = {
   onDeleteConfigRequest: () => void;
   onAddRound: () => void;
   onDeleteRoundRequest: () => void;
-  onBonusLimitReset?: () => void;
+  onBonusLimitReset: () => void;
 };
 
 const TournamentEditor = ({
@@ -31,6 +29,7 @@ const TournamentEditor = ({
   onAddRound,
   onDeleteRoundRequest,
   onDeleteConfigRequest,
+  onBonusLimitReset,
 }: TournamentEditorProps) => {
   if (editorTarget === 'config') {
     return (
@@ -52,6 +51,7 @@ const TournamentEditor = ({
       round={selectedRound}
       onSave={onSaveRound}
       onDeleteRequest={onDeleteRoundRequest}
+      onBonusLimitReset={onBonusLimitReset}
     />
   );
 };
