@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { z } from 'zod';
+import isEqual from 'fast-deep-equal';
 
 import { Button } from '@/shared/ui/button';
 import {
@@ -16,6 +17,7 @@ type RoundEditorProps = {
   onDeleteRequest: () => void;
   onBonusLimitReset: () => void;
   onBackToConfiguration: () => void;
+  onDirtyStateChange: (isDirty: boolean) => void;
 };
 
 type RoundFormErrors = z.inferFlattenedErrors<
@@ -34,6 +36,7 @@ const RoundEditor = ({
   onDeleteRequest,
   onBonusLimitReset,
   onBackToConfiguration,
+  onDirtyStateChange,
 }: RoundEditorProps) => {
   const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
   const [errors, setErrors] = useState<RoundFormErrors>({});
@@ -126,6 +129,10 @@ const RoundEditor = ({
       };
     });
   };
+
+  useEffect(() => {
+    onDirtyStateChange(!isEqual(round, draftRound));
+  }, [draftRound, round, onDirtyStateChange]);
 
   const handleQuestionTimeChange = (
     event: React.ChangeEvent<HTMLInputElement>

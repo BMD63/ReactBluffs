@@ -79,9 +79,17 @@ const TournamentConfigPage = ({
   const [isDeleteRoundConfirmOpen, setIsDeleteRoundConfirmOpen] =
     useState(false);
 
+  const [newUnsavedRoundId, setNewUnsavedRoundId] = useState<string | null>(
+    null
+  );
+
+  const [hasUnsavedRoundChanges, setHasUnsavedRoundChanges] = useState(false);
+
   useEffect(() => {
     tournamentConfigApi.getConfigs().then(setConfigs);
   }, []);
+
+  const [isBackConfirmOpen, setIsBackConfirmOpen] = useState(false);
 
   useEffect(() => {
     tournamentConfigApi.getConfig(selectedConfigId).then((loadedConfig) => {
@@ -139,6 +147,9 @@ const TournamentConfigPage = ({
         round.id === updatedRound.id ? updatedRound : round
       ),
     }));
+    if (updatedRound.id === newUnsavedRoundId) {
+      setNewUnsavedRoundId(null);
+    }
   };
 
   const handleBonusLimitReset = () => {
@@ -148,7 +159,14 @@ const TournamentConfigPage = ({
   };
 
   const handleBackToConfiguration = () => {
-    setEditorTarget('config');
+    const isNewUnsavedRound = selectedRoundId === newUnsavedRoundId;
+
+    if (!isNewUnsavedRound && !hasUnsavedRoundChanges) {
+      setEditorTarget('config');
+      return;
+    }
+
+    setIsBackConfirmOpen(true);
   };
 
   const deleteSelectedRound = async () => {
@@ -157,6 +175,9 @@ const TournamentConfigPage = ({
     }
 
     const deletedRoundId = selectedRoundId;
+    if (deletedRoundId === newUnsavedRoundId) {
+      setNewUnsavedRoundId(null);
+    }
 
     const savedConfig = await updateCurrentConfig((currentConfig) => ({
       ...currentConfig,
@@ -221,6 +242,15 @@ const TournamentConfigPage = ({
     setIsDeleteConfigConfirmOpen(true);
   };
 
+  const confirmBackToConfiguration = async () => {
+    if (selectedRoundId === newUnsavedRoundId) {
+      await deleteSelectedRound();
+    }
+
+    setIsBackConfirmOpen(false);
+    setEditorTarget('config');
+  };
+
   const handleAddRound = async () => {
     const newRound = createEmptyRound();
 
@@ -235,6 +265,7 @@ const TournamentConfigPage = ({
 
     setSelectedRoundId(newRound.id);
     setEditorTarget('round');
+    setNewUnsavedRoundId(newRound.id);
   };
 
   const handleReorderRounds = async (
@@ -326,8 +357,31 @@ const TournamentConfigPage = ({
             onDeleteConfigRequest={handleDeleteConfigRequest}
             onBonusLimitReset={handleBonusLimitReset}
             onBackToConfiguration={handleBackToConfiguration}
+            onDirtyRoundStateChange={setHasUnsavedRoundChanges}
           />
         </RoundEditorPanel>
+        {isBackConfirmOpen && (
+          <ConfirmActionModal
+            title={
+              selectedRoundId === newUnsavedRoundId
+                ? 'Discard new round?'
+                : 'Discard unsaved changes?'
+            }
+            description={
+              selectedRoundId === newUnsavedRoundId
+                ? 'This round has not been saved yet. It will be removed.'
+                : 'Your changes have not been saved.'
+            }
+            confirmLabel={
+              selectedRoundId === newUnsavedRoundId
+                ? 'Discard round'
+                : 'Discard changes'
+            }
+            isDanger
+            onCancel={() => setIsBackConfirmOpen(false)}
+            onConfirm={confirmBackToConfiguration}
+          />
+        )}
         {isDeleteRoundConfirmOpen && (
           <ConfirmActionModal
             title="Delete round?"
@@ -338,6 +392,7 @@ const TournamentConfigPage = ({
             onConfirm={confirmDeleteRound}
           />
         )}
+
         {isDeleteConfigConfirmOpen && (
           <ConfirmActionModal
             title="Delete configuration?"
