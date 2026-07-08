@@ -15,6 +15,7 @@ type RoundEditorProps = {
   onSave: (round: TournamentRoundConfig) => void;
   onDeleteRequest: () => void;
   onBonusLimitReset: () => void;
+  onBackToConfiguration: () => void;
 };
 
 type RoundFormErrors = z.inferFlattenedErrors<
@@ -32,6 +33,7 @@ const RoundEditor = ({
   onSave,
   onDeleteRequest,
   onBonusLimitReset,
+  onBackToConfiguration,
 }: RoundEditorProps) => {
   const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
   const [errors, setErrors] = useState<RoundFormErrors>({});
@@ -228,10 +230,20 @@ const RoundEditor = ({
         </EditorSection>
 
         <div className="admin-editor-actions">
-          <Button variant="primary">Save</Button>
+          <Button type="submit" variant="primary">
+            Save
+          </Button>
+
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onBackToConfiguration}
+          >
+            Back
+          </Button>
 
           <Button type="button" variant="secondary" onClick={onDeleteRequest}>
-            Delete round
+            Delete
           </Button>
         </div>
       </form>

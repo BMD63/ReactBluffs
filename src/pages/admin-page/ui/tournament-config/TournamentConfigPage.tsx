@@ -147,6 +147,10 @@ const TournamentConfigPage = ({
     );
   };
 
+  const handleBackToConfiguration = () => {
+    setEditorTarget('config');
+  };
+
   const deleteSelectedRound = async () => {
     if (!selectedRoundId) {
       return;
@@ -321,6 +325,7 @@ const TournamentConfigPage = ({
             onDeleteRoundRequest={handleDeleteRoundRequest}
             onDeleteConfigRequest={handleDeleteConfigRequest}
             onBonusLimitReset={handleBonusLimitReset}
+            onBackToConfiguration={handleBackToConfiguration}
           />
         </RoundEditorPanel>
         {isDeleteRoundConfirmOpen && (

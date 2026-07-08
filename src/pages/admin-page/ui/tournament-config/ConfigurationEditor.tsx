@@ -71,10 +71,12 @@ const ConfigurationEditor = ({
         </EditorSection>
 
         <div className="admin-editor-actions">
-          <Button variant="primary">Save</Button>
+          <Button type="submit" variant="primary">
+            Save
+          </Button>
 
           <Button type="button" variant="secondary" onClick={onDeleteRequest}>
-            Delete round
+            Delete
           </Button>
         </div>
       </form>
