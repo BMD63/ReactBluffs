@@ -66,27 +66,40 @@ const RoundEditor = ({
     });
   };
 
+  const updateDraftField = <Key extends keyof TournamentRoundConfig>(
+    field: Key,
+    value: TournamentRoundConfig[Key],
+    options?: {
+      clearError?: boolean;
+    }
+  ) => {
+    updateDraftRound(field, value);
+
+    if (options?.clearError) {
+      clearFieldError(field);
+    }
+  };
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateDraftRound('title', event.target.value);
-    clearFieldError('title');
+    updateDraftField('title', event.target.value, {
+      clearError: true,
+    });
   };
 
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    updateDraftRound(
+    updateDraftField(
       'type',
       event.target.value as TournamentRoundConfig['type']
     );
-    clearFieldError('type');
   };
 
   const handleDifficultyChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    updateDraftRound(
+    updateDraftField(
       'difficulty',
       event.target.value as TournamentRoundConfig['difficulty']
     );
-    clearFieldError('difficulty');
   };
 
   const handleQuestionsCountChange = (
@@ -117,22 +130,25 @@ const RoundEditor = ({
   const handleQuestionTimeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    updateDraftRound('questionTimeSeconds', parseNumber(event.target.value));
-    clearFieldError('questionTimeSeconds');
+    updateDraftField('questionTimeSeconds', parseNumber(event.target.value), {
+      clearError: true,
+    });
   };
 
   const handleCorrectionTimeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    updateDraftRound('correctionTimeSeconds', parseNumber(event.target.value));
-    clearFieldError('correctionTimeSeconds');
+    updateDraftField('correctionTimeSeconds', parseNumber(event.target.value), {
+      clearError: true,
+    });
   };
 
   const handleBonusLimitChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    updateDraftRound('bonusAnswersLimit', parseNumber(event.target.value));
-    clearFieldError('bonusAnswersLimit');
+    updateDraftField('bonusAnswersLimit', parseNumber(event.target.value), {
+      clearError: true,
+    });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
