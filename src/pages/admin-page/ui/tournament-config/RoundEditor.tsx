@@ -54,10 +54,16 @@ const RoundEditor = ({
   };
 
   const clearFieldError = (field: keyof RoundFormErrors) => {
-    setErrors((currentErrors) => ({
-      ...currentErrors,
-      [field]: undefined,
-    }));
+    setErrors((currentErrors) => {
+      if (!currentErrors[field]) {
+        return currentErrors;
+      }
+
+      return {
+        ...currentErrors,
+        [field]: undefined,
+      };
+    });
   };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,6 +94,8 @@ const RoundEditor = ({
   ) => {
     const questionsCount = parseNumber(event.target.value);
 
+    clearFieldError('questionsCount');
+
     setDraftRound((currentRound) => {
       const shouldResetBonusLimit =
         (currentRound.bonusAnswersLimit ?? 0) > questionsCount;
@@ -104,7 +112,6 @@ const RoundEditor = ({
           : (currentRound.bonusAnswersLimit ?? 0),
       };
     });
-    clearFieldError('questionsCount');
   };
 
   const handleQuestionTimeChange = (

@@ -9,8 +9,7 @@ import {
 
 export const roundSchema: z.ZodType<TournamentRoundConfig> = z.object({
   id: z.string().min(1),
-  title: z.string().trim().min(1),
-
+  title: z.string().trim().min(1, 'Title is required'),
   type: z.enum([
     QUESTION_TYPE.BOOLEAN,
     QUESTION_TYPE.MULTIPLE_CHOICE,
