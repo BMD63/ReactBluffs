@@ -55,9 +55,9 @@ const ConfigurationEditor = ({
             />
           </FormField>
 
-          <FormField label="ID">
+          {/* <FormField label="ID">
             <input value={config.id} readOnly />
-          </FormField>
+          </FormField> */}
 
           <FormField label="Rounds">
             <input value={config.rounds.length} readOnly />
