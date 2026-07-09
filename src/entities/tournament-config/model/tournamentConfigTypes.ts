@@ -24,6 +24,7 @@ export type TournamentRoundConfig = {
 export type TournamentConfig = {
   id: string;
   title: string;
+  description: string;
 
   rounds: TournamentRoundConfig[];
 };

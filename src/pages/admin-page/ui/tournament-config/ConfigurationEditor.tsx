@@ -21,10 +21,12 @@ const ConfigurationEditor = ({
   onDeleteRequest,
 }: ConfigurationEditorProps) => {
   const [title, setTitle] = useState(config.title);
+  const [description, setDescription] = useState(config.description);
 
   useEffect(() => {
     setTitle(config.title);
-  }, [config.id, config.title]);
+    setDescription(config.description);
+  }, [config]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,6 +40,7 @@ const ConfigurationEditor = ({
     onSave({
       ...config,
       title: normalizedTitle,
+      description: description.trim(),
     });
   };
 
@@ -52,6 +55,14 @@ const ConfigurationEditor = ({
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Configuration title"
+            />
+          </FormField>
+          <FormField label="Description">
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              placeholder="Configuration description"
+              rows={4}
             />
           </FormField>
 

@@ -27,6 +27,7 @@ const createEmptyTournamentConfig = (): TournamentConfig => {
   return {
     id: configId,
     title: 'New configuration',
+    description: '',
     rounds: [],
   };
 };

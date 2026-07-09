@@ -3,6 +3,7 @@ import type { TournamentConfig } from '../tournamentConfigTypes';
 export const offlineQuizTournamentConfig: TournamentConfig = {
   id: 'offline-quiz',
   title: 'Offline Quiz Tournament',
+  description: '',
 
   rounds: [
     {
@@ -96,7 +97,7 @@ export const offlineQuizTournamentConfig: TournamentConfig = {
 export const musicQuizTournamentConfig: TournamentConfig = {
   id: 'music-quiz',
   title: 'Music Quiz',
-
+  description: '',
   rounds: [
     {
       id: 'music-round-1',
