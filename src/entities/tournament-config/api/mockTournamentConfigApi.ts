@@ -1,4 +1,5 @@
 import type { TournamentConfig } from '../model/tournamentConfigTypes';
+import type { TournamentConfigApi } from './tournamentConfigApiTypes';
 import {
   offlineQuizTournamentConfig,
   musicQuizTournamentConfig,
@@ -9,7 +10,7 @@ const tournamentConfigs: TournamentConfig[] = [
   musicQuizTournamentConfig,
 ];
 
-export const mockTournamentConfigApi = {
+export const mockTournamentConfigApi: TournamentConfigApi = {
   async getConfigs(): Promise<TournamentConfig[]> {
     return tournamentConfigs;
   },
