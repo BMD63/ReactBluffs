@@ -191,7 +191,9 @@ const RoundEditor = ({
             <select value={draftRound.type} onChange={handleTypeChange}>
               <option value="openText">Open text</option>
               <option value="multipleChoice">Multiple choice</option>
-              <option value="bluff">Bluff</option>
+              <option value="boolean">Bluff</option>
+              <option value="image">Image</option>
+              <option value="audio">Audio</option>
             </select>
           </FormField>
 
