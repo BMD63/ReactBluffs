@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import isEqual from 'fast-deep-equal';
 import { Button } from '@/shared/ui/button';
 import {
   tournamentConfigApi,
@@ -151,21 +151,65 @@ const TournamentConfigPage = ({
       return null;
     }
 
-    const updatedConfig = updater(config);
-    const savedConfig = await tournamentConfigApi.updateConfig(
-      updatedConfig,
-      adminRequestParams
-    );
+    const previousConfig = config;
+    const updatedConfig = updater(previousConfig);
 
-    setConfig(savedConfig);
+    // Сначала мгновенно обновляем интерфейс.
+    setConfig(updatedConfig);
 
     setConfigs((currentConfigs) =>
       currentConfigs.map((configItem) =>
-        configItem.id === savedConfig.id ? savedConfig : configItem
+        configItem.id === updatedConfig.id ? updatedConfig : configItem
       )
     );
 
-    return savedConfig;
+    try {
+      const savedConfig = await tournamentConfigApi.updateConfig(
+        updatedConfig,
+        adminRequestParams
+      );
+
+      return savedConfig;
+    } catch (error) {
+      /*
+       * Откатываем состояние, только если после отправки запроса
+       * пользователь не успел сделать ещё одно изменение.
+       *
+       * Иначе поздняя ошибка старого запроса могла бы затереть
+       * более новое состояние формы.
+       */
+      setConfig((currentConfig) => {
+        if (
+          currentConfig?.id === updatedConfig.id &&
+          isEqual(currentConfig, updatedConfig)
+        ) {
+          return previousConfig;
+        }
+
+        return currentConfig;
+      });
+
+      setConfigs((currentConfigs) =>
+        currentConfigs.map((configItem) => {
+          if (
+            configItem.id === updatedConfig.id &&
+            isEqual(configItem, updatedConfig)
+          ) {
+            return previousConfig;
+          }
+
+          return configItem;
+        })
+      );
+
+      onStatusChange(
+        error instanceof Error
+          ? `Failed to update configuration: ${error.message}`
+          : 'Failed to update configuration'
+      );
+
+      return null;
+    }
   };
 
   const handleSaveConfig = async (updatedConfig: TournamentConfig) => {
@@ -332,18 +376,20 @@ const TournamentConfigPage = ({
   const handleAddRound = async () => {
     const newRound = createEmptyRound();
 
+    setSelectedRoundId(newRound.id);
+    setNewUnsavedRoundId(newRound.id);
+    setEditorTarget('round');
+
     const savedConfig = await updateCurrentConfig((currentConfig) => ({
       ...currentConfig,
       rounds: [...currentConfig.rounds, newRound],
     }));
 
     if (!savedConfig) {
-      return;
+      setSelectedRoundId(null);
+      setNewUnsavedRoundId(null);
+      setEditorTarget('config');
     }
-
-    setSelectedRoundId(newRound.id);
-    setEditorTarget('round');
-    setNewUnsavedRoundId(newRound.id);
   };
 
   const handleReorderRounds = async (
