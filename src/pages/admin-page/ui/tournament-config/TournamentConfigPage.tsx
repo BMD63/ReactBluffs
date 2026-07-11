@@ -21,6 +21,7 @@ type TournamentConfigPageProps = {
 };
 
 const DEFAULT_TOURNAMENT_CONFIG_ID = 'offline-quiz';
+const CONFIG_DELETE_DELAY_MS = 500;
 
 const createEmptyTournamentConfig = (): TournamentConfig => {
   const configId = crypto.randomUUID();
@@ -251,25 +252,53 @@ const TournamentConfigPage = ({
       return;
     }
 
-    await tournamentConfigApi.deleteConfig(config.id, adminRequestParams);
+    const deletedConfig = config;
+    const previousConfigs = configs;
+    const previousSelectedConfigId = selectedConfigId;
 
-    const updatedConfigs = await tournamentConfigApi.getConfigs();
+    const remainingConfigs = configs.filter(
+      (configItem) => configItem.id !== deletedConfig.id
+    );
 
-    setConfigs(updatedConfigs);
+    const nextConfig = remainingConfigs.at(0) ?? null;
 
-    const nextConfig = updatedConfigs.at(0);
+    const deleteTimerId = window.setTimeout(() => {
+      setConfigs(remainingConfigs);
 
-    if (!nextConfig) {
-      setConfig(null);
-      setSelectedConfigId('');
-      setSelectedRoundId(null);
+      if (!nextConfig) {
+        setConfig(null);
+        setSelectedConfigId('');
+        setSelectedRoundId(null);
+        setEditorTarget('config');
+
+        return;
+      }
+
+      setSelectedConfigId(nextConfig.id);
+      setEditorTarget('config');
+    }, CONFIG_DELETE_DELAY_MS);
+
+    try {
+      await tournamentConfigApi.deleteConfig(
+        deletedConfig.id,
+        adminRequestParams
+      );
+
+      onStatusChange('Configuration deleted!');
+    } catch (error) {
+      window.clearTimeout(deleteTimerId);
+
+      setConfigs(previousConfigs);
+      setConfig(deletedConfig);
+      setSelectedConfigId(previousSelectedConfigId);
       setEditorTarget('config');
 
-      return;
+      onStatusChange(
+        error instanceof Error
+          ? `Failed to delete configuration: ${error.message}`
+          : 'Failed to delete configuration'
+      );
     }
-
-    setSelectedConfigId(nextConfig.id);
-    setEditorTarget('config');
   };
 
   const confirmDeleteRound = async () => {
@@ -278,10 +307,9 @@ const TournamentConfigPage = ({
     setIsDeleteRoundConfirmOpen(false);
   };
 
-  const confirmDeleteConfig = async () => {
-    await deleteSelectedConfig();
-
+  const confirmDeleteConfig = () => {
     setIsDeleteConfigConfirmOpen(false);
+    void deleteSelectedConfig();
   };
 
   const handleDeleteRoundRequest = () => {
