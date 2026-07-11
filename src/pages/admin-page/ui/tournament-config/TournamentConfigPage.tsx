@@ -22,6 +22,12 @@ type TournamentConfigPageProps = {
 
 const DEFAULT_TOURNAMENT_CONFIG_ID = 'offline-quiz';
 const CONFIG_DELETE_DELAY_MS = 500;
+const ROUND_DELETE_DELAY_MS = 500;
+
+const wait = (delay: number) =>
+  new Promise<void>((resolve) => {
+    window.setTimeout(resolve, delay);
+  });
 
 const createEmptyTournamentConfig = (): TournamentConfig => {
   const configId = crypto.randomUUID();
@@ -259,30 +265,95 @@ const TournamentConfigPage = ({
   };
 
   const deleteSelectedRound = async () => {
-    if (!selectedRoundId) {
+    if (!config || !selectedRoundId) {
+      return;
+    }
+
+    const adminRequestParams = getAdminRequestParams();
+
+    if (!adminRequestParams) {
       return;
     }
 
     const deletedRoundId = selectedRoundId;
-    if (deletedRoundId === newUnsavedRoundId) {
-      setNewUnsavedRoundId(null);
-    }
+    const previousConfig = config;
+    const wasNewUnsavedRound = deletedRoundId === newUnsavedRoundId;
 
-    const savedConfig = await updateCurrentConfig((currentConfig) => ({
-      ...currentConfig,
-      rounds: currentConfig.rounds.filter(
+    const updatedConfig: TournamentConfig = {
+      ...previousConfig,
+      rounds: previousConfig.rounds.filter(
         (round) => round.id !== deletedRoundId
       ),
-    }));
+    };
 
-    if (!savedConfig) {
-      return;
-    }
+    const nextSelectedRoundId = updatedConfig.rounds.at(0)?.id ?? null;
 
-    const nextSelectedRoundId = savedConfig.rounds.at(0)?.id ?? null;
+    /*
+     * Запрос запускаем сразу, но сразу обрабатываем возможный reject,
+     * чтобы до окончания задержки не возникло unhandled rejection.
+     */
+    const updateResultPromise = tournamentConfigApi
+      .updateConfig(updatedConfig, adminRequestParams)
+      .then(
+        (savedConfig) =>
+          ({
+            ok: true,
+            savedConfig,
+          }) as const,
+        (error: unknown) =>
+          ({
+            ok: false,
+            error,
+          }) as const
+      );
+
+    // Даём пользователю увидеть подтверждённое действие.
+    await wait(ROUND_DELETE_DELAY_MS);
+
+    // Через 500 мс оптимистично убираем раунд из интерфейса.
+    setConfig(updatedConfig);
+
+    setConfigs((currentConfigs) =>
+      currentConfigs.map((configItem) =>
+        configItem.id === updatedConfig.id ? updatedConfig : configItem
+      )
+    );
 
     setSelectedRoundId(nextSelectedRoundId);
     setEditorTarget(nextSelectedRoundId ? 'round' : 'config');
+
+    if (wasNewUnsavedRound) {
+      setNewUnsavedRoundId(null);
+    }
+
+    const updateResult = await updateResultPromise;
+
+    if (updateResult.ok) {
+      onStatusChange('Round deleted!');
+      return;
+    }
+
+    // Сервер не сохранил удаление — возвращаем прежнее состояние.
+    setConfig(previousConfig);
+
+    setConfigs((currentConfigs) =>
+      currentConfigs.map((configItem) =>
+        configItem.id === previousConfig.id ? previousConfig : configItem
+      )
+    );
+
+    setSelectedRoundId(deletedRoundId);
+    setEditorTarget('round');
+
+    if (wasNewUnsavedRound) {
+      setNewUnsavedRoundId(deletedRoundId);
+    }
+
+    onStatusChange(
+      updateResult.error instanceof Error
+        ? `Failed to delete round: ${updateResult.error.message}`
+        : 'Failed to delete round'
+    );
   };
 
   const deleteSelectedConfig = async () => {
@@ -345,10 +416,9 @@ const TournamentConfigPage = ({
     }
   };
 
-  const confirmDeleteRound = async () => {
-    await deleteSelectedRound();
-
+  const confirmDeleteRound = () => {
     setIsDeleteRoundConfirmOpen(false);
+    void deleteSelectedRound();
   };
 
   const confirmDeleteConfig = () => {
@@ -373,16 +443,16 @@ const TournamentConfigPage = ({
     setEditorTarget('config');
   };
 
-  const handleAddRound = async () => {
+  const handleAddRound = async (updatedConfig: TournamentConfig) => {
     const newRound = createEmptyRound();
 
     setSelectedRoundId(newRound.id);
     setNewUnsavedRoundId(newRound.id);
     setEditorTarget('round');
 
-    const savedConfig = await updateCurrentConfig((currentConfig) => ({
-      ...currentConfig,
-      rounds: [...currentConfig.rounds, newRound],
+    const savedConfig = await updateCurrentConfig(() => ({
+      ...updatedConfig,
+      rounds: [...updatedConfig.rounds, newRound],
     }));
 
     if (!savedConfig) {

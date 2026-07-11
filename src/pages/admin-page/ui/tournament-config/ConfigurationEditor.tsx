@@ -10,7 +10,7 @@ import FormField from '../FormField';
 type ConfigurationEditorProps = {
   config: TournamentConfig;
   onSave: (config: TournamentConfig) => void;
-  onAddRound: () => void;
+  onAddRound: (config: TournamentConfig) => void;
   onDeleteRequest: () => void;
 };
 
@@ -31,17 +31,17 @@ const ConfigurationEditor = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const normalizedTitle = title.trim();
+    onSave(getUpdatedConfig());
+  };
 
-    if (!normalizedTitle) {
-      return;
-    }
+  const getUpdatedConfig = (): TournamentConfig => ({
+    ...config,
+    title: title.trim(),
+    description: description.trim(),
+  });
 
-    onSave({
-      ...config,
-      title: normalizedTitle,
-      description: description.trim(),
-    });
+  const handleAddRound = () => {
+    onAddRound(getUpdatedConfig());
   };
 
   return (
@@ -76,8 +76,8 @@ const ConfigurationEditor = ({
         </EditorSection>
 
         <EditorSection title="Rounds">
-          <Button type="button" variant="secondary" onClick={onAddRound}>
-            + Add round
+          <Button type="button" variant="secondary" onClick={handleAddRound}>
+            Add round
           </Button>
         </EditorSection>
 
