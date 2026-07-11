@@ -1,5 +1,8 @@
 import type { TournamentConfig } from '../model/tournamentConfigTypes';
-import type { TournamentConfigApi } from './tournamentConfigApiTypes';
+import type {
+  AdminRequestParams,
+  TournamentConfigApi,
+} from './tournamentConfigApiTypes';
 import {
   offlineQuizTournamentConfig,
   musicQuizTournamentConfig,
@@ -19,7 +22,10 @@ export const mockTournamentConfigApi: TournamentConfigApi = {
     return tournamentConfigs.find((config) => config.id === configId) ?? null;
   },
 
-  async updateConfig(config: TournamentConfig): Promise<TournamentConfig> {
+  async updateConfig(
+    config: TournamentConfig,
+    _params
+  ): Promise<TournamentConfig> {
     const configIndex = tournamentConfigs.findIndex(
       (currentConfig) => currentConfig.id === config.id
     );
@@ -34,13 +40,16 @@ export const mockTournamentConfigApi: TournamentConfigApi = {
     return config;
   },
 
-  async createConfig(config: TournamentConfig): Promise<TournamentConfig> {
+  async createConfig(
+    config: TournamentConfig,
+    _params: AdminRequestParams
+  ): Promise<TournamentConfig> {
     tournamentConfigs.push(config);
 
     return config;
   },
 
-  async deleteConfig(configId: string): Promise<void> {
+  async deleteConfig(configId: string, _params): Promise<void> {
     const configIndex = tournamentConfigs.findIndex(
       (config) => config.id === configId
     );

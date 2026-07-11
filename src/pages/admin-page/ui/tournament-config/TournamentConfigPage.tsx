@@ -16,6 +16,7 @@ import TournamentEditor from './TournamentEditor';
 import ConfirmActionModal from '../ConfirmActionModal';
 
 type TournamentConfigPageProps = {
+  adminToken: string | null;
   onStatusChange: (message: string) => void;
 };
 
@@ -62,6 +63,7 @@ const reorderItems = <Item,>(
 };
 
 const TournamentConfigPage = ({
+  adminToken,
   onStatusChange,
 }: TournamentConfigPageProps) => {
   const [selectedConfigId, setSelectedConfigId] = useState(
@@ -105,10 +107,29 @@ const TournamentConfigPage = ({
     });
   }, [selectedConfigId]);
 
+  const getAdminRequestParams = () => {
+    if (!adminToken) {
+      onStatusChange('Admin token is missing');
+      return null;
+    }
+
+    return { adminToken };
+  };
+
   const handleCreateConfig = async () => {
+    const adminRequestParams = getAdminRequestParams();
+
+    if (!adminRequestParams) {
+      return;
+    }
+
     const newConfig = createEmptyTournamentConfig();
 
-    const createdConfig = await tournamentConfigApi.createConfig(newConfig);
+    const createdConfig = await tournamentConfigApi.createConfig(
+      newConfig,
+      adminRequestParams
+    );
+
     const updatedConfigs = await tournamentConfigApi.getConfigs();
 
     setConfigs(updatedConfigs);
@@ -123,8 +144,17 @@ const TournamentConfigPage = ({
       return null;
     }
 
+    const adminRequestParams = getAdminRequestParams();
+
+    if (!adminRequestParams) {
+      return null;
+    }
+
     const updatedConfig = updater(config);
-    const savedConfig = await tournamentConfigApi.updateConfig(updatedConfig);
+    const savedConfig = await tournamentConfigApi.updateConfig(
+      updatedConfig,
+      adminRequestParams
+    );
 
     setConfig(savedConfig);
 
@@ -138,19 +168,32 @@ const TournamentConfigPage = ({
   };
 
   const handleSaveConfig = async (updatedConfig: TournamentConfig) => {
-    await updateCurrentConfig(() => updatedConfig);
+    const savedConfig = await updateCurrentConfig(() => updatedConfig);
+
+    if (!savedConfig) {
+      return;
+    }
+
+    onStatusChange('Configuration updated!');
   };
 
   const handleSaveRound = async (updatedRound: TournamentRoundConfig) => {
-    await updateCurrentConfig((currentConfig) => ({
+    const savedConfig = await updateCurrentConfig((currentConfig) => ({
       ...currentConfig,
       rounds: currentConfig.rounds.map((round) =>
         round.id === updatedRound.id ? updatedRound : round
       ),
     }));
+
+    if (!savedConfig) {
+      return;
+    }
+
     if (updatedRound.id === newUnsavedRoundId) {
       setNewUnsavedRoundId(null);
     }
+
+    onStatusChange('Round updated!');
   };
 
   const handleBonusLimitReset = () => {
@@ -202,7 +245,13 @@ const TournamentConfigPage = ({
       return;
     }
 
-    await tournamentConfigApi.deleteConfig(config.id);
+    const adminRequestParams = getAdminRequestParams();
+
+    if (!adminRequestParams) {
+      return;
+    }
+
+    await tournamentConfigApi.deleteConfig(config.id, adminRequestParams);
 
     const updatedConfigs = await tournamentConfigApi.getConfigs();
 

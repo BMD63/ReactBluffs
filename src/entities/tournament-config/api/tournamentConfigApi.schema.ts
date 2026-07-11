@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { QUESTION_TYPE } from '@/entities/question';
+import { QUESTION_TYPE } from '../../question/model/questionTypes';
 
 import { TOURNAMENT_DIFFICULTIES } from '../model/tournamentConfigTypes';
 

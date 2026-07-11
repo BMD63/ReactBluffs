@@ -384,7 +384,10 @@ const AdminPage = () => {
         {adminSection === 'home' && <AdminHome />}
 
         {adminSection === 'tournamentConfig' && (
-          <TournamentConfigPage onStatusChange={setStatus} />
+          <TournamentConfigPage
+            adminToken={adminToken}
+            onStatusChange={setStatus}
+          />
         )}
 
         {adminSection === 'questions' && (

@@ -1,5 +1,8 @@
 import type { TournamentConfig } from '../model/tournamentConfigTypes';
-import type { TournamentConfigApi } from './tournamentConfigApiTypes';
+import type {
+  AdminRequestParams,
+  TournamentConfigApi,
+} from './tournamentConfigApiTypes';
 import { API_BASE_URL, API_ENDPOINTS } from '@/shared/config/api';
 
 const getTournamentConfigsUrl = (configId?: string) => {
@@ -14,6 +17,23 @@ const getTournamentConfigsUrl = (configId?: string) => {
   });
 
   return `${url}?${searchParams.toString()}`;
+};
+
+const getAdminHeaders = (adminToken: string) => ({
+  'Content-Type': 'application/json',
+  'x-admin-token': adminToken,
+});
+const getErrorMessage = async (
+  response: Response,
+  fallbackMessage: string
+): Promise<string> => {
+  try {
+    const errorData = await response.json();
+
+    return errorData.error ?? fallbackMessage;
+  } catch {
+    return fallbackMessage;
+  }
 };
 
 export const httpTournamentConfigApi: TournamentConfigApi = {
@@ -37,21 +57,59 @@ export const httpTournamentConfigApi: TournamentConfigApi = {
     return response.json();
   },
 
-  async createConfig(config: TournamentConfig): Promise<TournamentConfig> {
-    void config;
+  async createConfig(
+    config: TournamentConfig,
+    { adminToken }: AdminRequestParams
+  ): Promise<TournamentConfig> {
+    const response = await fetch(getTournamentConfigsUrl(), {
+      method: 'POST',
+      headers: getAdminHeaders(adminToken),
+      body: JSON.stringify(config),
+    });
 
-    throw new Error('Not implemented');
+    if (!response.ok) {
+      throw new Error(
+        await getErrorMessage(response, 'Failed to create tournament config')
+      );
+    }
+
+    return response.json();
   },
 
-  async updateConfig(config: TournamentConfig): Promise<TournamentConfig> {
-    void config;
+  async updateConfig(
+    config: TournamentConfig,
+    { adminToken }: AdminRequestParams
+  ): Promise<TournamentConfig> {
+    const response = await fetch(getTournamentConfigsUrl(), {
+      method: 'PUT',
+      headers: getAdminHeaders(adminToken),
+      body: JSON.stringify(config),
+    });
 
-    throw new Error('Not implemented');
+    if (!response.ok) {
+      throw new Error(
+        await getErrorMessage(response, 'Failed to update tournament config')
+      );
+    }
+
+    return response.json();
   },
 
-  async deleteConfig(configId: string): Promise<void> {
-    void configId;
+  async deleteConfig(
+    configId: string,
+    { adminToken }: AdminRequestParams
+  ): Promise<void> {
+    const response = await fetch(getTournamentConfigsUrl(configId), {
+      method: 'DELETE',
+      headers: {
+        'x-admin-token': adminToken,
+      },
+    });
 
-    throw new Error('Not implemented');
+    if (!response.ok) {
+      throw new Error(
+        await getErrorMessage(response, 'Failed to delete tournament config')
+      );
+    }
   },
 };
