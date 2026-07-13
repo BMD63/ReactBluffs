@@ -18,6 +18,8 @@ type RoundEditorProps = {
   onBonusLimitReset: () => void;
   onBackToConfiguration: () => void;
   onDirtyStateChange: (isDirty: boolean) => void;
+  onAddRoundRequest: (round: TournamentRoundConfig) => void;
+  canAddRound: boolean;
 };
 
 type RoundFormErrors = z.inferFlattenedErrors<
@@ -37,6 +39,8 @@ const RoundEditor = ({
   onBonusLimitReset,
   onBackToConfiguration,
   onDirtyStateChange,
+  onAddRoundRequest,
+  canAddRound,
 }: RoundEditorProps) => {
   const [draftRound, setDraftRound] = useState<TournamentRoundConfig>(round);
   const [errors, setErrors] = useState<RoundFormErrors>({});
@@ -173,6 +177,18 @@ const RoundEditor = ({
     onSave(result.data);
   };
 
+  const handleAddRoundRequest = () => {
+    const result = roundSchema.safeParse(draftRound);
+
+    if (!result.success) {
+      setErrors(result.error.flatten().fieldErrors);
+      return;
+    }
+
+    setErrors({});
+    onAddRoundRequest(result.data);
+  };
+
   return (
     <section className="admin-round-editor">
       <h3>Edit round</h3>
@@ -273,6 +289,16 @@ const RoundEditor = ({
           >
             Back
           </Button>
+
+          {canAddRound && (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleAddRoundRequest}
+            >
+              Add round
+            </Button>
+          )}
 
           <Button type="button" variant="secondary" onClick={onDeleteRequest}>
             Delete

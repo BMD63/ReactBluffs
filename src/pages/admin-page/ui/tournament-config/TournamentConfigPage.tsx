@@ -101,6 +101,11 @@ const TournamentConfigPage = ({
 
   const [isBackConfirmOpen, setIsBackConfirmOpen] = useState(false);
 
+  const [isAddRoundConfirmOpen, setIsAddRoundConfirmOpen] = useState(false);
+
+  const [roundPendingAdd, setRoundPendingAdd] =
+    useState<TournamentRoundConfig | null>(null);
+
   useEffect(() => {
     tournamentConfigApi.getConfig(selectedConfigId).then((loadedConfig) => {
       setConfig(loadedConfig);
@@ -443,7 +448,7 @@ const TournamentConfigPage = ({
     setEditorTarget('config');
   };
 
-  const handleAddRound = async (updatedConfig: TournamentConfig) => {
+  const createAndOpenRound = async (baseConfig: TournamentConfig) => {
     const newRound = createEmptyRound();
 
     setSelectedRoundId(newRound.id);
@@ -451,8 +456,8 @@ const TournamentConfigPage = ({
     setEditorTarget('round');
 
     const savedConfig = await updateCurrentConfig(() => ({
-      ...updatedConfig,
-      rounds: [...updatedConfig.rounds, newRound],
+      ...baseConfig,
+      rounds: [...baseConfig.rounds, newRound],
     }));
 
     if (!savedConfig) {
@@ -460,6 +465,69 @@ const TournamentConfigPage = ({
       setNewUnsavedRoundId(null);
       setEditorTarget('config');
     }
+  };
+
+  const cancelAddRoundFromEditor = () => {
+    setIsAddRoundConfirmOpen(false);
+    setRoundPendingAdd(null);
+  };
+
+  const discardRoundChangesAndAddNew = () => {
+    if (!config) {
+      return;
+    }
+
+    setIsAddRoundConfirmOpen(false);
+    setRoundPendingAdd(null);
+
+    void createAndOpenRound(config);
+  };
+
+  const saveRoundChangesAndAddNew = async () => {
+    if (!roundPendingAdd || !config) {
+      return;
+    }
+
+    setIsAddRoundConfirmOpen(false);
+
+    const savedConfig = await updateCurrentConfig((currentConfig) => ({
+      ...currentConfig,
+      rounds: currentConfig.rounds.map((round) =>
+        round.id === roundPendingAdd.id ? roundPendingAdd : round
+      ),
+    }));
+
+    if (!savedConfig) {
+      setRoundPendingAdd(null);
+      return;
+    }
+
+    setRoundPendingAdd(null);
+    setNewUnsavedRoundId(null);
+    onStatusChange('Round updated!');
+
+    await createAndOpenRound(savedConfig);
+  };
+
+  const handleAddRound = (updatedConfig: TournamentConfig) => {
+    void createAndOpenRound(updatedConfig);
+  };
+
+  const handleAddRoundFromEditorRequest = (
+    currentRoundDraft: TournamentRoundConfig
+  ) => {
+    if (hasUnsavedRoundChanges) {
+      setRoundPendingAdd(currentRoundDraft);
+      setIsAddRoundConfirmOpen(true);
+
+      return;
+    }
+
+    if (!config) {
+      return;
+    }
+
+    void createAndOpenRound(config);
   };
 
   const handleReorderRounds = async (
@@ -496,6 +564,9 @@ const TournamentConfigPage = ({
 
   const selectedRound =
     config.rounds.find((round) => round.id === selectedRoundId) ?? null;
+
+  const canAddRoundFromEditor =
+    selectedRoundId !== null && selectedRoundId !== newUnsavedRoundId;
 
   return (
     <section className="tournament-config-page">
@@ -547,11 +618,13 @@ const TournamentConfigPage = ({
             onSaveConfig={handleSaveConfig}
             onSaveRound={handleSaveRound}
             onAddRound={handleAddRound}
+            onAddRoundFromEditorRequest={handleAddRoundFromEditorRequest}
             onDeleteRoundRequest={handleDeleteRoundRequest}
             onDeleteConfigRequest={handleDeleteConfigRequest}
             onBonusLimitReset={handleBonusLimitReset}
             onBackToConfiguration={handleBackToConfiguration}
             onDirtyRoundStateChange={setHasUnsavedRoundChanges}
+            canAddRoundFromEditor={canAddRoundFromEditor}
           />
         </RoundEditorPanel>
         {isBackConfirmOpen && (
@@ -574,6 +647,17 @@ const TournamentConfigPage = ({
             isDanger
             onCancel={() => setIsBackConfirmOpen(false)}
             onConfirm={confirmBackToConfiguration}
+          />
+        )}
+        {isAddRoundConfirmOpen && (
+          <ConfirmActionModal
+            title="Save changes before adding a new round?"
+            description="You have unsaved changes in the current round."
+            confirmLabel="Save and continue"
+            secondaryLabel="Discard changes"
+            onCancel={cancelAddRoundFromEditor}
+            onSecondary={discardRoundChangesAndAddNew}
+            onConfirm={saveRoundChangesAndAddNew}
           />
         )}
         {isDeleteRoundConfirmOpen && (

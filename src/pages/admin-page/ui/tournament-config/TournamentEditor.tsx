@@ -8,6 +8,7 @@ import type {
 
 type TournamentEditorProps = {
   editorTarget: 'config' | 'round';
+  canAddRoundFromEditor: boolean;
 
   config: TournamentConfig;
   selectedRound: TournamentRoundConfig | null;
@@ -16,6 +17,7 @@ type TournamentEditorProps = {
   onSaveRound: (round: TournamentRoundConfig) => void;
   onDeleteConfigRequest: () => void;
   onAddRound: (config: TournamentConfig) => void;
+  onAddRoundFromEditorRequest: (round: TournamentRoundConfig) => void;
   onDeleteRoundRequest: () => void;
   onBonusLimitReset: () => void;
   onBackToConfiguration: () => void;
@@ -29,11 +31,13 @@ const TournamentEditor = ({
   onSaveConfig,
   onSaveRound,
   onAddRound,
+  onAddRoundFromEditorRequest,
   onDeleteRoundRequest,
   onDeleteConfigRequest,
   onBonusLimitReset,
   onBackToConfiguration,
   onDirtyRoundStateChange,
+  canAddRoundFromEditor,
 }: TournamentEditorProps) => {
   if (editorTarget === 'config') {
     return (
@@ -58,6 +62,8 @@ const TournamentEditor = ({
       onBonusLimitReset={onBonusLimitReset}
       onBackToConfiguration={onBackToConfiguration}
       onDirtyStateChange={onDirtyRoundStateChange}
+      onAddRoundRequest={onAddRoundFromEditorRequest}
+      canAddRound={canAddRoundFromEditor}
     />
   );
 };

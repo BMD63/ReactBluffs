@@ -5,8 +5,10 @@ type ConfirmActionModalProps = {
   description: string;
   confirmLabel: string;
   cancelLabel?: string;
+  secondaryLabel?: string;
   onConfirm: () => void;
   onCancel: () => void;
+  onSecondary?: () => void;
   isDanger?: boolean;
 };
 
@@ -15,8 +17,10 @@ const ConfirmActionModal = ({
   description,
   confirmLabel,
   cancelLabel = 'Cancel',
+  secondaryLabel,
   onConfirm,
   onCancel,
+  onSecondary,
   isDanger = false,
 }: ConfirmActionModalProps) => {
   return (
@@ -30,6 +34,12 @@ const ConfirmActionModal = ({
           <Button type="button" variant="secondary" onClick={onCancel}>
             {cancelLabel}
           </Button>
+
+          {secondaryLabel && onSecondary && (
+            <Button type="button" variant="secondary" onClick={onSecondary}>
+              {secondaryLabel}
+            </Button>
+          )}
 
           <Button type="button" variant="primary" onClick={onConfirm}>
             {confirmLabel}
