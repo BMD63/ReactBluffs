@@ -338,20 +338,20 @@ const TournamentConfigPage = ({
      * Запрос запускаем сразу, но сразу обрабатываем возможный reject,
      * чтобы до окончания задержки не возникло unhandled rejection.
      */
-    const updateResultPromise = tournamentConfigApi
-      .updateConfig(updatedConfig, adminRequestParams)
-      .then(
-        (savedConfig) =>
-          ({
-            ok: true,
-            savedConfig,
-          }) as const,
-        (error: unknown) =>
-          ({
-            ok: false,
-            error,
-          }) as const
-      );
+    const updateResultPromise = enqueueMutation(() =>
+      tournamentConfigApi.updateConfig(updatedConfig, adminRequestParams)
+    ).then(
+      (savedConfig) =>
+        ({
+          ok: true,
+          savedConfig,
+        }) as const,
+      (error: unknown) =>
+        ({
+          ok: false,
+          error,
+        }) as const
+    );
 
     // Даём пользователю увидеть подтверждённое действие.
     await wait(ROUND_DELETE_DELAY_MS);
