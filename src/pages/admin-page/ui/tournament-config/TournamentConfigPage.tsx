@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import isEqual from 'fast-deep-equal';
 import { Button } from '@/shared/ui/button';
 import {
@@ -104,6 +104,21 @@ const TournamentConfigPage = ({
   const [isConfigChangeConfirmOpen, setIsConfigChangeConfirmOpen] =
     useState(false);
 
+  const mutationQueueRef = useRef<Promise<void>>(Promise.resolve());
+
+  const enqueueMutation = <Result,>(
+    mutation: () => Promise<Result>
+  ): Promise<Result> => {
+    const queuedMutation = mutationQueueRef.current.then(mutation, mutation);
+
+    mutationQueueRef.current = queuedMutation.then(
+      () => undefined,
+      () => undefined
+    );
+
+    return queuedMutation;
+  };
+
   useEffect(() => {
     tournamentConfigApi.getConfigs().then(setConfigs);
   }, []);
@@ -165,9 +180,8 @@ const TournamentConfigPage = ({
 
     const newConfig = createEmptyTournamentConfig();
 
-    const createdConfig = await tournamentConfigApi.createConfig(
-      newConfig,
-      adminRequestParams
+    const createdConfig = await enqueueMutation(() =>
+      tournamentConfigApi.createConfig(newConfig, adminRequestParams)
     );
 
     const updatedConfigs = await tournamentConfigApi.getConfigs();
@@ -203,9 +217,8 @@ const TournamentConfigPage = ({
     );
 
     try {
-      const savedConfig = await tournamentConfigApi.updateConfig(
-        updatedConfig,
-        adminRequestParams
+      const savedConfig = await enqueueMutation(() =>
+        tournamentConfigApi.updateConfig(updatedConfig, adminRequestParams)
       );
 
       return savedConfig;
@@ -427,9 +440,8 @@ const TournamentConfigPage = ({
     }, CONFIG_DELETE_DELAY_MS);
 
     try {
-      await tournamentConfigApi.deleteConfig(
-        deletedConfig.id,
-        adminRequestParams
+      await enqueueMutation(() =>
+        tournamentConfigApi.deleteConfig(deletedConfig.id, adminRequestParams)
       );
 
       onStatusChange('Configuration deleted!');
