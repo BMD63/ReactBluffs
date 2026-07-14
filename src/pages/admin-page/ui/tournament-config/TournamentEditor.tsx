@@ -12,7 +12,8 @@ type TournamentEditorProps = {
 
   config: TournamentConfig;
   selectedRound: TournamentRoundConfig | null;
-
+  onDirtyConfigStateChange: (isDirty: boolean) => void;
+  onConfigDraftChange: (config: TournamentConfig) => void;
   onSaveConfig: (config: TournamentConfig) => void;
   onSaveRound: (round: TournamentRoundConfig) => void;
   onDeleteConfigRequest: () => void;
@@ -37,6 +38,8 @@ const TournamentEditor = ({
   onBonusLimitReset,
   onBackToConfiguration,
   onDirtyRoundStateChange,
+  onDirtyConfigStateChange,
+  onConfigDraftChange,
   canAddRoundFromEditor,
 }: TournamentEditorProps) => {
   if (editorTarget === 'config') {
@@ -46,6 +49,8 @@ const TournamentEditor = ({
         onSave={onSaveConfig}
         onAddRound={onAddRound}
         onDeleteRequest={onDeleteConfigRequest}
+        onDirtyStateChange={onDirtyConfigStateChange}
+        onDraftChange={onConfigDraftChange}
       />
     );
   }

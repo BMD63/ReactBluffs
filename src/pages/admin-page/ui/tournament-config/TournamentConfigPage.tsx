@@ -95,6 +95,15 @@ const TournamentConfigPage = ({
 
   const [hasUnsavedRoundChanges, setHasUnsavedRoundChanges] = useState(false);
 
+  const [hasUnsavedConfigChanges, setHasUnsavedConfigChanges] = useState(false);
+
+  const [configDraft, setConfigDraft] = useState<TournamentConfig | null>(null);
+
+  const [pendingConfigId, setPendingConfigId] = useState<string | null>(null);
+
+  const [isConfigChangeConfirmOpen, setIsConfigChangeConfirmOpen] =
+    useState(false);
+
   useEffect(() => {
     tournamentConfigApi.getConfigs().then(setConfigs);
   }, []);
@@ -126,6 +135,25 @@ const TournamentConfigPage = ({
     }
 
     return { adminToken };
+  };
+
+  const openConfig = (configId: string) => {
+    setSelectedConfigId(configId);
+    setEditorTarget('config');
+  };
+
+  const handleConfigChangeRequest = (nextConfigId: string) => {
+    if (nextConfigId === selectedConfigId) {
+      return;
+    }
+
+    if (!hasUnsavedConfigChanges) {
+      openConfig(nextConfigId);
+      return;
+    }
+
+    setPendingConfigId(nextConfigId);
+    setIsConfigChangeConfirmOpen(true);
   };
 
   const handleCreateConfig = async () => {
@@ -568,6 +596,50 @@ const TournamentConfigPage = ({
   const canAddRoundFromEditor =
     selectedRoundId !== null && selectedRoundId !== newUnsavedRoundId;
 
+  const cancelConfigChange = () => {
+    setIsConfigChangeConfirmOpen(false);
+    setPendingConfigId(null);
+  };
+
+  const discardConfigChangesAndContinue = () => {
+    if (!pendingConfigId) {
+      return;
+    }
+
+    const nextConfigId = pendingConfigId;
+
+    setIsConfigChangeConfirmOpen(false);
+    setPendingConfigId(null);
+    setHasUnsavedConfigChanges(false);
+    setConfigDraft(null);
+
+    openConfig(nextConfigId);
+  };
+
+  const saveConfigChangesAndContinue = async () => {
+    if (!pendingConfigId || !configDraft) {
+      return;
+    }
+
+    const nextConfigId = pendingConfigId;
+
+    setIsConfigChangeConfirmOpen(false);
+    setPendingConfigId(null);
+
+    const savedConfig = await updateCurrentConfig(() => configDraft);
+
+    if (!savedConfig) {
+      return;
+    }
+
+    setHasUnsavedConfigChanges(false);
+    setConfigDraft(null);
+
+    onStatusChange('Configuration updated!');
+
+    openConfig(nextConfigId);
+  };
+
   return (
     <section className="tournament-config-page">
       <div className="tournament-config-page__layout">
@@ -589,10 +661,7 @@ const TournamentConfigPage = ({
                 key={configItem.id}
                 config={configItem}
                 isActive={configItem.id === selectedConfigId}
-                onOpen={() => {
-                  setSelectedConfigId(configItem.id);
-                  setEditorTarget('config');
-                }}
+                onOpen={() => handleConfigChangeRequest(configItem.id)}
               />
             ))}
           </div>
@@ -624,6 +693,8 @@ const TournamentConfigPage = ({
             onBonusLimitReset={handleBonusLimitReset}
             onBackToConfiguration={handleBackToConfiguration}
             onDirtyRoundStateChange={setHasUnsavedRoundChanges}
+            onDirtyConfigStateChange={setHasUnsavedConfigChanges}
+            onConfigDraftChange={setConfigDraft}
             canAddRoundFromEditor={canAddRoundFromEditor}
           />
         </RoundEditorPanel>
@@ -679,6 +750,18 @@ const TournamentConfigPage = ({
             isDanger
             onCancel={() => setIsDeleteConfigConfirmOpen(false)}
             onConfirm={confirmDeleteConfig}
+          />
+        )}
+
+        {isConfigChangeConfirmOpen && (
+          <ConfirmActionModal
+            title="Save changes?"
+            description="You have unsaved changes."
+            confirmLabel="Save and continue"
+            secondaryLabel="Discard changes"
+            onCancel={cancelConfigChange}
+            onSecondary={discardConfigChangesAndContinue}
+            onConfirm={saveConfigChangesAndContinue}
           />
         )}
       </div>

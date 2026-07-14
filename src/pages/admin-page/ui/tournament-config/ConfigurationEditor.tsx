@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-
-import { Button } from '@/shared/ui/button';
-import EditorSection from '../EditorSection';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { TournamentConfig } from '@/entities/tournament-config';
+import { Button } from '@/shared/ui/button';
 
+import EditorSection from '../EditorSection';
 import FormField from '../FormField';
 
 type ConfigurationEditorProps = {
@@ -12,6 +11,8 @@ type ConfigurationEditorProps = {
   onSave: (config: TournamentConfig) => void;
   onAddRound: (config: TournamentConfig) => void;
   onDeleteRequest: () => void;
+  onDirtyStateChange: (isDirty: boolean) => void;
+  onDraftChange: (config: TournamentConfig) => void;
 };
 
 const ConfigurationEditor = ({
@@ -19,29 +20,42 @@ const ConfigurationEditor = ({
   onSave,
   onAddRound,
   onDeleteRequest,
+  onDirtyStateChange,
+  onDraftChange,
 }: ConfigurationEditorProps) => {
   const [title, setTitle] = useState(config.title);
   const [description, setDescription] = useState(config.description);
+
+  const draftConfig = useMemo<TournamentConfig>(
+    () => ({
+      ...config,
+      title: title.trim(),
+      description: description.trim(),
+    }),
+    [config, title, description]
+  );
+
+  const hasUnsavedChanges =
+    title !== config.title || description !== config.description;
 
   useEffect(() => {
     setTitle(config.title);
     setDescription(config.description);
   }, [config]);
 
+  useEffect(() => {
+    onDraftChange(draftConfig);
+    onDirtyStateChange(hasUnsavedChanges);
+  }, [draftConfig, hasUnsavedChanges, onDraftChange, onDirtyStateChange]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    onSave(getUpdatedConfig());
+    onSave(draftConfig);
   };
 
-  const getUpdatedConfig = (): TournamentConfig => ({
-    ...config,
-    title: title.trim(),
-    description: description.trim(),
-  });
-
   const handleAddRound = () => {
-    onAddRound(getUpdatedConfig());
+    onAddRound(draftConfig);
   };
 
   return (
@@ -57,6 +71,7 @@ const ConfigurationEditor = ({
               placeholder="Configuration title"
             />
           </FormField>
+
           <FormField label="Description">
             <textarea
               value={description}
@@ -65,10 +80,6 @@ const ConfigurationEditor = ({
               rows={4}
             />
           </FormField>
-
-          {/* <FormField label="ID">
-            <input value={config.id} readOnly />
-          </FormField> */}
 
           <FormField label="Rounds">
             <input value={config.rounds.length} readOnly />
