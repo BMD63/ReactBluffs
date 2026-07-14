@@ -79,6 +79,8 @@ const TournamentConfigPage = ({
 
   const [configs, setConfigs] = useState<TournamentConfig[]>([]);
   const [config, setConfig] = useState<TournamentConfig | null>();
+  const [configsLoadError, setConfigsLoadError] = useState<string | null>(null);
+  const [configLoadError, setConfigLoadError] = useState<string | null>(null);
   const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
   const [editorTarget, setEditorTarget] = useState<'config' | 'round'>(
     'config'
@@ -120,8 +122,40 @@ const TournamentConfigPage = ({
   };
 
   useEffect(() => {
-    tournamentConfigApi.getConfigs().then(setConfigs);
-  }, []);
+    let isCancelled = false;
+
+    const loadConfigs = async () => {
+      setConfigsLoadError(null);
+
+      try {
+        const loadedConfigs = await tournamentConfigApi.getConfigs();
+
+        if (isCancelled) {
+          return;
+        }
+
+        setConfigs(loadedConfigs);
+      } catch (error) {
+        if (isCancelled) {
+          return;
+        }
+
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'Failed to load tournament configurations';
+
+        setConfigsLoadError(errorMessage);
+        onStatusChange(errorMessage);
+      }
+    };
+
+    void loadConfigs();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [onStatusChange]);
 
   const [isBackConfirmOpen, setIsBackConfirmOpen] = useState(false);
 
@@ -131,17 +165,51 @@ const TournamentConfigPage = ({
     useState<TournamentRoundConfig | null>(null);
 
   useEffect(() => {
-    tournamentConfigApi.getConfig(selectedConfigId).then((loadedConfig) => {
-      setConfig(loadedConfig);
+    let isCancelled = false;
 
-      if (!loadedConfig) {
+    const loadConfig = async () => {
+      setConfigLoadError(null);
+      setConfig(undefined);
+
+      try {
+        const loadedConfig =
+          await tournamentConfigApi.getConfig(selectedConfigId);
+
+        if (isCancelled) {
+          return;
+        }
+
+        setConfig(loadedConfig);
+
+        if (!loadedConfig) {
+          setSelectedRoundId(null);
+          return;
+        }
+
+        setSelectedRoundId(loadedConfig.rounds.at(0)?.id ?? null);
+      } catch (error) {
+        if (isCancelled) {
+          return;
+        }
+
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'Failed to load tournament configuration';
+
+        setConfigLoadError(errorMessage);
+        setConfig(null);
         setSelectedRoundId(null);
-        return;
+        onStatusChange(errorMessage);
       }
+    };
 
-      setSelectedRoundId(loadedConfig.rounds.at(0)?.id ?? null);
-    });
-  }, [selectedConfigId]);
+    void loadConfig();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [selectedConfigId, onStatusChange]);
 
   const getAdminRequestParams = () => {
     if (!adminToken) {
@@ -596,6 +664,10 @@ const TournamentConfigPage = ({
 
   if (config === undefined) {
     return <p>Loading...</p>;
+  }
+
+  if (configLoadError) {
+    return <p>{configLoadError}</p>;
   }
 
   if (config === null) {
