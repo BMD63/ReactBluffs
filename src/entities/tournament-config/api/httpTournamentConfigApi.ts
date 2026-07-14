@@ -3,6 +3,10 @@ import type {
   AdminRequestParams,
   TournamentConfigApi,
 } from './tournamentConfigApiTypes';
+import {
+  tournamentConfigDtoSchema,
+  tournamentConfigDtosSchema,
+} from './tournamentConfigApi.schema';
 import { API_BASE_URL, API_ENDPOINTS } from '@/shared/config/api';
 
 const getTournamentConfigsUrl = (configId?: string) => {
@@ -51,10 +55,18 @@ export const httpTournamentConfigApi: TournamentConfigApi = {
     const response = await fetch(getTournamentConfigsUrl(configId));
 
     if (!response.ok) {
-      throw new Error('Failed to fetch tournament config');
+      throw new Error(
+        await getErrorMessage(response, 'Failed to fetch tournament config')
+      );
     }
 
-    return response.json();
+    const data: unknown = await response.json();
+
+    if (data === null) {
+      return null;
+    }
+
+    return tournamentConfigDtoSchema.parse(data);
   },
 
   async createConfig(
@@ -73,7 +85,9 @@ export const httpTournamentConfigApi: TournamentConfigApi = {
       );
     }
 
-    return response.json();
+    const data: unknown = await response.json();
+
+    return tournamentConfigDtoSchema.parse(data);
   },
 
   async updateConfig(
@@ -92,7 +106,9 @@ export const httpTournamentConfigApi: TournamentConfigApi = {
       );
     }
 
-    return response.json();
+    const data: unknown = await response.json();
+
+    return tournamentConfigDtoSchema.parse(data);
   },
 
   async deleteConfig(
