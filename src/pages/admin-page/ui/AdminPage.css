@@ -1010,3 +1010,63 @@
 
   font-size: 13px;
 }
+
+.tournament-config-skeleton__title,
+.tournament-config-skeleton__card,
+.tournament-config-skeleton__label,
+.tournament-config-skeleton__input,
+.tournament-config-skeleton__textarea,
+.tournament-config-skeleton__button {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  animation: tournament-config-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.tournament-config-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tournament-config-skeleton__title {
+  width: 45%;
+  height: 28px;
+  margin-bottom: 8px;
+}
+
+.tournament-config-skeleton__card {
+  width: 100%;
+  height: 72px;
+}
+
+.tournament-config-skeleton__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tournament-config-skeleton__label {
+  width: 30%;
+  height: 14px;
+}
+
+.tournament-config-skeleton__input {
+  width: 100%;
+  height: 42px;
+}
+
+.tournament-config-skeleton__textarea {
+  width: 100%;
+  height: 110px;
+}
+
+.tournament-config-skeleton__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tournament-config-skeleton__button {
+  width: 110px;
+  height: 40px;
+}

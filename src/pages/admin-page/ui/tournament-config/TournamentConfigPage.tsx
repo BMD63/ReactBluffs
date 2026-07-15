@@ -81,6 +81,7 @@ const TournamentConfigPage = ({
   const [config, setConfig] = useState<TournamentConfig | null>();
   const [configsLoadError, setConfigsLoadError] = useState<string | null>(null);
   const [configLoadError, setConfigLoadError] = useState<string | null>(null);
+  const [isConfigLoading, setIsConfigLoading] = useState(false);
   const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
   const [editorTarget, setEditorTarget] = useState<'config' | 'round'>(
     'config'
@@ -169,7 +170,7 @@ const TournamentConfigPage = ({
 
     const loadConfig = async () => {
       setConfigLoadError(null);
-      setConfig(undefined);
+      setIsConfigLoading(true);
 
       try {
         const loadedConfig =
@@ -201,6 +202,10 @@ const TournamentConfigPage = ({
         setConfig(null);
         setSelectedRoundId(null);
         onStatusChange(errorMessage);
+      } finally {
+        if (!isCancelled) {
+          setIsConfigLoading(false);
+        }
       }
     };
 
@@ -662,23 +667,14 @@ const TournamentConfigPage = ({
     });
   };
 
-  if (config === undefined) {
-    return <p>Loading...</p>;
-  }
-
-  if (configLoadError) {
-    return <p>{configLoadError}</p>;
-  }
-
-  if (config === null) {
-    return <p>Tournament configuration not found.</p>;
-  }
-
   const selectedRound =
-    config.rounds.find((round) => round.id === selectedRoundId) ?? null;
+    config?.rounds.find((round) => round.id === selectedRoundId) ?? null;
 
   const canAddRoundFromEditor =
-    selectedRoundId !== null && selectedRoundId !== newUnsavedRoundId;
+    config !== null &&
+    config !== undefined &&
+    selectedRoundId !== null &&
+    selectedRoundId !== newUnsavedRoundId;
 
   const cancelConfigChange = () => {
     setIsConfigChangeConfirmOpen(false);
@@ -752,35 +748,74 @@ const TournamentConfigPage = ({
         </ConfigurationsPanel>
 
         <RoundsPanel>
-          <RoundsList
-            config={config}
-            selectedRoundId={selectedRoundId}
-            onSelectRound={(roundId) => {
-              setSelectedRoundId(roundId);
-              setEditorTarget('round');
-            }}
-            onReorderRounds={handleReorderRounds}
-          />
+          {isConfigLoading || config === undefined ? (
+            <div className="tournament-config-skeleton tournament-config-skeleton--rounds">
+              <div className="tournament-config-skeleton__title" />
+
+              <div className="tournament-config-skeleton__card" />
+              <div className="tournament-config-skeleton__card" />
+              <div className="tournament-config-skeleton__card" />
+            </div>
+          ) : configLoadError ? (
+            <p className="admin-error">{configLoadError}</p>
+          ) : config === null ? (
+            <p>Tournament configuration not found.</p>
+          ) : (
+            <RoundsList
+              config={config}
+              selectedRoundId={selectedRoundId}
+              onSelectRound={(roundId) => {
+                setSelectedRoundId(roundId);
+                setEditorTarget('round');
+              }}
+              onReorderRounds={handleReorderRounds}
+            />
+          )}
         </RoundsPanel>
 
         <RoundEditorPanel>
-          <TournamentEditor
-            editorTarget={editorTarget}
-            config={config}
-            selectedRound={selectedRound}
-            onSaveConfig={handleSaveConfig}
-            onSaveRound={handleSaveRound}
-            onAddRound={handleAddRound}
-            onAddRoundFromEditorRequest={handleAddRoundFromEditorRequest}
-            onDeleteRoundRequest={handleDeleteRoundRequest}
-            onDeleteConfigRequest={handleDeleteConfigRequest}
-            onBonusLimitReset={handleBonusLimitReset}
-            onBackToConfiguration={handleBackToConfiguration}
-            onDirtyRoundStateChange={setHasUnsavedRoundChanges}
-            onDirtyConfigStateChange={setHasUnsavedConfigChanges}
-            onConfigDraftChange={setConfigDraft}
-            canAddRoundFromEditor={canAddRoundFromEditor}
-          />
+          {isConfigLoading || config === undefined ? (
+            <div className="tournament-config-skeleton tournament-config-skeleton--editor">
+              <div className="tournament-config-skeleton__title" />
+
+              <div className="tournament-config-skeleton__field">
+                <div className="tournament-config-skeleton__label" />
+                <div className="tournament-config-skeleton__input" />
+              </div>
+
+              <div className="tournament-config-skeleton__field">
+                <div className="tournament-config-skeleton__label" />
+                <div className="tournament-config-skeleton__textarea" />
+              </div>
+
+              <div className="tournament-config-skeleton__actions">
+                <div className="tournament-config-skeleton__button" />
+                <div className="tournament-config-skeleton__button" />
+              </div>
+            </div>
+          ) : configLoadError ? (
+            <p className="admin-error">{configLoadError}</p>
+          ) : config === null ? (
+            <p>Tournament configuration not found.</p>
+          ) : (
+            <TournamentEditor
+              editorTarget={editorTarget}
+              config={config}
+              selectedRound={selectedRound}
+              onSaveConfig={handleSaveConfig}
+              onSaveRound={handleSaveRound}
+              onAddRound={handleAddRound}
+              onAddRoundFromEditorRequest={handleAddRoundFromEditorRequest}
+              onDeleteRoundRequest={handleDeleteRoundRequest}
+              onDeleteConfigRequest={handleDeleteConfigRequest}
+              onBonusLimitReset={handleBonusLimitReset}
+              onBackToConfiguration={handleBackToConfiguration}
+              onDirtyRoundStateChange={setHasUnsavedRoundChanges}
+              onDirtyConfigStateChange={setHasUnsavedConfigChanges}
+              onConfigDraftChange={setConfigDraft}
+              canAddRoundFromEditor={canAddRoundFromEditor}
+            />
+          )}
         </RoundEditorPanel>
         {isBackConfirmOpen && (
           <ConfirmActionModal
