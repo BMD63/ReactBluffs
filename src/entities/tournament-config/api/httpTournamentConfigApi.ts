@@ -48,7 +48,9 @@ export const httpTournamentConfigApi: TournamentConfigApi = {
       throw new Error('Failed to fetch tournament configs');
     }
 
-    return response.json();
+    const data: unknown = await response.json();
+
+    return tournamentConfigDtosSchema.parse(data);
   },
 
   async getConfig(configId: string): Promise<TournamentConfig | null> {
